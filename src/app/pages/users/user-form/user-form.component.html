@@ -1,0 +1,33 @@
+<div class="userForm">
+  <mat-form-field class="userFormField">
+    <input matInput placeholder="Name" [formControl]="name">
+    <mat-error *ngIf="name.hasError('required')">
+      Name is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="userFormField">
+    <mat-select placeholder="Select role" [(value)]="role">
+      <mat-option value="admin">Administrador</mat-option>
+      <mat-option value="operario">Operario</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="userFormField">
+    <input matInput placeholder="Username" [formControl]="username">
+    <mat-error *ngIf="username.hasError('required')">
+      Username is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="signin-field">
+    <input type="password" matInput placeholder="Password" [formControl]="password" [type]="hide ? 'password' : 'text'">
+    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+    </button>
+    <mat-error *ngIf="password.hasError('required')">
+      Password is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+  <div class="buttonsDiv">
+    <button mat-raised-button class="buttonActions" color="primary" (click)="save()">Ok</button>
+    <button mat-raised-button class="buttonActions" color="warn" (click)="cancel()">Cancel</button>
+  </div>
+</div>

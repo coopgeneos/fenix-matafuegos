@@ -1,0 +1,56 @@
+<div class="customerForm">
+
+  <mat-form-field class="customerFormField">
+    <input matInput placeholder="Code" [formControl]="code">
+    <mat-error *ngIf="code.hasError('required')">
+      Code is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="customerFormField">
+    <input matInput placeholder="Name" [formControl]="name">
+    <mat-error *ngIf="name.hasError('required')">
+      Name is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="customerFormField">
+    <input matInput placeholder="Address" [formControl]="address">
+    <mat-error *ngIf="address.hasError('required')">
+      Address is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="customerFormField">
+    <input matInput placeholder="Phone" [formControl]="phone">
+    <mat-error *ngIf="phone.hasError('required')">
+      Phone is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="customerFormField">
+    <input matInput placeholder="Email" [formControl]="email">
+    <mat-error *ngIf="email.hasError('required')">
+      Email is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="customerFormField">
+    <input matInput placeholder="Web" [formControl]="web">
+    <mat-error *ngIf="web.hasError('required')">
+      Web is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="customerFormField">
+    <mat-select placeholder="Select type" [(value)]="type">
+      <mat-option value="vehicular">Vehicular</mat-option>
+      <mat-option value="empresa">Empresa</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="buttonsDiv">
+    <button mat-raised-button class="buttonActions" color="primary" (click)="save()">Ok</button>
+    <button mat-raised-button class="buttonActions" color="warn" (click)="cancel()">Cancel</button>
+  </div>
+</div>

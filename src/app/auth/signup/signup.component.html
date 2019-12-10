@@ -1,0 +1,34 @@
+<div class="container">
+    <mat-card class="signin-card">
+      <mat-card-header>
+        <mat-card-title>SignUp</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-form-field class="signin-field">
+          <input matInput placeholder="Email" [formControl]="emailFormControl">
+          <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+            Please enter a valid email address
+          </mat-error>
+          <mat-error *ngIf="emailFormControl.hasError('required')">
+            Email is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="signin-field">
+          <input type="password" matInput placeholder="Password" [formControl]="passwordFormControl">
+          <mat-error *ngIf="passwordFormControl.hasError('required')">
+            Password is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="signin-field">
+          <input type="password" matInput placeholder="Retype password" [formControl]="rePasswordFormControl">
+          <mat-error *ngIf="rePasswordFormControl.hasError('required')">
+            Password is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+        <mat-card-actions class="actions">
+          <a [routerLink]="['/signin']">I have an account</a>
+          <button mat-raised-button color="primary" class="login-button" (click)="signup()">Create</button>
+        </mat-card-actions>
+      </mat-card-content>
+    </mat-card>
+  </div>  

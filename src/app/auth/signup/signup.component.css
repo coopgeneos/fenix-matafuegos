@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.signin-card {
+  flex-basis: auto;
+}
+
+.signin-field {
+  width: 100%;
+}
+
+.actions {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.login-button {
+  float: right;
+}
