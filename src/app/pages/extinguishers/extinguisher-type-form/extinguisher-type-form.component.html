@@ -1,0 +1,49 @@
+<div class="extinguisherTypeForm">
+
+  <mat-form-field class="extinguisherTypeFormField">
+    <input matInput placeholder="Code" [formControl]="code">
+    <mat-error *ngIf="code.hasError('required')">
+      Code is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="extinguisherTypeFormField">
+    <mat-select placeholder="Select category" [(value)]="category">
+      <mat-option value="categ1">Categoria 1</mat-option>
+      <mat-option value="categ2">Categoria 2</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="extinguisherTypeFormField">
+    <input matInput placeholder="Load expiration" [formControl]="loadExpiration" type="number">
+    <mat-error *ngIf="loadExpiration.hasError('required')">
+      LoadExpiration is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="extinguisherTypeFormField">
+    <input matInput placeholder="PH expiration" [formControl]="phExpiration" type="number">
+    <mat-error *ngIf="phExpiration.hasError('required')">
+      PHExpiration is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="extinguisherTypeFormField">
+    <input matInput placeholder="Weight" [formControl]="weight" type="number">
+    <mat-error *ngIf="weight.hasError('required')">
+      Weight is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="extinguisherTypeFormField">
+    <input matInput placeholder="Volume" [formControl]="volume" type="number">
+    <mat-error *ngIf="volume.hasError('required')">
+      Volume is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+  
+  <div class="buttonsDiv">
+    <button mat-raised-button class="buttonActions" color="primary" (click)="save()">Ok</button>
+    <button mat-raised-button class="buttonActions" color="warn" (click)="cancel()">Cancel</button>
+  </div>
+</div>

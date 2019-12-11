@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserService } from 'src/app/pages/users/user.service';
+import { UsersService } from 'src/app/pages/users/users.service';
 import { User } from 'src/app/models/user';
 import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-user-form',
-  templateUrl: './user-form.component.html',
-  styleUrls: ['./user-form.component.css']
+  templateUrl: './users-form.component.html',
+  styleUrls: ['./users-form.component.css']
 })
-export class UserFormComponent implements OnInit {
+export class UsersFormComponent implements OnInit {
   
   id: number = 0;
   user: User;
@@ -23,7 +23,7 @@ export class UserFormComponent implements OnInit {
   
   constructor(
     private activatedRouter: ActivatedRoute,
-    private service: UserService,
+    private service: UsersService,
     private _snackBar: MatSnackBar,
     private router: Router) { 
     this.activatedRouter.params.subscribe(

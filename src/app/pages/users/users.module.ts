@@ -11,16 +11,16 @@ import {
 } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { UserService } from './user.service';
+import { UsersService } from './users.service';
 
 import { UsersListComponent } from './users-list/users-list.component';
-import { UserFormComponent } from './user-form/user-form.component';
+import { UsersFormComponent } from './users-form/users-form.component';
 
 
 @NgModule({
   declarations: [
     UsersListComponent,
-    UserFormComponent
+    UsersFormComponent
   ],
   imports: [
     CommonModule,
@@ -34,6 +34,6 @@ import { UserFormComponent } from './user-form/user-form.component';
     MatSelectModule,
     MatSnackBarModule
   ],
-  providers: [UserService]
+  providers: [UsersService]
 })
 export class UsersModule { }

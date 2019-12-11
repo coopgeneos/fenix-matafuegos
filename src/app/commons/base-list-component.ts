@@ -1,5 +1,5 @@
-import { OnSort, SortEvent, NgbdSortableHeader } from 'src/app/commons/sortable.directive';
-import { OnFilter, FilterEvent } from 'src/app/commons/filterable.directive';
+import { OnSort, SortEvent, NgbdSortableHeader } from 'src/app/commons/directives/sortable.directive';
+import { OnFilter, FilterEvent } from 'src/app/commons/directives/filterable.directive';
 import { BaseServiceAPI } from './base-service-api';
 import { ViewChildren, QueryList } from '@angular/core';
 

@@ -1,0 +1,175 @@
+import { Component, OnInit } from '@angular/core';
+import { Extinguisher } from 'src/app/models/extinguisher';
+import { FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material';
+import { ExtinguishersService } from '../extinguisher.service';
+import { CustomersService } from '../../customers/customers.service';
+import { ExtinguisherTypeService } from '../extinguisher-type.service';
+import { Customer } from 'src/app/models/customer';
+import { ExtinguisherType } from 'src/app/models/extinguisherType';
+import * as moment from 'moment';
+
+@Component({
+  selector: 'app-extinguisher-form',
+  templateUrl: './extinguisher-form.component.html',
+  styleUrls: ['./extinguisher-form.component.css']
+})
+export class ExtinguisherFormComponent implements OnInit {
+
+  id: number = 0;
+  extinguisher: Extinguisher;
+
+  code = new FormControl('', [Validators.required]);
+  location = new FormControl('', [Validators.required]);
+  costCenter = new FormControl('', [Validators.required]);
+  address = new FormControl('', [Validators.required]);
+  factoryNo = new FormControl('', [Validators.required]);
+  bvNo = new FormControl('', [Validators.required]);
+  manufacturing = new FormControl('', [Validators.required]);
+  lastLoad = new FormControl('', [Validators.required]);
+  lastHydraulicTest = new FormControl('', [Validators.required]);
+
+  category: string = "categ1";
+  categories: any[] = [
+    { name: 'Categoría 1', value: 'categ1'}, 
+    { name: 'Categoría 2', value: 'categ2'},
+  ];
+
+  customerId: string = null; //Uso string para que el componente select me tome el valor
+  customers: Customer[];
+  
+  typeId: string = null;
+  extinguisherTypes: ExtinguisherType[];
+  
+  constructor(
+    private activatedRouter: ActivatedRoute,
+    private service: ExtinguishersService,
+    private _snackBar: MatSnackBar,
+    private router: Router,
+    public customerService: CustomersService,
+    public typeService: ExtinguisherTypeService) { 
+    this.activatedRouter.params.subscribe(
+      params => { 
+        this.id = Number(params['id']); 
+      }
+    );
+  }
+
+  ngOnInit() {
+    if(this.id != 0) {
+      this.service.get(this.id).subscribe(
+        data => {
+          this.code.setValue(data.code);
+          this.category = data.category;
+          this.location.setValue(data.location);
+          this.costCenter.setValue(data.costCenter);
+          this.address.setValue(data.address);
+          this.factoryNo.setValue(data.factoryNo);
+          this.bvNo.setValue(data.bvNo);
+          this.manufacturing.setValue(moment(data.manufacturingDate).format("YYYY-MM-DD"));
+          this.lastLoad.setValue(moment(data.lastLoad).format("YYYY-MM-DD"));
+          this.lastHydraulicTest.setValue(moment(data.lastHydraulicTest).format("YYYY-MM-DD"));
+          this.customerId = data.customer.id.toString();
+          this.typeId = data.type.id.toString();
+        },
+        error => {
+          this._snackBar.open("Error fetching the extinguisher!", "Close", { duration: 2000 });
+        }
+      )
+    }
+
+    this.customerService.search()
+      .then(list => {
+        this.customers = list;
+      })
+      .catch(err => {
+        this._snackBar.open("Error fetching the customers!", "Close", { duration: 2000 });
+      })
+
+    this.typeService.search()
+      .then(list => {
+        this.extinguisherTypes = list;
+      })
+      .catch(err => {
+        this._snackBar.open("Error fetching the types!", "Close", { duration: 2000 });
+      })
+  }
+
+  save() : void {
+    let extinguisher = new Extinguisher();
+    this.code.value && this.code.value != "" ? extinguisher.code = this.code.value : delete extinguisher.code;
+    this.category && this.category != "" ? extinguisher.category = this.category : delete extinguisher.category;
+    this.costCenter && this.costCenter.value != "" ? extinguisher.costCenter = this.costCenter.value : delete extinguisher.costCenter;  
+    this.location && this.location.value != "" ? extinguisher.location = this.location.value : delete extinguisher.location;  
+    this.address.value && this.address.value != "" ? extinguisher.address = this.address.value : delete extinguisher.address; 
+    this.factoryNo.value && this.factoryNo.value != "" ? extinguisher.factoryNo = this.factoryNo.value : delete extinguisher.factoryNo; 
+    this.bvNo.value && this.bvNo.value != "" ? extinguisher.bvNo = this.bvNo.value : delete extinguisher.bvNo;
+    this.manufacturing.value && this.manufacturing.value != "" ? extinguisher.manufacturingDate = this.manufacturing.value : delete extinguisher.manufacturingDate;
+    this.lastLoad.value && this.lastLoad.value != "" ? extinguisher.lastLoad = this.lastLoad.value : delete extinguisher.lastLoad;
+    this.lastHydraulicTest.value && this.lastHydraulicTest.value != "" ? extinguisher.lastHydraulicTest = this.lastHydraulicTest.value : delete extinguisher.lastHydraulicTest; 
+    
+    if(this.customerId) {
+      extinguisher.customer = new Customer();
+      extinguisher.customer.id = Number(this.customerId); 
+    } else 
+      delete extinguisher.customer;
+    
+    if(this.typeId) {
+      extinguisher.type = new ExtinguisherType();
+      extinguisher.type.id = Number(this.typeId); 
+    } else 
+      delete extinguisher.type;
+    
+    if(this.validate()) {
+      if(this.id == 0) {
+        this.service.add(extinguisher).subscribe(
+          _ => {
+            this._snackBar.open("Extinguisher saved!", "Close", { duration: 2000 });
+            this.router.navigate(['/pages/extinguishers'])
+          },
+          error => {
+            this._snackBar.open("Error saving extinguisher! " + error, "Close", { duration: 2000 });
+          }
+        )
+      } else {
+        this.service.update(this.id, extinguisher).subscribe(
+          _ => {
+            this._snackBar.open("Extinguisher saved!", "Close", { duration: 2000 });
+            this.router.navigate(['/pages/extinguishers'])
+          },
+          error => {
+            this._snackBar.open("Error updating extinguisher!" + error, "Close", { duration: 2000 });
+          }
+        )
+      }
+    } else
+    this._snackBar.open("Please check fields!","Close", { duration: 2000 });
+  }
+
+  cancel() : void {
+    this.router.navigate(['/pages/extinguishers'])
+  }
+
+  validate() : boolean {
+    let error = false;
+    /* if(!this.categories.includes(this.category)) {
+      error = true;
+    } */
+    return !error && 
+      !this.code.hasError('required') && 
+      !this.location.hasError('required') && 
+      !this.address.hasError('required') && 
+      !this.factoryNo.hasError('required') && 
+      !this.bvNo.hasError('required') && 
+      !this.manufacturing.hasError('required') && 
+      !this.lastLoad.hasError('required') && 
+      !this.lastHydraulicTest.hasError('required') 
+  }
+
+  /* selectCustomer(id: any) {
+    this.idCustomer = (id == 'null') ? 0 : id;
+  } */
+
+
+}

@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class UserService extends BaseServiceAPI<User>{
+export class UsersService extends BaseServiceAPI<User>{
 
   constructor(protected httpClient: HttpClient) { 
     super(httpClient, 'user');

@@ -1,8 +1,8 @@
 import { HttpClient} from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { SortEvent } from 'src/app/commons/sortable.directive';
-import { FilterEvent } from 'src/app/commons/filterable.directive';
-import { Condition } from 'src/app/commons/filterable.directive'
+import { SortEvent } from 'src/app/commons/directives/sortable.directive';
+import { FilterEvent } from 'src/app/commons/directives/filterable.directive';
+import { Condition } from 'src/app/commons/directives/filterable.directive'
 /* import { NgbPaginationLast } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { keys } from 'ts-transformer-keys'; */

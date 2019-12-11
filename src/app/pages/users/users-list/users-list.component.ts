@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user';
-import { UserService } from 'src/app/pages/users/user.service';
+import { UsersService } from 'src/app/pages/users/users.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 
@@ -14,7 +14,7 @@ export class UsersListComponent implements OnInit {
   dataSource: User[];
 
   constructor(
-    private service: UserService, 
+    private service: UsersService, 
     protected router: Router,
     private _snackBar: MatSnackBar) { }
 

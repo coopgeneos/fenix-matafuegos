@@ -1,0 +1,15 @@
+.customSelect {
+  width: 100%
+}
+
+.extinguishersForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 50%
+}
+
+.buttonActions {
+  float: right;
+  margin-left: 2px;
+}

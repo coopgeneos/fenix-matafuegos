@@ -17,9 +17,13 @@ import { AuthService } from '../auth/auth.service';
 import { PagesComponent } from './pages.component';
 import { IsAdminGuard } from '../guards/isAdmin.guard';
 import { CustomersModule } from './customers/customers.module';
+import { ExtinguishersModule } from './extinguishers/extinguishers.module';
+import { CommonsModule } from '../commons/commons.module';
 
 @NgModule({
-  declarations: [PagesComponent],
+  declarations: [
+    PagesComponent
+  ],
   imports: [
     CommonModule,
     PagesRoutingModule,
@@ -30,7 +34,9 @@ import { CustomersModule } from './customers/customers.module';
     MatSidenavModule,
     MatListModule,
     UsersModule,
-    CustomersModule
+    CustomersModule,
+    ExtinguishersModule,
+    CommonsModule
   ],
   providers: [
     IsAuthenticatedGuard, 

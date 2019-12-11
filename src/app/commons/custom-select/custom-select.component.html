@@ -1,0 +1,9 @@
+<div>
+
+  <input (keyup)="searchElement($event.target.value)" style="width: 100%">
+  <select (change)="selectElement($event.target.value)" class="form-control" style="width: 100%"> 
+    <option [value]="notSelected">Seleccione...</option>
+    <option *ngFor="let elem of filteredList" [(value)]="elem[key]">{{elem[label]}}</option> 
+  </select>
+      
+</div>
