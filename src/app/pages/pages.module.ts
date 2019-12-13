@@ -19,6 +19,7 @@ import { IsAdminGuard } from '../guards/isAdmin.guard';
 import { CustomersModule } from './customers/customers.module';
 import { ExtinguishersModule } from './extinguishers/extinguishers.module';
 import { CommonsModule } from '../commons/commons.module';
+import { WorkOrdersModule } from './work-orders/work-orders.module';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { CommonsModule } from '../commons/commons.module';
     UsersModule,
     CustomersModule,
     ExtinguishersModule,
+    WorkOrdersModule,
     CommonsModule
   ],
   providers: [

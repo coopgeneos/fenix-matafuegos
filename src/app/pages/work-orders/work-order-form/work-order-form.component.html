@@ -1,0 +1,50 @@
+<div class="orderForm">
+  <mat-form-field class="orderFormField">
+    <input matInput placeholder="OrderNo" [formControl]="orderNo" readonly="{{canceled != null}}">
+    <mat-error *ngIf="orderNo.hasError('required')">
+      Order is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="orderFormField">
+    <mat-select placeholder="Select customer" [(value)]="customerId" disabled="{{canceled != null}}">
+      <mat-option *ngFor="let c of customers" value="{{c.id}}">{{c.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="orderFormField">
+    <mat-select placeholder="Select extinguisher" [(value)]="extinguisherId" disabled="{{canceled != null}}">
+      <mat-option *ngFor="let e of extinguishers" value="{{e.id}}">{{e.code}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-selection-list>
+    <mat-list-item *ngFor="let serv of servicesList; let i=index"> {{serv.name}} 
+      <mat-checkbox [checked]="serv.value" (change)="checkService(i)" disabled="{{canceled != null}}"></mat-checkbox>
+    </mat-list-item>
+  </mat-selection-list>
+
+  <!-- <mat-form-field class="orderFormField">
+    <mat-select placeholder="Select user" [(value)]="userId">
+      <mat-option *ngFor="let u of users" value="{{u.id}}">{{u.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="extinguishersFormField">
+    <input matInput placeholder="Close date" [formControl]="closeDate" type="date">
+    <mat-error *ngIf="closeDate.hasError('required') && userId">
+      CloseDate date is <strong>required</strong>
+    </mat-error>
+  </mat-form-field> -->
+
+  <mat-form-field class="orderFormField" *ngIf="canceled != null">
+    <textarea matInput placeholder="Cancel description" [ngModel]="canceled" readonly="{{canceled != null}}"></textarea>
+  </mat-form-field>
+
+  <div class="buttonsDiv">
+    <button mat-raised-button class="buttonActions" color="primary" (click)="save()" *ngIf="canceled == null">Ok</button>
+    <button mat-raised-button class="buttonActions" color="warn" (click)="cancel()" *ngIf="canceled == null">Cancel</button>
+    <button mat-raised-button class="buttonActions" color="primary" (click)="cancel()" *ngIf="canceled != null">Ok</button>
+
+  </div>
+</div>

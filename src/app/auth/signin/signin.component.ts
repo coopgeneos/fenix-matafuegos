@@ -42,7 +42,6 @@ export class SigninComponent implements OnInit {
           });
       
           dialogRef.afterClosed().subscribe(result => {
-            console.log("Cerrando", result)
             if(result && result == true) {
               this.userIdle.resetTimer();
             } else {

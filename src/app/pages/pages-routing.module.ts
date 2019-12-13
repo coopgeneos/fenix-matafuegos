@@ -12,28 +12,36 @@ import { ExtinguisherTypeListComponent } from './extinguishers/extinguisher-type
 import { ExtinguisherTypeFormComponent } from './extinguishers/extinguisher-type-form/extinguisher-type-form.component';
 import { ExtinguisherListComponent } from './extinguishers/extinguisher-list/extinguisher-list.component';
 import { ExtinguisherFormComponent } from './extinguishers/extinguisher-form/extinguisher-form.component';
+import { WorkOrderListComponent } from './work-orders/work-order-list/work-order-list.component';
+import { WorkOrderFormComponent } from './work-orders/work-order-form/work-order-form.component';
+import { WorkOrderMadeFormComponent } from './work-orders/work-order-made-form/work-order-made-form.component';
 
 const routes: Routes = [
   { path: '', component: PagesComponent,
     children: [
-      { path: 'users', component: UsersListComponent, canActivate: [IsAuthenticatedGuard] },
-      { path: 'users/:id', component: UsersFormComponent, canActivate: [IsAuthenticatedGuard] },
-      { path: 'users/0', component: UsersFormComponent, canActivate: [IsAuthenticatedGuard] },
+      { path: 'users', component: UsersListComponent, canActivate: [IsAuthenticatedGuard, IsAdminGuard] },
+      { path: 'users/:id', component: UsersFormComponent, canActivate: [IsAuthenticatedGuard, IsAdminGuard] },
+      { path: 'users/0', component: UsersFormComponent, canActivate: [IsAuthenticatedGuard, IsAdminGuard] },
 
-      { path: 'customers', component: CustomersListComponent, canActivate: [IsAuthenticatedGuard] },
-      { path: 'customers/:id', component: CustomersFormComponent, canActivate: [IsAuthenticatedGuard] },
-      { path: 'customers/0', component: CustomersFormComponent, canActivate: [IsAuthenticatedGuard] },
+      { path: 'customers', component: CustomersListComponent, canActivate: [IsAuthenticatedGuard, IsAdminGuard] },
+      { path: 'customers/:id', component: CustomersFormComponent, canActivate: [IsAuthenticatedGuard, IsAdminGuard] },
+      { path: 'customers/0', component: CustomersFormComponent, canActivate: [IsAuthenticatedGuard, IsAdminGuard] },
 
-      { path: 'extinguisherstype', component: ExtinguisherTypeListComponent, canActivate: [IsAuthenticatedGuard] },
-      { path: 'extinguisherstype/:id', component: ExtinguisherTypeFormComponent, canActivate: [IsAuthenticatedGuard] },
-      { path: 'extinguisherstype/0', component: ExtinguisherTypeFormComponent, canActivate: [IsAuthenticatedGuard] },
+      { path: 'extinguisherstype', component: ExtinguisherTypeListComponent, canActivate: [IsAuthenticatedGuard, IsAdminGuard] },
+      { path: 'extinguisherstype/:id', component: ExtinguisherTypeFormComponent, canActivate: [IsAuthenticatedGuard, IsAdminGuard] },
+      { path: 'extinguisherstype/0', component: ExtinguisherTypeFormComponent, canActivate: [IsAuthenticatedGuard, IsAdminGuard] },
 
-      { path: 'extinguishers', component: ExtinguisherListComponent, canActivate: [IsAuthenticatedGuard] },
-      { path: 'extinguishers/:id', component: ExtinguisherFormComponent, canActivate: [IsAuthenticatedGuard] },
-      { path: 'extinguishers/0', component: ExtinguisherFormComponent, canActivate: [IsAuthenticatedGuard] },
+      { path: 'extinguishers', component: ExtinguisherListComponent, canActivate: [IsAuthenticatedGuard, IsAdminGuard] },
+      { path: 'extinguishers/:id', component: ExtinguisherFormComponent, canActivate: [IsAuthenticatedGuard, IsAdminGuard] },
+      { path: 'extinguishers/0', component: ExtinguisherFormComponent, canActivate: [IsAuthenticatedGuard, IsAdminGuard] },
 
-      { path: '', redirectTo: 'users', pathMatch: 'full' },
-      { path: '**', redirectTo: 'users', pathMatch: 'full' },
+      { path: 'workorders', component: WorkOrderListComponent, canActivate: [IsAuthenticatedGuard] },
+      { path: 'workorders/:id', component: WorkOrderFormComponent, canActivate: [IsAuthenticatedGuard] },
+      { path: 'workorders/0', component: WorkOrderFormComponent, canActivate: [IsAuthenticatedGuard] },
+      { path: 'workordersupdate/:id', component: WorkOrderMadeFormComponent, canActivate: [IsAuthenticatedGuard] },
+      
+      { path: '', redirectTo: 'workorders', pathMatch: 'full' },
+      { path: '**', redirectTo: 'workorders', pathMatch: 'full' },
     ]
   }
 ]

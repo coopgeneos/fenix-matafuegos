@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>Cancelación</h1>
+<div mat-dialog-content>
+  <p>¿Esta seguro que desea cancelar la orden?. Esta acción no puede deshacerse</p>
+  <mat-form-field>
+    <textarea matInput [(ngModel)]="text" placeholder="Ingrese un motivo..."></textarea>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="abort()">No</button>
+  <button mat-button (click)="cancel()" cdkFocusInitial>Ok</button>
+</div>
+

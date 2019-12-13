@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 // import { map } from 'rxjs/operators';
 
 export class LoggedUser {
+  id: number;
   name: string;
   username: string;
   role: string
