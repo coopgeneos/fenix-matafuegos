@@ -10,7 +10,8 @@ import {
   MatSelectModule,
   MatCheckboxModule,
   MatListModule,
-  MatDialogModule
+  MatDialogModule,
+  MatPaginatorModule
 } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
@@ -41,6 +42,7 @@ import { CancelPopupComponent } from './cancel-popup/cancel-popup.component';
     MatCheckboxModule,
     MatListModule,
     MatDialogModule,
+    MatPaginatorModule,
     FormsModule
   ],
   providers: [WorkOrdersService],

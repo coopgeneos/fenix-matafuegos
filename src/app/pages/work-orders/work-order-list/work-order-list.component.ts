@@ -7,26 +7,31 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { User } from 'src/app/models/user';
 import * as moment from 'moment';
 import { CancelPopupComponent } from '../cancel-popup/cancel-popup.component';
+import { BaseListComponent } from 'src/app/commons/base-list-component';
 
 @Component({
   selector: 'app-work-order-list',
   templateUrl: './work-order-list.component.html',
   styleUrls: ['./work-order-list.component.css']
 })
-export class WorkOrderListComponent implements OnInit {
+export class WorkOrderListComponent extends BaseListComponent<WorkOrder> implements OnInit {
 
   displayedColumns: string[] = ['orderNo', 'customer', 'extinguisher', 'closeBy', 'closeDate',  'edit'];
   dataSource: WorkOrder[];
 
   constructor(
-    private service: WorkOrdersService, 
+    public service: WorkOrdersService, 
     protected router: Router,
     private _snackBar: MatSnackBar,
     private authService: AuthService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog) { 
+      super(service);
+    }
 
   ngOnInit() {
-    this.loadData();
+    // this.loadData();
+    this.service.clearState();
+    this.service.search();
   }
   
   loadData() : void {

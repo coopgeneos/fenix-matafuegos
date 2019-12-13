@@ -3,7 +3,6 @@ import { OnFilter, FilterEvent } from 'src/app/commons/directives/filterable.dir
 import { BaseServiceAPI } from './base-service-api';
 import { ViewChildren, QueryList } from '@angular/core';
 
-
 export class BaseListComponent<T> implements OnSort, OnFilter{
 
   public pagination:number[] = [25,50,100,200,500];
@@ -13,6 +12,7 @@ export class BaseListComponent<T> implements OnSort, OnFilter{
   constructor(public service: BaseServiceAPI<T>) { }
 
   ngOnInit() {
+    console.log("iniciando BaseLisComponent")
     //Clear state on init so SHARED services dont keep filtered
     this.service.clearState();
     this.service.search();

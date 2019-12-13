@@ -1,9 +1,7 @@
-<div>
-
-  <input (keyup)="searchElement($event.target.value)" style="width: 100%">
-  <select (change)="selectElement($event.target.value)" class="form-control" style="width: 100%"> 
+<div class="divCS">
+  <input matInput (keyup)="searchElement($event.target.value)" class="inputCS">
+  <select (change)="selectElement($event.target.value)" class="selectCS"> 
     <option [value]="notSelected">Seleccione...</option>
     <option *ngFor="let elem of filteredList" [(value)]="elem[key]">{{elem[label]}}</option> 
-  </select>
-      
+  </select>    
 </div>

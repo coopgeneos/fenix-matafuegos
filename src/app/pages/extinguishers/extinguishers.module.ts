@@ -7,9 +7,10 @@ import {
   MatInputModule, 
   MatButtonModule,
   MatSnackBarModule,
-  MatSelectModule
+  MatSelectModule,
+  MatPaginatorModule
 } from '@angular/material';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { ExtinguisherTypeService } from './extinguisher-type.service';
 
@@ -29,6 +30,7 @@ import { CommonsModule } from 'src/app/commons/commons.module';
   ],
   imports: [
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     MatTableModule,
     MatIconModule,
@@ -37,6 +39,7 @@ import { CommonsModule } from 'src/app/commons/commons.module';
     MatButtonModule,
     MatSnackBarModule,
     MatSelectModule,
+    MatPaginatorModule,
     CommonsModule
   ],
   providers: [

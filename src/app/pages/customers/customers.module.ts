@@ -7,14 +7,16 @@ import {
   MatInputModule, 
   MatButtonModule,
   MatSnackBarModule,
-  MatSelectModule
+  MatSelectModule,
+  MatPaginatorModule
 } from '@angular/material';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { CustomersFormComponent } from './customers-form/customers-form.component';
 import { CustomersListComponent } from './customers-list/customers-list.component';
 
 import { CustomersService } from './customers.service';
+import { CommonsModule } from 'src/app/commons/commons.module';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,7 @@ import { CustomersService } from './customers.service';
   ],
   imports: [
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     MatTableModule,
     MatIconModule,
@@ -31,7 +34,9 @@ import { CustomersService } from './customers.service';
     MatButtonModule,
     MatSnackBarModule,
     MatSelectModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatPaginatorModule,
+    CommonsModule
   ],
   providers: [CustomersService]
 })

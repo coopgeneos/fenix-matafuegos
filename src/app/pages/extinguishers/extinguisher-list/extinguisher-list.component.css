@@ -10,3 +10,8 @@ table {
 .button-row a {
   margin-right: 8px;
 }
+
+.filters {
+  display: flex;
+  margin-bottom: 1%;
+}

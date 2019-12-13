@@ -1,8 +1,15 @@
+<div class="filters">
+  <input matInput placeholder="Name filter" [(ngModel)]="nameFilter">
+  <input matInput placeholder="Phone filter" [(ngModel)]="phoneFilter">
+  <input matInput placeholder="Email filter" [(ngModel)]="emailFilter">
+  <button mat-raised-button (click)="filter()">Filter</button>
+</div>
+
 <div class="button-row">
   <button mat-fab color="warn" (click)="create()"><mat-icon>add</mat-icon></button>
 </div>
   
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<table mat-table [dataSource]="service.listData" class="mat-elevation-z8">
 
   <!-- Code Column -->
   <ng-container matColumnDef="code">
@@ -62,3 +69,9 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
+
+<mat-paginator [length]="service.total"
+              [pageSize]="service.pageSize"
+              [pageSizeOptions]="pagination"
+              (page)="service.page = $event.pageIndex">
+</mat-paginator>
