@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { WorkOrder } from 'src/app/models/workOrder';
+import { WorkOrder, WOrderState } from 'src/app/models/workOrder';
 import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkOrdersService } from '../work-orders.service';
@@ -11,6 +11,7 @@ import * as moment from 'moment';
 import { UsersService } from '../../users/users.service';
 import { CustomersService } from '../../customers/customers.service';
 import { ExtinguishersService } from '../../extinguishers/extinguisher.service';
+import { CustomSnackService } from 'src/app/services/custom-snack.service';
 
 @Component({
   selector: 'app-work-order-form',
@@ -28,7 +29,9 @@ export class WorkOrderFormComponent implements OnInit {
   services: string = "";
   userId: string = null;
   closeDate = new FormControl('', [Validators.required]);
-  canceled: string = null;
+  cancelNote: string = null;
+  state: WOrderState = WOrderState.CREADA;
+
   customers: Customer[];
   extinguishers: Extinguisher[];
   users: User[];
@@ -47,7 +50,7 @@ export class WorkOrderFormComponent implements OnInit {
   constructor(
     private activatedRouter: ActivatedRoute,
     private service: WorkOrdersService,
-    private _snackBar: MatSnackBar,
+    private _snackBar: CustomSnackService,
     private router: Router,
     private userService: UsersService,
     private customerService: CustomersService,
@@ -67,11 +70,13 @@ export class WorkOrderFormComponent implements OnInit {
           this.customerId = data.customer.id.toString();
           this.extinguisherId = data.extinguisher.id.toString();
           this.userId = data.closeBy ? data.closeBy.id.toString() : null;
-          this.services = data.services;
+          this.services = data.toDoList;
           data.closeDate ? 
             this.closeDate.setValue(moment(data.closeDate).format("YYYY-MM-DD")) :
             this.closeDate.setValue(null);
-          this.canceled = data.canceled ? data.canceled : null;
+          this.cancelNote = data.cancelNote ? data.cancelNote : null;
+          
+          this.state = data.state
           
           let aux = this.services.split(',');
           for(let i=0; i<aux.length; i++) {
@@ -84,7 +89,7 @@ export class WorkOrderFormComponent implements OnInit {
           }
         },
         error => {
-          this._snackBar.open("Error fetching the order!", "Close", { duration: 2000 });
+          this._snackBar.showError("Error obteniendo las órdenes!");
         }
       )
     }
@@ -94,7 +99,7 @@ export class WorkOrderFormComponent implements OnInit {
         this.users = list;
       })
       .catch(err => {
-        this._snackBar.open("Error fetching orders!", "Close", { duration: 2000 });
+        this._snackBar.showError("Error obteniendo los usuarios!");
       })
 
     this.customerService.search()
@@ -102,7 +107,7 @@ export class WorkOrderFormComponent implements OnInit {
         this.customers = list;
       })
       .catch(err => {
-        this._snackBar.open("Error fetching customers!", "Close", { duration: 2000 });
+        this._snackBar.showError("Error obteniendo los clientes!");
       })
 
     this.extinguisherService.search()
@@ -110,14 +115,13 @@ export class WorkOrderFormComponent implements OnInit {
         this.extinguishers = list;
       })
       .catch(err => {
-        this._snackBar.open("Error fetching extinguishers!", "Close", { duration: 2000 });
+        this._snackBar.showError("Error obteniendo los matafuegos!");
       })
   }
 
   save() : void {
     let order = new WorkOrder();
     this.orderNo.value && this.orderNo.value != "" ? order.orderNo = this.orderNo.value : delete order.orderNo;
-    this.closeDate.value && this.closeDate.value != "" ? order.closeDate = this.closeDate.value : delete order.closeDate;
     
     if(this.customerId) {
       order.customer = new Customer();
@@ -131,48 +135,50 @@ export class WorkOrderFormComponent implements OnInit {
     } else 
       delete order.extinguisher;
 
-    if(this.userId) {
-      order.closeBy = new User();
-      order.closeBy.id = Number(this.userId);
-    } else 
-      delete order.closeBy;
-
-    order.services = this.servicesList
+    order.toDoList = this.servicesList
                       .filter(serv => {return serv.value})
                       .map(serv => {return serv.name})
-                      .toString()
+                      .toString();
+
+    //Borro los campos innecesarios
+    let fields = ['orderNo','customer','extinguisher','toDoList','state'];
+    for(let key in order) {
+      if(fields.includes(key))
+        continue
+      delete order[key];
+    }
 
     console.log(order);
 
     if(this.validate(order)) {
       if(this.id == 0) {
-        order.state = 'created';
+        order.state = WOrderState.CREADA;
         this.service.add(order).subscribe(
           _ => {
-            this._snackBar.open("Order saved!", "Close", { duration: 2000 });
+            this._snackBar.showSuccess("Orden guardada!");
             this.router.navigate(['/pages/workorders'])
           },
           error => {
-            this._snackBar.open("Error saving order! " + error, "Close", { duration: 2000 });
+            this._snackBar.showError("Error guardando la orden! " + error);
           }
         )
       } else {
-        if(this.canceled) {
-          order.state = 'canceled';
-          order.canceled = this.canceled;
-        }
+        /* if(this.canceled) {
+          order.state = WOrderState.CANCELED;
+          order.cancellingNote = this.canceled;
+        } */
         this.service.update(this.id, order).subscribe(
           _ => {
-            this._snackBar.open("Order saved!", "Close", { duration: 2000 });
+            this._snackBar.showSuccess("Orden guardada!");
             this.router.navigate(['/pages/workorders'])
           },
           error => {
-            this._snackBar.open("Error updating order!" + error, "Close", { duration: 2000 });
+            this._snackBar.showError("Error actualizando la orden! " + error);
           }
         )
       }
     } else
-    this._snackBar.open("Please check fields!","Close", { duration: 2000 });
+    this._snackBar.showInfo("Verifique los campos!");
   }
 
   cancel() : void {
@@ -185,7 +191,7 @@ export class WorkOrderFormComponent implements OnInit {
       (order.orderNo && order.orderNo != "") && 
       order.customer && 
       order.extinguisher && 
-      (order.services && order.services != "")
+      (order.toDoList && order.toDoList != "")
   }
 
   checkService(i: number) {

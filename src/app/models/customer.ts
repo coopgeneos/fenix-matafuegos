@@ -1,3 +1,8 @@
+export enum CustomerType {
+  EMPRESA = "EMPRESA",
+  PARTICULAR = "PARTICULAR"
+}
+
 export class Customer {
   id: number;
   code: string;
@@ -6,7 +11,7 @@ export class Customer {
   phone: string;
   email: string;
   web: string;
-  type: string;
+  type: CustomerType;
 
   constructor() {
     this.code = ""; 
@@ -15,6 +20,6 @@ export class Customer {
     this.phone = "";
     this.email = ""; 
     this.web = "";
-    this.type = "";
+    this.type = null;
   }
 }

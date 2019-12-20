@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { WorkOrder } from 'src/app/models/workOrder';
+import { WorkOrder, WOrderState } from 'src/app/models/workOrder';
 import { WorkOrdersService } from '../work-orders.service';
 import { Router } from '@angular/router';
 import { MatSnackBar, MatDialog } from '@angular/material';
@@ -8,6 +8,7 @@ import { User } from 'src/app/models/user';
 import * as moment from 'moment';
 import { CancelPopupComponent } from '../cancel-popup/cancel-popup.component';
 import { BaseListComponent } from 'src/app/commons/base-list-component';
+import { CustomSnackService } from 'src/app/services/custom-snack.service';
 
 @Component({
   selector: 'app-work-order-list',
@@ -16,13 +17,13 @@ import { BaseListComponent } from 'src/app/commons/base-list-component';
 })
 export class WorkOrderListComponent extends BaseListComponent<WorkOrder> implements OnInit {
 
-  displayedColumns: string[] = ['orderNo', 'customer', 'extinguisher', 'closeBy', 'closeDate',  'edit'];
+  displayedColumns: string[] = ['orderNo', 'customer', 'extinguisher', 'closeBy', 'closeDate', 'state', 'edit'];
   dataSource: WorkOrder[];
 
   constructor(
     public service: WorkOrdersService, 
     protected router: Router,
-    private _snackBar: MatSnackBar,
+    private _snackBar: CustomSnackService,
     private authService: AuthService,
     public dialog: MatDialog) { 
       super(service);
@@ -41,7 +42,7 @@ export class WorkOrderListComponent extends BaseListComponent<WorkOrder> impleme
       })
       .catch(err => {
         console.error(JSON.stringify(err))
-        this._snackBar.open("Error retrieving data! " + err, "Close", { duration: 3000 });
+        this._snackBar.showError("Error obteniendo la información! " + JSON.stringify(err));
       })
   }
 
@@ -52,11 +53,11 @@ export class WorkOrderListComponent extends BaseListComponent<WorkOrder> impleme
   delete(order: any) : void {
     this.service.delete(order.id).subscribe(
       _ => {
-        this._snackBar.open("Order deleted!", "Close", { duration: 3000 });
+        this._snackBar.showSuccess("Orden borrada!");
         this.loadData();
       },
       error => {
-        this._snackBar.open("Error deleting order!", "Close", { duration: 3000 });
+        this._snackBar.showError("Error borrando la orden!");
       }
     )
   }
@@ -75,22 +76,23 @@ export class WorkOrderListComponent extends BaseListComponent<WorkOrder> impleme
     _order.closeBy = new User();
     _order.closeBy.id = this.authService.getLoggedUser().id;
     _order.closeDate = moment().format("YYYY-MM-DD");
+    _order.state = WOrderState.CERRADA;
 
-    delete _order.orderNo;
-    delete _order.customer;
-    delete _order.extinguisher;
-    delete _order.services;
-    delete _order.made;
-    delete _order.madeBy; 
-    delete _order.madeDate; 
+    //Borro los campos innecesarios para el update
+    let fields = ['id','closeBy','closeDate','state'];
+    for(let key in _order) {
+      if(fields.includes(key))
+        continue
+      delete _order[key];
+    }
 
     this.service.update(_order.id, _order).subscribe(
       _ => {
-        this._snackBar.open("Order saved!", "Close", { duration: 2000 });
+        this._snackBar.showSuccess("Orden guardada!");
         this.loadData();
       },
       error => {
-        this._snackBar.open("Error updating order!" + error, "Close", { duration: 2000 });
+        this._snackBar.showError("Error actualizando la orden!" + error);
       }
     )
   }
@@ -103,11 +105,11 @@ export class WorkOrderListComponent extends BaseListComponent<WorkOrder> impleme
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
         let _order = new WorkOrder();
-        _order.canceled = result;
-        _order.state = 'canceled'
+        _order.cancelNote = result;
+        _order.state = WOrderState.CANCELADA
 
         for(let key in _order) {
-          if(key == 'canceled' || key == 'state')
+          if(key == 'cancelNote' || key == 'state')
             continue
           delete _order[key];
         }
@@ -116,11 +118,11 @@ export class WorkOrderListComponent extends BaseListComponent<WorkOrder> impleme
 
         this.service.update(order.id, _order).subscribe(
           _ => {
-            this._snackBar.open("Order saved!", "Close", { duration: 2000 });
+            this._snackBar.showSuccess("Orden guardada!");
             this.loadData();
           },
           error => {
-            this._snackBar.open("Error updating order!" + error, "Close", { duration: 2000 });
+            this._snackBar.showError("Error actualizando la orden!" + error);
           }
         )
       }

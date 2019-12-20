@@ -1,25 +1,30 @@
 <div class="orderForm">
   <mat-form-field class="orderFormField">
-    <input matInput placeholder="OrderNo" readonly="true" [value]="order.orderNo">
+    <input matInput placeholder="Nro" readonly="true" [value]="order.orderNo">
   </mat-form-field>
 
   <mat-form-field class="orderFormField">
-    <input matInput placeholder="Customer" readonly="true" [value]="order.customer.name">
+    <input matInput placeholder="Cliente" readonly="true" [value]="order.customer.name">
   </mat-form-field>
 
   <mat-form-field class="orderFormField">
-    <input matInput placeholder="Extinguisher" readonly="true" [value]="order.extinguisher.code">
+    <input matInput placeholder="Matafuego" readonly="true" [value]="order.extinguisher.code">
   </mat-form-field>
 
   <mat-selection-list>
     <mat-list-item *ngFor="let serv of madeList; let i=index"> {{serv.name}} 
       <mat-checkbox disabled="true" [checked]="serv.todo"></mat-checkbox>
-      <mat-checkbox [checked]="serv.doit" (change)="addDoneService(i)"></mat-checkbox>
+      <mat-checkbox disabled="{{state == 'FACTURADA' || state == 'CERRADA'}}" [checked]="serv.doit" (change)="addDoneService(i)"></mat-checkbox>
     </mat-list-item>
   </mat-selection-list>
 
+  <mat-form-field class="orderFormField" *ngIf="state == 'FACTURADA'">
+    <textarea matInput placeholder="Datos de facturación" [(ngModel)]="iNote" readonly="true"></textarea>
+  </mat-form-field>
+
   <div class="buttonsDiv">
-    <button mat-raised-button class="buttonActions" color="primary" (click)="save()">Ok</button>
-    <button mat-raised-button class="buttonActions" color="warn" (click)="cancel()">Cancel</button>
+    <button mat-raised-button class="buttonActions" color="primary" *ngIf="state == 'CREADA' || state == 'COMPLETANDOSE'" (click)="save()">Guardar</button>
+    <button mat-raised-button class="buttonActions" color="warn" *ngIf="state == 'CREADA' || state == 'COMPLETANDOSE'" (click)="cancel()">Cancelar</button>
+    <button mat-raised-button class="buttonActions" color="primary" *ngIf="state == 'FACTURADA' || state == 'CERRADA'" (click)="cancel()">Ok</button>
   </div>
 </div>

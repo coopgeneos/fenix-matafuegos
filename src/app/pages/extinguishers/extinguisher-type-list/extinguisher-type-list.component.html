@@ -6,43 +6,43 @@
 
   <!-- Code Column -->
   <ng-container matColumnDef="code">
-    <th mat-header-cell *matHeaderCellDef> Code </th>
+    <th mat-header-cell *matHeaderCellDef> Identificador </th>
     <td mat-cell *matCellDef="let element"> {{element.code}} </td>
   </ng-container>
 
   <!-- Category Column -->
   <ng-container matColumnDef="category">
-    <th mat-header-cell *matHeaderCellDef> Category </th>
+    <th mat-header-cell *matHeaderCellDef> Categoría </th>
     <td mat-cell *matCellDef="let element"> {{element.category}} </td>
   </ng-container>
 
   <!-- LoadExpiration Column -->
   <ng-container matColumnDef="loadExpiration">
-    <th mat-header-cell *matHeaderCellDef> LoadExpiration </th>
+    <th mat-header-cell *matHeaderCellDef> Vencimiento </th>
     <td mat-cell *matCellDef="let element"> {{element.loadExpiration}} </td>
   </ng-container>
 
   <!-- PHExpiration Column -->
   <ng-container matColumnDef="phExpiration">
-    <th mat-header-cell *matHeaderCellDef> PHExpiration </th>
+    <th mat-header-cell *matHeaderCellDef> Venc. de PH </th>
     <td mat-cell *matCellDef="let element"> {{element.phExpiration}} </td>
   </ng-container>
 
   <!-- Weight Column -->
   <ng-container matColumnDef="weight">
-    <th mat-header-cell *matHeaderCellDef> Weight </th>
+    <th mat-header-cell *matHeaderCellDef> Peso </th>
     <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
   </ng-container>
 
   <!-- Volume Column -->
   <ng-container matColumnDef="volume">
-    <th mat-header-cell *matHeaderCellDef> Volume </th>
+    <th mat-header-cell *matHeaderCellDef> Volumen </th>
     <td mat-cell *matCellDef="let element"> {{element.volume}} </td>
   </ng-container>
 
   <!-- Edit -->
   <ng-container matColumnDef="edit">
-    <th mat-header-cell *matHeaderCellDef> Edit </th>
+    <th mat-header-cell *matHeaderCellDef> Opciones </th>
     <td mat-cell *matCellDef="let element">
       <a (click)="edit(element)">
         <mat-icon aria-hidden="false" aria-label="adit">edit</mat-icon>

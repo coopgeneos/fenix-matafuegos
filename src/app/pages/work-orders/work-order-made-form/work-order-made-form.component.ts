@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { WorkOrder } from 'src/app/models/workOrder';
+import { WorkOrder, WOrderState } from 'src/app/models/workOrder';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkOrdersService } from '../work-orders.service';
 import { MatSnackBar } from '@angular/material';
@@ -26,7 +26,10 @@ export class WorkOrderMadeFormComponent implements OnInit {
     {name: 'Prueba hidráulica', todo: false, doit: false},
     {name: 'Colocación de calco', todo: false, doit: false},
     {name: 'Cambio de zuncho', todo: false, doit: false}
-  ]
+  ];
+
+  state: WOrderState;
+  iNote: string;
   
   constructor(
     private activatedRouter: ActivatedRoute,
@@ -46,8 +49,12 @@ export class WorkOrderMadeFormComponent implements OnInit {
       this.service.get(this.id).subscribe(
         data => {
           this.order = data;
+          this.state = data.state;
+          this.iNote = data.invoiceNote ? 
+            `Nro: ${data.invoiceNo}\nFecha: ${data.invoiceDate}\nNota: ${data.invoiceNote}` : 
+            null;
 
-          let aux = data.made ? data.made.split(',') : [];
+          let aux = data.doneList ? data.doneList.split(',') : [];
           for(let i=0; i<aux.length; i++) {
             for(let j=0; j<this.madeList.length; j++) {
               if(aux[i] == this.madeList[j].name) {
@@ -57,7 +64,7 @@ export class WorkOrderMadeFormComponent implements OnInit {
             }
           }
 
-          aux = data.services ? data.services.split(',') : [];
+          aux = data.toDoList ? data.toDoList.split(',') : [];
           for(let i=0; i<aux.length; i++) {
             for(let j=0; j<this.madeList.length; j++) {
               if(aux[i] == this.madeList[j].name) {
@@ -66,6 +73,8 @@ export class WorkOrderMadeFormComponent implements OnInit {
               }
             }
           }
+
+          console.log(this.iNote)
         },
         error => {
           this._snackBar.open("Error fetching the order!", "Close", { duration: 2000 });
@@ -78,23 +87,22 @@ export class WorkOrderMadeFormComponent implements OnInit {
   save() : void {
     let order = new WorkOrder();
     order.id = this.order.id;
-    order.made = this.madeList
+    order.doneList = this.madeList
                       .filter(serv => {return serv.doit})
                       .map(serv => {return serv.name})
                       .toString();
-    order.madeBy = new User();
-    order.madeBy.id = this.authSerive.getLoggedUser().id;
-    order.madeDate = moment().format("YYYY-MM-DD")
-    order.state = 'completingIt'
+    order.doneBy = new User();
+    order.doneBy.id = this.authSerive.getLoggedUser().id;
+    order.doneDate = moment().format("YYYY-MM-DD")
+    order.state = WOrderState.COMPLETANDOSE;
 
-    delete order.orderNo;
-    delete order.customer;
-    delete order.extinguisher;
-    delete order.services;
-    delete order.closeBy;
-    delete order.closeDate; 
-
-    console.log(order);
+    //Borro los campos innecesarios para el update
+    let fields = ['id','doneList','doneBy','doneDate','state'];
+    for(let key in order) {
+      if(fields.includes(key))
+        continue
+      delete order[key];
+    }
 
     if(this.validate(order)) {
       this.service.update(this.id, order).subscribe(
@@ -115,7 +123,7 @@ export class WorkOrderMadeFormComponent implements OnInit {
   }
 
   validate(order: WorkOrder) : boolean {
-    return order.made && order.made != "";
+    return order.doneList && order.doneList != "";
   }
 
   addDoneService(i: number) {

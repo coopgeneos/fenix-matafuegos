@@ -1,51 +1,47 @@
 <div class="customerForm">
 
   <mat-form-field class="customerFormField">
-    <input matInput placeholder="Code" [formControl]="code">
+    <input matInput placeholder="Identificador" [formControl]="code">
     <mat-error *ngIf="code.hasError('required')">
-      Code is <strong>required</strong>
+      El código es <strong>required</strong>
     </mat-error>
   </mat-form-field>
 
   <mat-form-field class="customerFormField">
-    <input matInput placeholder="Name" [formControl]="name">
+    <input matInput placeholder="Nombre" [formControl]="name">
     <mat-error *ngIf="name.hasError('required')">
-      Name is <strong>required</strong>
+      El nombre es <strong>required</strong>
     </mat-error>
   </mat-form-field>
 
   <mat-form-field class="customerFormField">
-    <input matInput placeholder="Address" [formControl]="address">
+    <input matInput placeholder="Dirección" [formControl]="address">
     <mat-error *ngIf="address.hasError('required')">
-      Address is <strong>required</strong>
+      La dirección es <strong>required</strong>
     </mat-error>
   </mat-form-field>
 
   <mat-form-field class="customerFormField">
-    <input matInput placeholder="Phone" [formControl]="phone">
+    <input matInput placeholder="Teléfono" [formControl]="phone">
     <mat-error *ngIf="phone.hasError('required')">
-      Phone is <strong>required</strong>
+      El teléfono es <strong>required</strong>
     </mat-error>
   </mat-form-field>
 
   <mat-form-field class="customerFormField">
     <input matInput placeholder="Email" [formControl]="email">
     <mat-error *ngIf="email.hasError('required')">
-      Email is <strong>required</strong>
+      El email es <strong>required</strong>
     </mat-error>
   </mat-form-field>
 
   <mat-form-field class="customerFormField">
     <input matInput placeholder="Web" [formControl]="web">
-    <mat-error *ngIf="web.hasError('required')">
-      Web is <strong>required</strong>
-    </mat-error>
   </mat-form-field>
 
   <mat-form-field class="customerFormField">
-    <mat-select placeholder="Select type" [(value)]="type">
-      <mat-option value="vehicular">Vehicular</mat-option>
-      <mat-option value="empresa">Empresa</mat-option>
+    <mat-select placeholder="Seleccione el tipo" [(value)]="type">
+      <mat-option *ngFor="let val of types()" value="{{val}}">{{val}}</mat-option>
     </mat-select>
   </mat-form-field>
 

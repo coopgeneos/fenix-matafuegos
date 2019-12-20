@@ -21,13 +21,17 @@ import { WorkOrderListComponent } from './work-order-list/work-order-list.compon
 import { WorkOrderFormComponent } from './work-order-form/work-order-form.component';
 import { WorkOrderMadeFormComponent } from './work-order-made-form/work-order-made-form.component';
 import { CancelPopupComponent } from './cancel-popup/cancel-popup.component';
+import { WorkOrderInvoiceListComponent } from './work-order-invoice-list/work-order-invoice-list.component';
+import { InvoicePopupComponent } from './invoice-popup/invoice-popup.component';
 
 @NgModule({
   declarations: [
     WorkOrderListComponent,
     WorkOrderFormComponent,
     WorkOrderMadeFormComponent,
-    CancelPopupComponent
+    CancelPopupComponent,
+    WorkOrderInvoiceListComponent,
+    InvoicePopupComponent
   ],
   imports: [
     CommonModule,
@@ -46,6 +50,6 @@ import { CancelPopupComponent } from './cancel-popup/cancel-popup.component';
     FormsModule
   ],
   providers: [WorkOrdersService],
-  entryComponents: [ CancelPopupComponent ],
+  entryComponents: [ CancelPopupComponent, InvoicePopupComponent ],
 })
 export class WorkOrdersModule { }

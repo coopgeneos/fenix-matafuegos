@@ -1,7 +1,17 @@
+export enum ExtinguisherTypeCategory {
+  A = "A",
+  ABC = "ABC",
+  AC = "AC",
+  AB = "AB",
+  BC = "BC",
+  ABCD = "ABCD",
+  D = "D",
+  K = "K"
+}
 export class ExtinguisherType {
   id: number;
   code: string;
-  category: string;
+  category: ExtinguisherTypeCategory;
   loadExpiration: number;
   phExpiration: number;
   weight: number;
@@ -10,7 +20,7 @@ export class ExtinguisherType {
   constructor() {
     this.id = 0;
     this.code = ""; 
-    this.category = "";
+    this.category = null;
     this.loadExpiration = 0;
     this.phExpiration = 0;
     this.weight = 0; 

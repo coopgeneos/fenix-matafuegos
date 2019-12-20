@@ -10,16 +10,21 @@ import { IsAuthenticatedGuard } from './guards/isAuthenticated.guard';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CredentialsInterceptor } from './interceptors/credentials.interceptor';
 import { CommonsModule } from './commons/commons.module';
+import { TranslatorPipe } from './pipes/translator.pipe';
+import { CustomSnackService } from './services/custom-snack.service';
+import { MatSnackBarModule } from '@angular/material';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    TranslatorPipe
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatSnackBarModule
   ],
   providers: [
     AuthService, 
@@ -28,8 +33,10 @@ import { CommonsModule } from './commons/commons.module';
       provide: HTTP_INTERCEPTORS,
       useClass: CredentialsInterceptor,
       multi: true
-    }
+    },
+    CustomSnackService
   ],
+  exports: [TranslatorPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

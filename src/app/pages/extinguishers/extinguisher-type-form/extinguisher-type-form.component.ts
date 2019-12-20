@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ExtinguisherType } from 'src/app/models/extinguisherType';
+import { ExtinguisherType, ExtinguisherTypeCategory } from 'src/app/models/extinguisherType';
 import { FormControl, Validators } from '@angular/forms';
 import { ExtinguisherTypeService } from '../extinguisher-type.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
+import { CustomSnackService } from 'src/app/services/custom-snack.service';
 
 @Component({
   selector: 'app-extinguisher-type-form',
@@ -20,14 +21,16 @@ export class ExtinguisherTypeFormComponent implements OnInit {
   phExpiration = new FormControl('', [Validators.required]);
   weight = new FormControl('', [Validators.required]);
   volume = new FormControl('', [Validators.required]);
-  category: string = "categ1";
+  category: ExtinguisherTypeCategory = ExtinguisherTypeCategory.A;
 
-  categories: string[] = ['categ1', 'categ2'];
+  categories = () => {
+    return Object.keys(ExtinguisherTypeCategory)
+  };
   
   constructor(
     private activatedRouter: ActivatedRoute,
     private service: ExtinguisherTypeService,
-    private _snackBar: MatSnackBar,
+    private _snackBar: CustomSnackService,
     private router: Router) { 
     this.activatedRouter.params.subscribe(
       params => { 
@@ -49,7 +52,7 @@ export class ExtinguisherTypeFormComponent implements OnInit {
           this.volume.setValue(data.volume);
         },
         error => {
-          this._snackBar.open("Error fetching the extinguisherType!", "Close", { duration: 2000 });
+          this._snackBar.showError("Error obteniendo la información!");
         }
       )
     }
@@ -58,7 +61,7 @@ export class ExtinguisherTypeFormComponent implements OnInit {
   save() : void {
     let type = new ExtinguisherType();
     this.code.value && this.code.value != "" ? type.code = this.code.value : delete type.code;
-    this.category && this.category != "" ? type.category = this.category : delete type.category;
+    this.category ? type.category = this.category : delete type.category;
     this.loadExpiration && this.loadExpiration.value != "" ? type.loadExpiration = this.loadExpiration.value : delete type.loadExpiration;  
     this.phExpiration.value && this.phExpiration.value != "" ? type.phExpiration = this.phExpiration.value : delete type.phExpiration; 
     this.weight.value && this.weight.value != "" ? type.weight = this.weight.value : delete type.weight; 
@@ -67,26 +70,26 @@ export class ExtinguisherTypeFormComponent implements OnInit {
       if(this.id == 0) {
         this.service.add(type).subscribe(
           _ => {
-            this._snackBar.open("ExtinguisherType saved!", "Close", { duration: 2000 });
+            this._snackBar.showSuccess("Tipo de matafuego guardado!");
             this.router.navigate(['/pages/extinguisherstype'])
           },
           error => {
-            this._snackBar.open("Error saving extinguisherType! " + error, "Close", { duration: 2000 });
+            this._snackBar.showError("Error guardando el tipo de matafuego! " + error);
           }
         )
       } else {
         this.service.update(this.id, type).subscribe(
           _ => {
-            this._snackBar.open("ExtinguisherType saved!", "Close", { duration: 2000 });
+            this._snackBar.showSuccess("Tipo de matafuego guardado!");
             this.router.navigate(['/pages/extinguisherstype'])
           },
           error => {
-            this._snackBar.open("Error updating extinguisherType!" + error, "Close", { duration: 2000 });
+            this._snackBar.showError("Error actualizando el tipo de matafuego! " + error);
           }
         )
       }
     } else
-    this._snackBar.open("Please check fields!","Close", { duration: 2000 });
+    this._snackBar.showInfo("Verifique los campos!");
   }
 
   cancel() : void {
@@ -95,9 +98,9 @@ export class ExtinguisherTypeFormComponent implements OnInit {
 
   validate() : boolean {
     let error = false;
-    if(!this.categories.includes(this.category)) {
-      error = true;
-    }
+    // if(!this.categories.includes(this.category.toString)) {
+    //   error = true;
+    // }
     return !error && 
       !this.code.hasError('required') && 
       !this.loadExpiration.hasError('required') && 

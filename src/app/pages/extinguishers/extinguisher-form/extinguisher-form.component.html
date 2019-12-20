@@ -1,9 +1,9 @@
 <div class="extinguishersForm">
 
     <mat-form-field class="extinguishersFormField">
-      <input matInput placeholder="Code" [formControl]="code">
+      <input matInput placeholder="Identificador" [formControl]="code">
       <mat-error *ngIf="code.hasError('required')">
-        Code is <strong>required</strong>
+        El identificador es <strong>obligatorio</strong>
       </mat-error>
     </mat-form-field>
   
@@ -17,81 +17,85 @@
     </div> -->
 
     <mat-form-field class="extinguishersFormField">
-      <mat-select placeholder="Select customer" [(value)]="customerId">
+      <mat-select placeholder="Cliente" [(value)]="customerId">
         <mat-option *ngFor="let c of customers" value="{{c.id}}">{{c.name}}</mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field class="extinguishersFormField">
-      <mat-select placeholder="Select type" [(value)]="typeId">
+      <mat-select placeholder="Tipo" [(value)]="typeId">
         <mat-option *ngFor="let type of extinguisherTypes" value="{{type.id}}">{{type.code}}</mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field class="extinguishersFormField">
-      <mat-select placeholder="Select category" [(value)]="category">
-        <mat-option *ngFor="let categ of categories" value="{{categ.value}}">{{categ.name}}</mat-option>
+      <mat-select placeholder="Categoría" [(value)]="category">
+        <mat-option *ngFor="let categ of categories()" value="{{categ}}">{{categ}}</mat-option>
       </mat-select>
     </mat-form-field>
 
+    <mat-form-field class="extinguishersFormField" *ngIf="category == 'VEHICULAR'">
+      <input matInput placeholder="Patente" [(ngModel)]="carID">
+    </mat-form-field>
+
     <mat-form-field class="extinguishersFormField">
-      <input matInput placeholder="Cost center" [formControl]="costCenter" type="string">
+      <input matInput placeholder="Centro de costo" [formControl]="costCenter" type="string">
       <mat-error *ngIf="costCenter.hasError('required')">
-        Cost center is <strong>required</strong>
+        El centro de costo es <strong>obligatorio</strong>
       </mat-error>
     </mat-form-field>
   
     <mat-form-field class="extinguishersFormField">
-      <input matInput placeholder="Location" [formControl]="location" type="string">
+      <input matInput placeholder="Ubicación" [formControl]="location" type="string">
       <mat-error *ngIf="location.hasError('required')">
-        Location is <strong>required</strong>
+        La ubicación es <strong>obligatorio</strong>
       </mat-error>
     </mat-form-field>
   
     <mat-form-field class="extinguishersFormField">
-      <input matInput placeholder="Address" [formControl]="address" type="string">
+      <input matInput placeholder="Dirección" [formControl]="address" type="string">
       <mat-error *ngIf="address.hasError('required')">
-        Address is <strong>required</strong>
+        La dirección de <strong>obligatorio</strong>
       </mat-error>
     </mat-form-field>
   
     <mat-form-field class="extinguishersFormField">
-      <input matInput placeholder="Factory number" [formControl]="factoryNo" type="number">
+      <input matInput placeholder="Nro de fabricación" [formControl]="factoryNo" type="number">
       <mat-error *ngIf="factoryNo.hasError('required')">
-        Factory number is <strong>required</strong>
+        El nro de fabricación es <strong>obligatorio</strong>
       </mat-error>
     </mat-form-field>
 
     <mat-form-field class="extinguishersFormField">
-      <input matInput placeholder="BV number" [formControl]="bvNo" type="number">
+      <input matInput placeholder="Nro de BV" [formControl]="bvNo" type="number">
       <mat-error *ngIf="bvNo.hasError('required')">
-        BV number is <strong>required</strong>
+        El nro de BV es <strong>obligatorio</strong>
       </mat-error>
     </mat-form-field>
 
     <mat-form-field class="extinguishersFormField">
-      <input matInput placeholder="Manufacturing date" [formControl]="manufacturing" type="date">
+      <input matInput placeholder="Fabricación" [formControl]="manufacturing" type="date">
       <mat-error *ngIf="manufacturing.hasError('required')">
-        Manufacturing date is <strong>required</strong>
+        La fecha de fabricación es <strong>obligatorio</strong>
       </mat-error>
     </mat-form-field>
 
     <mat-form-field class="extinguishersFormField">
-      <input matInput placeholder="Last load" [formControl]="lastLoad" type="date">
+      <input matInput placeholder="Ultima carga" [formControl]="lastLoad" type="date">
       <mat-error *ngIf="lastLoad.hasError('required')">
-        Last load is <strong>required</strong>
+        La fecha de última carga es <strong>obligatorio</strong>
       </mat-error>
     </mat-form-field>
 
     <mat-form-field class="extinguishersFormField">
-      <input matInput placeholder="Last hydraulic test" [formControl]="lastHydraulicTest" type="date">
+      <input matInput placeholder="Ultima PH" [formControl]="lastHydraulicTest" type="date">
       <mat-error *ngIf="lastHydraulicTest.hasError('required')">
-        Last hydraulic test is <strong>required</strong>
+        La fecha de última PH es <strong>obligatorio</strong>
       </mat-error>
     </mat-form-field>
     
     <div class="buttonsDiv">
-      <button mat-raised-button class="buttonActions" color="primary" (click)="save()">Ok</button>
-      <button mat-raised-button class="buttonActions" color="warn" (click)="cancel()">Cancel</button>
+      <button mat-raised-button class="buttonActions" color="primary" (click)="save()">Guardar</button>
+      <button mat-raised-button class="buttonActions" color="warn" (click)="cancel()">Cancelar</button>
     </div>
   </div>

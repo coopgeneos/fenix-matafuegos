@@ -62,7 +62,7 @@ export class AuthService {
     let userData = localStorage.getItem('currentUser')
     if(userData && JSON.parse(userData)){
       userData = JSON.parse(userData);
-      return userData['role'] == 'admin';
+      return userData['role'] == 'ADMIN';
     }
     return false;
   }

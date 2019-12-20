@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user';
 import { UsersService } from 'src/app/pages/users/users.service';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material';
+import { CustomSnackService } from 'src/app/services/custom-snack.service';
 
 @Component({
   selector: 'app-users-list',
@@ -16,7 +16,7 @@ export class UsersListComponent implements OnInit {
   constructor(
     private service: UsersService, 
     protected router: Router,
-    private _snackBar: MatSnackBar) { }
+    private _snackBar: CustomSnackService) { }
 
   ngOnInit() {
     this.loadData();
@@ -29,7 +29,7 @@ export class UsersListComponent implements OnInit {
       })
       .catch(err => {
         console.error(JSON.stringify(err))
-        this._snackBar.open("Error retrieving data! " + err, "Close", { duration: 3000 });
+        this._snackBar.showError("Error obteniendo la información! " + err);
       })
   }
 
@@ -40,11 +40,11 @@ export class UsersListComponent implements OnInit {
   delete(user: any) : void {
     this.service.delete(user.id).subscribe(
       _ => {
-        this._snackBar.open("User deleted!", "Close", { duration: 3000 });
+        this._snackBar.showSuccess("Usuario eliminado!");
         this.loadData();
       },
       error => {
-        this._snackBar.open("Error deleting user!", "Close", { duration: 3000 });
+        this._snackBar.showError("Error eliminando el usuario!");
       }
     )
   }

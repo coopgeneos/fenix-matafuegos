@@ -1,20 +1,20 @@
 <div class="userForm">
   <mat-form-field class="userFormField">
-    <input matInput placeholder="Name" [formControl]="name">
+    <input matInput placeholder="Nombre" [formControl]="name">
     <mat-error *ngIf="name.hasError('required')">
-      Name is <strong>required</strong>
+      El nombre es <strong>obligatorio</strong>
     </mat-error>
   </mat-form-field>
   <mat-form-field class="userFormField">
-    <mat-select placeholder="Select role" [(value)]="role">
-      <mat-option value="admin">Administrador</mat-option>
-      <mat-option value="operario">Operario</mat-option>
+    <mat-select placeholder="Rol" [(value)]="role">
+      <mat-option value="ADMIN">Administrador</mat-option>
+      <mat-option value="OPERARIO">Operario</mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field class="userFormField">
-    <input matInput placeholder="Username" [formControl]="username">
+    <input matInput placeholder="Usuario" [formControl]="username">
     <mat-error *ngIf="username.hasError('required')">
-      Username is <strong>required</strong>
+      El usuario es <strong>obligatorio</strong>
     </mat-error>
   </mat-form-field>
   <mat-form-field class="signin-field">
@@ -23,11 +23,11 @@
       <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
     </button>
     <mat-error *ngIf="password.hasError('required')">
-      Password is <strong>required</strong>
+      La contraseña es <strong>obligatorio</strong>
     </mat-error>
   </mat-form-field>
   <div class="buttonsDiv">
-    <button mat-raised-button class="buttonActions" color="primary" (click)="save()">Ok</button>
-    <button mat-raised-button class="buttonActions" color="warn" (click)="cancel()">Cancel</button>
+    <button mat-raised-button class="buttonActions" color="primary" (click)="save()">Guardar</button>
+    <button mat-raised-button class="buttonActions" color="warn" (click)="cancel()">Cancelar</button>
   </div>
 </div>

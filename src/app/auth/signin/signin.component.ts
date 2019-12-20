@@ -67,7 +67,7 @@ export class SigninComponent implements OnInit {
       this.authService.signIn(credentials).subscribe(
         logged => {
           if(logged.error)
-            throw logged.message;
+            this._snackBar.open(logged.message, "Close", { duration: 2000 });
           else {
             this.userIdle.startWatching();
             this.authService.setSession(logged.user);
@@ -75,7 +75,7 @@ export class SigninComponent implements OnInit {
           }
         },
         error => {
-          alert(error)
+          this._snackBar.open(error, "Close", { duration: 2000 });
         }
       )
     }

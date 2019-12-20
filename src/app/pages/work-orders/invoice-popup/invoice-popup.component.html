@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>Facturación</h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <input matInput [(ngModel)]="invoiceNo" placeholder="Ingrese nro de factura...">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Invoice date" [(ngModel)]="date" type="date">
+    <!-- <mat-error *ngIf="Invoice date.hasError('required')">
+      Fecha es <strong>obligatoria</strong>
+    </mat-error> -->
+  </mat-form-field>
+  <mat-form-field>
+    <textarea matInput [(ngModel)]="note" placeholder="Ingrese un motivo..."></textarea>
+  </mat-form-field>
+  <p *ngIf="error" class="msgError">{{msg}}</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="cancel()">Cancelar</button>
+  <button mat-button (click)="save()" cdkFocusInitial>Guardar</button>
+</div>
+

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Extinguisher } from 'src/app/models/extinguisher';
+import { Extinguisher, ExtinguisherCategory } from 'src/app/models/extinguisher';
 import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
@@ -7,8 +7,9 @@ import { ExtinguishersService } from '../extinguisher.service';
 import { CustomersService } from '../../customers/customers.service';
 import { ExtinguisherTypeService } from '../extinguisher-type.service';
 import { Customer } from 'src/app/models/customer';
-import { ExtinguisherType } from 'src/app/models/extinguisherType';
+import { ExtinguisherType, ExtinguisherTypeCategory } from 'src/app/models/extinguisherType';
 import * as moment from 'moment';
+import { CustomSnackService } from 'src/app/services/custom-snack.service';
 
 @Component({
   selector: 'app-extinguisher-form',
@@ -29,12 +30,11 @@ export class ExtinguisherFormComponent implements OnInit {
   manufacturing = new FormControl('', [Validators.required]);
   lastLoad = new FormControl('', [Validators.required]);
   lastHydraulicTest = new FormControl('', [Validators.required]);
-
-  category: string = "categ1";
-  categories: any[] = [
-    { name: 'Categoría 1', value: 'categ1'}, 
-    { name: 'Categoría 2', value: 'categ2'},
-  ];
+  carID: string = null;
+  category: ExtinguisherCategory = ExtinguisherCategory.DOMICILIARIO;
+  categories = () => {
+    return Object.keys(ExtinguisherCategory)
+  }
 
   customerId: string = null; //Uso string para que el componente select me tome el valor
   customers: Customer[];
@@ -45,7 +45,7 @@ export class ExtinguisherFormComponent implements OnInit {
   constructor(
     private activatedRouter: ActivatedRoute,
     private service: ExtinguishersService,
-    private _snackBar: MatSnackBar,
+    private _snackBar: CustomSnackService,
     private router: Router,
     public customerService: CustomersService,
     public typeService: ExtinguisherTypeService) { 
@@ -72,9 +72,10 @@ export class ExtinguisherFormComponent implements OnInit {
           this.lastHydraulicTest.setValue(moment(data.lastHydraulicTest).format("YYYY-MM-DD"));
           this.customerId = data.customer.id.toString();
           this.typeId = data.type.id.toString();
+          this.carID = data.idCar;
         },
         error => {
-          this._snackBar.open("Error fetching the extinguisher!", "Close", { duration: 2000 });
+          this._snackBar.showError("Error obteniendo la información!");
         }
       )
     }
@@ -84,7 +85,7 @@ export class ExtinguisherFormComponent implements OnInit {
         this.customers = list;
       })
       .catch(err => {
-        this._snackBar.open("Error fetching the customers!", "Close", { duration: 2000 });
+        this._snackBar.showError("Error obteniendo los clientes!");
       })
 
     this.typeService.search()
@@ -92,14 +93,14 @@ export class ExtinguisherFormComponent implements OnInit {
         this.extinguisherTypes = list;
       })
       .catch(err => {
-        this._snackBar.open("Error fetching the types!", "Close", { duration: 2000 });
+        this._snackBar.showError("Error obteniendo los tipos!");
       })
   }
 
   save() : void {
     let extinguisher = new Extinguisher();
     this.code.value && this.code.value != "" ? extinguisher.code = this.code.value : delete extinguisher.code;
-    this.category && this.category != "" ? extinguisher.category = this.category : delete extinguisher.category;
+    this.category ? extinguisher.category = this.category : delete extinguisher.category;
     this.costCenter && this.costCenter.value != "" ? extinguisher.costCenter = this.costCenter.value : delete extinguisher.costCenter;  
     this.location && this.location.value != "" ? extinguisher.location = this.location.value : delete extinguisher.location;  
     this.address.value && this.address.value != "" ? extinguisher.address = this.address.value : delete extinguisher.address; 
@@ -108,7 +109,8 @@ export class ExtinguisherFormComponent implements OnInit {
     this.manufacturing.value && this.manufacturing.value != "" ? extinguisher.manufacturingDate = this.manufacturing.value : delete extinguisher.manufacturingDate;
     this.lastLoad.value && this.lastLoad.value != "" ? extinguisher.lastLoad = this.lastLoad.value : delete extinguisher.lastLoad;
     this.lastHydraulicTest.value && this.lastHydraulicTest.value != "" ? extinguisher.lastHydraulicTest = this.lastHydraulicTest.value : delete extinguisher.lastHydraulicTest; 
-    
+    this.carID && this.carID != "" ? extinguisher.idCar = this.carID : delete extinguisher.idCar;
+
     if(this.customerId) {
       extinguisher.customer = new Customer();
       extinguisher.customer.id = Number(this.customerId); 
@@ -125,26 +127,26 @@ export class ExtinguisherFormComponent implements OnInit {
       if(this.id == 0) {
         this.service.add(extinguisher).subscribe(
           _ => {
-            this._snackBar.open("Extinguisher saved!", "Close", { duration: 2000 });
+            this._snackBar.showSuccess("Matafuego guardado!");
             this.router.navigate(['/pages/extinguishers'])
           },
           error => {
-            this._snackBar.open("Error saving extinguisher! " + error, "Close", { duration: 2000 });
+            this._snackBar.showError("Error guardando matafuegos! " + error);
           }
         )
       } else {
         this.service.update(this.id, extinguisher).subscribe(
           _ => {
-            this._snackBar.open("Extinguisher saved!", "Close", { duration: 2000 });
+            this._snackBar.showSuccess("Matafuego actualizado!");
             this.router.navigate(['/pages/extinguishers'])
           },
           error => {
-            this._snackBar.open("Error updating extinguisher!" + error, "Close", { duration: 2000 });
+            this._snackBar.showError("Error actualizando matafuegos! " + error);
           }
         )
       }
     } else
-    this._snackBar.open("Please check fields!","Close", { duration: 2000 });
+    this._snackBar.showInfo("Verifique los campos!");
   }
 
   cancel() : void {
@@ -153,9 +155,9 @@ export class ExtinguisherFormComponent implements OnInit {
 
   validate() : boolean {
     let error = false;
-    /* if(!this.categories.includes(this.category)) {
+    if(this.category == ExtinguisherCategory.VEHICULAR && !this.carID) {
       error = true;
-    } */
+    }
     return !error && 
       !this.code.hasError('required') && 
       !this.location.hasError('required') && 
@@ -166,10 +168,5 @@ export class ExtinguisherFormComponent implements OnInit {
       !this.lastLoad.hasError('required') && 
       !this.lastHydraulicTest.hasError('required') 
   }
-
-  /* selectCustomer(id: any) {
-    this.idCustomer = (id == 'null') ? 0 : id;
-  } */
-
 
 }

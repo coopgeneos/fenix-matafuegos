@@ -1,0 +1,20 @@
+::ng-deep snack-bar-container.snackSuccess {
+  background: #28a745;
+  color: white;
+
+}
+::ng-deep snack-bar-container .mat-simple-snackbar-action  {
+  color: white;
+}
+::ng-deep snack-bar-container.snackError {
+  background: #dc3545;
+}
+
+::ng-deep snack-bar-container.snackInfo {
+  background: #ffc107;
+  color: black;
+}
+
+::ng-deep snack-bar-container.snackInfo .mat-simple-snackbar-action  {
+  color: black;
+}

@@ -19,14 +19,14 @@ export class PagesComponent implements OnInit {
   }
 
   logout() : void {
+    localStorage.removeItem('currentUser');
     this.authService.signOut().subscribe(
       response => {
-        localStorage.removeItem('currentUser');
         this.userIdle.stopWatching();
         this.router.navigate(['/signin']);
       },
       error => {
-        console.error("Cagó el logout "+JSON.stringify(error))
+        console.error("Error en el logout "+JSON.stringify(error))
       }
     )
   }

@@ -254,7 +254,6 @@ export class BaseServiceAPI<T> {
 
   //Workaround for update listdata when order, filter or pageSize changes
   private _set(patch: Partial<State>) {
-    console.log("seteando page en baseserviceapi")
     Object.assign(this._state, patch);
     this._search();
   }

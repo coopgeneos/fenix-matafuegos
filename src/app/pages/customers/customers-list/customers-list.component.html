@@ -1,8 +1,8 @@
 <div class="filters">
-  <input matInput placeholder="Name filter" [(ngModel)]="nameFilter">
-  <input matInput placeholder="Phone filter" [(ngModel)]="phoneFilter">
-  <input matInput placeholder="Email filter" [(ngModel)]="emailFilter">
-  <button mat-raised-button (click)="filter()">Filter</button>
+  <input matInput placeholder="Nombre" [(ngModel)]="nameFilter">
+  <input matInput placeholder="Teléfono" [(ngModel)]="phoneFilter">
+  <input matInput placeholder="Email" [(ngModel)]="emailFilter">
+  <button mat-raised-button (click)="filter()">Filtrar</button>
 </div>
 
 <div class="button-row">
@@ -13,25 +13,25 @@
 
   <!-- Code Column -->
   <ng-container matColumnDef="code">
-    <th mat-header-cell *matHeaderCellDef> Code </th>
+    <th mat-header-cell *matHeaderCellDef> Identificador </th>
     <td mat-cell *matCellDef="let element"> {{element.code}} </td>
   </ng-container>
 
   <!-- Name Column -->
   <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <th mat-header-cell *matHeaderCellDef> Nombre </th>
     <td mat-cell *matCellDef="let element"> {{element.name}} </td>
   </ng-container>
 
   <!-- Address Column -->
   <ng-container matColumnDef="address">
-    <th mat-header-cell *matHeaderCellDef> Address </th>
+    <th mat-header-cell *matHeaderCellDef> Dirección </th>
     <td mat-cell *matCellDef="let element"> {{element.address}} </td>
   </ng-container>
 
   <!-- Phone Column -->
   <ng-container matColumnDef="phone">
-    <th mat-header-cell *matHeaderCellDef> Phone </th>
+    <th mat-header-cell *matHeaderCellDef> Teléfono </th>
     <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
   </ng-container>
 
@@ -49,13 +49,13 @@
 
   <!-- Type Column -->
   <ng-container matColumnDef="type">
-    <th mat-header-cell *matHeaderCellDef> Type </th>
+    <th mat-header-cell *matHeaderCellDef> Tipo </th>
     <td mat-cell *matCellDef="let element"> {{element.type}} </td>
   </ng-container>
 
   <!-- Edit -->
   <ng-container matColumnDef="edit">
-    <th mat-header-cell *matHeaderCellDef> Edit </th>
+    <th mat-header-cell *matHeaderCellDef> Opciones </th>
     <td mat-cell *matCellDef="let element">
       <a (click)="edit(element)">
         <mat-icon aria-hidden="false" aria-label="adit">edit</mat-icon>

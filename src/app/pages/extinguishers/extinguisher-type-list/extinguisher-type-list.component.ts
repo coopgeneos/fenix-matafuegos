@@ -3,6 +3,7 @@ import { ExtinguisherType } from 'src/app/models/extinguisherType';
 import { ExtinguisherTypeService } from '../extinguisher-type.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
+import { CustomSnackService } from 'src/app/services/custom-snack.service';
 
 @Component({
   selector: 'app-extinguisher-type-list',
@@ -17,7 +18,7 @@ export class ExtinguisherTypeListComponent implements OnInit {
   constructor(
     private service: ExtinguisherTypeService, 
     protected router: Router,
-    private _snackBar: MatSnackBar) { }
+    private _snackBar: CustomSnackService) { }
 
   ngOnInit() {
     this.loadData();
@@ -30,7 +31,7 @@ export class ExtinguisherTypeListComponent implements OnInit {
       })
       .catch(err => {
         console.error(JSON.stringify(err))
-        this._snackBar.open("Error retrieving data! " + err, "Close", { duration: 3000 });
+        this._snackBar.showError("Error al obtener los datos! " + err,);
       })
   }
 
@@ -41,11 +42,11 @@ export class ExtinguisherTypeListComponent implements OnInit {
   delete(extType: any) : void {
     this.service.delete(extType.id).subscribe(
       _ => {
-        this._snackBar.open("ExtinguisherType deleted!", "Close", { duration: 3000 });
+        this._snackBar.showSuccess("Tipo de matafuego borrado!");
         this.loadData();
       },
       error => {
-        this._snackBar.open("Error deleting extinguisherType!", "Close", { duration: 3000 });
+        this._snackBar.showError("Error borrando el tipo de matafuego!");
       }
     )
   }

@@ -15,6 +15,7 @@ import { ExtinguisherFormComponent } from './extinguishers/extinguisher-form/ext
 import { WorkOrderListComponent } from './work-orders/work-order-list/work-order-list.component';
 import { WorkOrderFormComponent } from './work-orders/work-order-form/work-order-form.component';
 import { WorkOrderMadeFormComponent } from './work-orders/work-order-made-form/work-order-made-form.component';
+import { WorkOrderInvoiceListComponent } from './work-orders/work-order-invoice-list/work-order-invoice-list.component';
 
 const routes: Routes = [
   { path: '', component: PagesComponent,
@@ -39,6 +40,7 @@ const routes: Routes = [
       { path: 'workorders/:id', component: WorkOrderFormComponent, canActivate: [IsAuthenticatedGuard] },
       { path: 'workorders/0', component: WorkOrderFormComponent, canActivate: [IsAuthenticatedGuard] },
       { path: 'workordersupdate/:id', component: WorkOrderMadeFormComponent, canActivate: [IsAuthenticatedGuard] },
+      { path: 'workordersinvoice', component: WorkOrderInvoiceListComponent, canActivate: [IsAuthenticatedGuard, IsAdminGuard] },
       
       { path: '', redirectTo: 'workorders', pathMatch: 'full' },
       { path: '**', redirectTo: 'workorders', pathMatch: 'full' },
