@@ -67,9 +67,7 @@ export class CustomersFormComponent implements OnInit {
     this.email.value && this.email.value != "" ? customer.email = this.email.value : delete customer.email;
     this.web.value && this.web.value != "" ? customer.web = this.web.value : delete customer.web;
     this.type ? customer.type = CustomerType[this.type] : delete customer.type; 
-    
-    console.log(customer, this.type)
-    
+        
     if(this.validate()) {
       if(this.id == 0) {
         this.service.add(customer).subscribe(

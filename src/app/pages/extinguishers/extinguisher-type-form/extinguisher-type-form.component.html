@@ -1,48 +1,48 @@
-<div class="extinguisherTypeForm">
+<div class="general-form">
 
   <mat-form-field class="extinguisherTypeFormField">
-    <input matInput placeholder="Code" [formControl]="code">
+    <input matInput placeholder="Identificador" [formControl]="code">
     <mat-error *ngIf="code.hasError('required')">
       Código es <strong>obligatorio</strong>
     </mat-error>
   </mat-form-field>
 
   <mat-form-field class="extinguisherTypeFormField">
-    <mat-select placeholder="Select category" [(value)]="category">
+    <mat-select placeholder="Categoría" [(value)]="category">
       <mat-option *ngFor="let categ of categories()" value="{{categ}}">{{categ}}</mat-option>
     </mat-select>
   </mat-form-field>
 
   <mat-form-field class="extinguisherTypeFormField">
-    <input matInput placeholder="Load expiration" [formControl]="loadExpiration" type="number">
+    <input matInput placeholder="Vencimiento" [formControl]="loadExpiration" type="number">
     <mat-error *ngIf="loadExpiration.hasError('required')">
       El vencimiento es <strong>obligatorio</strong>
     </mat-error>
   </mat-form-field>
 
   <mat-form-field class="extinguisherTypeFormField">
-    <input matInput placeholder="PH expiration" [formControl]="phExpiration" type="number">
+    <input matInput placeholder="Venc. PH" [formControl]="phExpiration" type="number">
     <mat-error *ngIf="phExpiration.hasError('required')">
       El vencimiento de la PH es <strong>obligatorio</strong>
     </mat-error>
   </mat-form-field>
 
   <mat-form-field class="extinguisherTypeFormField">
-    <input matInput placeholder="Weight" [formControl]="weight" type="number">
+    <input matInput placeholder="Peso" [formControl]="weight" type="number">
     <mat-error *ngIf="weight.hasError('required')">
       El peso es <strong>obligatorio</strong>
     </mat-error>
   </mat-form-field>
 
   <mat-form-field class="extinguisherTypeFormField">
-    <input matInput placeholder="Volume" [formControl]="volume" type="number">
+    <input matInput placeholder="Volumen" [formControl]="volume" type="number">
     <mat-error *ngIf="volume.hasError('required')">
       El volumne es <strong>obligatorio</strong>
     </mat-error>
   </mat-form-field>
   
-  <div class="buttonsDiv">
-    <button mat-raised-button class="buttonActions" color="primary" (click)="save()">Guardar</button>
-    <button mat-raised-button class="buttonActions" color="warn" (click)="cancel()">Cancelar</button>
+  <div class="div-button-actions">
+    <button mat-raised-button class="button-actions" color="primary" (click)="save()">Guardar</button>
+    <button mat-raised-button class="button-actions" color="warn" (click)="cancel()">Cancelar</button>
   </div>
 </div>

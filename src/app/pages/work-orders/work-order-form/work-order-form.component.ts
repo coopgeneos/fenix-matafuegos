@@ -12,6 +12,8 @@ import { UsersService } from '../../users/users.service';
 import { CustomersService } from '../../customers/customers.service';
 import { ExtinguishersService } from '../../extinguishers/extinguisher.service';
 import { CustomSnackService } from 'src/app/services/custom-snack.service';
+import { ExtinguisherJobs } from '../const-data';
+import { Condition } from '../../../commons/directives/filterable.directive'
 
 @Component({
   selector: 'app-work-order-form',
@@ -36,16 +38,9 @@ export class WorkOrderFormComponent implements OnInit {
   extinguishers: Extinguisher[];
   users: User[];
 
-  servicesList: any[] = [
-    {name: 'Control y mantenimiento', value: false},
-    {name: 'Carga completa', value: false},
-    {name: 'Reemplazo de manómetro', value: false},
-    {name: 'Reemplazo de válvula', value: false},
-    {name: 'Reemplazo de manguera', value: false},
-    {name: 'Prueba hidráulica', value: false},
-    {name: 'Colocación de calco', value: false},
-    {name: 'Cambio de zuncho', value: false}
-  ]
+  servicesList: any[] = ExtinguisherJobs.map(job => {
+    return {name: job, value: false}
+  })
   
   constructor(
     private activatedRouter: ActivatedRoute,
@@ -148,8 +143,6 @@ export class WorkOrderFormComponent implements OnInit {
       delete order[key];
     }
 
-    console.log(order);
-
     if(this.validate(order)) {
       if(this.id == 0) {
         order.state = WOrderState.CREADA;
@@ -163,10 +156,7 @@ export class WorkOrderFormComponent implements OnInit {
           }
         )
       } else {
-        /* if(this.canceled) {
-          order.state = WOrderState.CANCELED;
-          order.cancellingNote = this.canceled;
-        } */
+        order.state = WOrderState.COMPLETANDOSE;
         this.service.update(this.id, order).subscribe(
           _ => {
             this._snackBar.showSuccess("Orden guardada!");
@@ -196,6 +186,18 @@ export class WorkOrderFormComponent implements OnInit {
 
   checkService(i: number) {
     this.servicesList[i].value = !this.servicesList[i].value;
+  }
+
+  loadExtinguishers() : void {
+    this.extinguisherService.clearState();
+    this.extinguisherService.filter = {column: "customer", value: this.customerId, condition: Condition["="]}
+    this.extinguisherService.search()
+      .then(list => {
+        this.extinguishers = list;
+      })
+      .catch(err => {
+        this._snackBar.showError("Error obteniendo los matafuegos!");
+      })
   }
 
 }

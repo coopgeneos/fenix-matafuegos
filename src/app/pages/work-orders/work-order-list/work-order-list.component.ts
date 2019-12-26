@@ -9,6 +9,8 @@ import * as moment from 'moment';
 import { CancelPopupComponent } from '../cancel-popup/cancel-popup.component';
 import { BaseListComponent } from 'src/app/commons/base-list-component';
 import { CustomSnackService } from 'src/app/services/custom-snack.service';
+import { ClosePopupComponent } from '../close-popup/close-popup.component';
+import { ExtinguishersService } from '../../extinguishers/extinguisher.service';
 
 @Component({
   selector: 'app-work-order-list',
@@ -25,7 +27,8 @@ export class WorkOrderListComponent extends BaseListComponent<WorkOrder> impleme
     protected router: Router,
     private _snackBar: CustomSnackService,
     private authService: AuthService,
-    public dialog: MatDialog) { 
+    public dialog: MatDialog,
+    private extinguisherService: ExtinguishersService) { 
       super(service);
     }
 
@@ -71,30 +74,67 @@ export class WorkOrderListComponent extends BaseListComponent<WorkOrder> impleme
   }
 
   close(order: WorkOrder) : void {
-    let _order = new WorkOrder();
-    _order.id = order.id;
-    _order.closeBy = new User();
-    _order.closeBy.id = this.authService.getLoggedUser().id;
-    _order.closeDate = moment().format("YYYY-MM-DD");
-    _order.state = WOrderState.CERRADA;
+    const dialogRef = this.dialog.open(ClosePopupComponent, {
+      width: '400px'
+    });
 
-    //Borro los campos innecesarios para el update
-    let fields = ['id','closeBy','closeDate','state'];
-    for(let key in _order) {
-      if(fields.includes(key))
-        continue
-      delete _order[key];
-    }
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        let _order = new WorkOrder();
+        _order.id = order.id;
+        _order.closeBy = new User();
+        _order.closeBy.id = this.authService.getLoggedUser().id;
+        _order.closeDate = moment().format("YYYY-MM-DD");
+        _order.state = WOrderState.CERRADA;
 
-    this.service.update(_order.id, _order).subscribe(
-      _ => {
-        this._snackBar.showSuccess("Orden guardada!");
-        this.loadData();
-      },
-      error => {
-        this._snackBar.showError("Error actualizando la orden!" + error);
+        //Borro los campos innecesarios para el update
+        let fields = ['id','closeBy','closeDate','state'];
+        for(let key in _order) {
+          if(fields.includes(key))
+            continue
+          delete _order[key];
+        }
+
+        this.service.update(_order.id, _order).subscribe(
+          _ => {
+            this._snackBar.showSuccess("Orden guardada!");
+            this.loadData();
+          },
+          error => {
+            this._snackBar.showError("Error actualizando la orden!" + error);
+          }
+        )
+
+        //Es necesario actualizar el matafuego?
+        fields = ['id'];
+        let upd_ext = false;
+        let ext = order.extinguisher;
+        if(order.doneList.includes('Carga completa')){
+          ext.lastLoad = moment().format("YYYY-MM-DD");
+          upd_ext = true;
+          fields.push('lastLoad');
+        }
+        if(order.doneList.includes('Prueba hidráulica')){
+          ext.lastHydraulicTest = moment().format("YYYY-MM-DD");
+          upd_ext = true;
+          fields.push('lastHydraulicTest');
+        }
+        if(upd_ext) {
+          //Campos del matafuego a actualizar
+          for(let key in ext) {
+            if(fields.includes(key))
+              continue
+            delete ext[key];
+          }
+          this.extinguisherService.update(ext.id, ext).subscribe(
+            _ => {},
+            error => {
+              this._snackBar.showError("Error actualizando las fechas del matafuego!");
+            }
+          )
+        }
       }
-    )
+    })
   }
 
   cancel(order: WorkOrder): void {
@@ -113,8 +153,6 @@ export class WorkOrderListComponent extends BaseListComponent<WorkOrder> impleme
             continue
           delete _order[key];
         }
-
-        console.log(order.id, _order)
 
         this.service.update(order.id, _order).subscribe(
           _ => {

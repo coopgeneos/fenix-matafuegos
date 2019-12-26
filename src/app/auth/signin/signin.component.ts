@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { UserIdleService } from 'angular-user-idle';
 import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
@@ -58,7 +58,12 @@ export class SigninComponent implements OnInit {
 
   signIn() : void {
     if(!this.validate()) {
-      this._snackBar.open("Bad credentials!", "Close", { duration: 2000 });
+      this._snackBar.open("Bad credentials!", "Close", {
+        duration: 3500,
+        verticalPosition: 'top',
+        horizontalPosition: 'right',
+        panelClass: ['snackError']
+      });
     } else {
       let credentials = {
         username: this.usernameFormControl.value, 
@@ -67,7 +72,12 @@ export class SigninComponent implements OnInit {
       this.authService.signIn(credentials).subscribe(
         logged => {
           if(logged.error)
-            this._snackBar.open(logged.message, "Close", { duration: 2000 });
+            this._snackBar.open(logged.message, "Close", {
+              duration: 3500,
+              verticalPosition: 'top',
+              horizontalPosition: 'right',
+              panelClass: ['snackError']
+            });
           else {
             this.userIdle.startWatching();
             this.authService.setSession(logged.user);
@@ -75,7 +85,12 @@ export class SigninComponent implements OnInit {
           }
         },
         error => {
-          this._snackBar.open(error, "Close", { duration: 2000 });
+          this._snackBar.open(error, "Close", {
+            duration: 3500,
+            verticalPosition: 'top',
+            horizontalPosition: 'right',
+            panelClass: ['snackError']
+          });
         }
       )
     }

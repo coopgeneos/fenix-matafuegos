@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../auth/auth.service';
+import { AuthService, LoggedUser } from '../auth/auth.service';
 import { Router } from '@angular/router';
 import { UserIdleService } from 'angular-user-idle';
 
@@ -10,12 +10,28 @@ import { UserIdleService } from 'angular-user-idle';
 })
 export class PagesComponent implements OnInit {
 
+  logged: LoggedUser;
+  
+  menuEntries = [
+    {label: "Usuarios", path: "users", show: this.authService.isAdmin()},
+    {label: "Clientes", path: "customers", show: this.authService.isAdmin()},
+    {label: "Tipo de matafuegos", path: "extinguisherstype", show: this.authService.isAdmin()},
+    {label: "Matafuegos", path: "extinguishers", show: this.authService.isAdmin()},
+    {label: "Ordenes", path: "workorders", show: true},
+    {label: "Facturación", path: "workordersinvoice", show: this.authService.isAdmin()},
+  ]
+
+  menu = this.menuEntries.filter(entry => {return entry.show});
+
+  section: string = "Ordenes"
+
   constructor(
     private authService: AuthService,
     private router: Router,
     private userIdle: UserIdleService) { }
 
   ngOnInit() {
+    this.logged = this.authService.getLoggedUser();
   }
 
   logout() : void {
@@ -29,6 +45,10 @@ export class PagesComponent implements OnInit {
         console.error("Error en el logout "+JSON.stringify(error))
       }
     )
+  }
+
+  selectMenu(label: string) : void {
+    this.section = label;
   }
 
 }

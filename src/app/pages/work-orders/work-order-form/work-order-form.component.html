@@ -1,4 +1,4 @@
-<div class="orderForm">
+<div class="general-form">
   <mat-form-field class="orderFormField">
     <input matInput placeholder="Nro de orden" [formControl]="orderNo" readonly="{{state == 'CANCELADA' || state == 'FACTURADA'  || state == 'CERRADA'}}">
     <mat-error *ngIf="orderNo.hasError('required')">
@@ -7,19 +7,23 @@
   </mat-form-field>
 
   <mat-form-field class="orderFormField">
-    <mat-select placeholder="Cliente" [(value)]="customerId" disabled="{{state == 'CANCELADA' || state == 'FACTURADA'  || state == 'CERRADA'}}">
+    <mat-select placeholder="Cliente" [(value)]="customerId" 
+      disabled="{{state == 'CANCELADA' || state == 'FACTURADA'  || state == 'CERRADA'}}"
+      (selectionChange)=loadExtinguishers()>
       <mat-option *ngFor="let c of customers" value="{{c.id}}">{{c.name}}</mat-option>
     </mat-select>
   </mat-form-field>
 
-  <mat-form-field class="orderFormField">
-    <mat-select placeholder="Matafuego" [(value)]="extinguisherId" disabled="{{state == 'CANCELADA' || state == 'FACTURADA'  || state == 'CERRADA'}}">
+  <mat-form-field class="orderFormField" *ngIf="customerId">
+    <mat-select placeholder="Matafuego" [(value)]="extinguisherId" 
+      disabled="{{state == 'CANCELADA' || state == 'FACTURADA'  || state == 'CERRADA'}}">
       <mat-option *ngFor="let e of extinguishers" value="{{e.id}}">{{e.code}}</mat-option>
     </mat-select>
   </mat-form-field>
 
-  <mat-selection-list>
-    <mat-list-item *ngFor="let serv of servicesList; let i=index"> {{serv.name}} 
+  <mat-selection-list >
+    <mat-list-item *ngFor="let serv of servicesList; let i=index">  
+      <p>{{serv.name}}</p>
       <mat-checkbox [checked]="serv.value" (change)="checkService(i)" disabled="{{state == 'CANCELADA' || state == 'FACTURADA'  || state == 'CERRADA'}}"></mat-checkbox>
     </mat-list-item>
   </mat-selection-list>
@@ -38,13 +42,13 @@
   </mat-form-field> -->
 
   <mat-form-field class="orderFormField" *ngIf="state == 'CANCELADA'">
-    <textarea matInput placeholder="Motivo de cancelación" [ngModel]="canceled" readonly="true"></textarea>
+    <textarea matInput placeholder="Motivo de cancelación" [ngModel]="cancelNote" readonly="true"></textarea>
   </mat-form-field>
 
-  <div class="buttonsDiv">
-    <button mat-raised-button class="buttonActions" color="primary" (click)="save()" *ngIf="state == 'CREADA' || state == 'COMPLETANDOSE'">Guardar</button>
-    <button mat-raised-button class="buttonActions" color="warn" (click)="cancel()" *ngIf="state == 'CREADA' || state == 'COMPLETANDOSE'">Cancelar</button>
-    <button mat-raised-button class="buttonActions" color="primary" (click)="cancel()" *ngIf="state == 'CANCELADA' || state == 'CERRADA'">Ok</button>
+  <div class="div-button-actions">
+    <button mat-raised-button class="button-actions" color="primary" (click)="save()" *ngIf="state == 'CREADA' || state == 'COMPLETANDOSE'">Guardar</button>
+    <button mat-raised-button class="button-actions" color="warn" (click)="cancel()" *ngIf="state == 'CREADA' || state == 'COMPLETANDOSE'">Cancelar</button>
+    <button mat-raised-button class="button-actions" color="primary" (click)="cancel()" *ngIf="state == 'CANCELADA' || state == 'CERRADA'">Ok</button>
 
   </div>
 </div>

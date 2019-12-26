@@ -96,7 +96,7 @@ export class UsersFormComponent implements OnInit {
     if(!(this.role == Role.ADMIN || this.role == Role.OPERARIO)) {
       error = false;
     }
-    return error || !(this.name.hasError('required') 
+    return !error || !(this.name.hasError('required') 
       || this.username.hasError('required'))
   }
 

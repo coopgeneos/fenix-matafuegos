@@ -10,8 +10,7 @@ export class CancelPopupComponent  {
 
   text: string; 
 
-  constructor(
-    public ref: MatDialogRef<CancelPopupComponent>) { }
+  constructor(public ref: MatDialogRef<CancelPopupComponent>) { }
 
   abort() : void {
     this.ref.close(null);

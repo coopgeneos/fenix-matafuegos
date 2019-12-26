@@ -1,4 +1,4 @@
-<div class="userForm">
+<div class="general-form">
   <mat-form-field class="userFormField">
     <input matInput placeholder="Nombre" [formControl]="name">
     <mat-error *ngIf="name.hasError('required')">
@@ -26,8 +26,8 @@
       La contraseña es <strong>obligatorio</strong>
     </mat-error>
   </mat-form-field>
-  <div class="buttonsDiv">
-    <button mat-raised-button class="buttonActions" color="primary" (click)="save()">Guardar</button>
-    <button mat-raised-button class="buttonActions" color="warn" (click)="cancel()">Cancelar</button>
+  <div class="div-button-actions">
+    <button mat-raised-button class="button-actions" color="primary" (click)="save()">Guardar</button>
+    <button mat-raised-button class="button-actions" color="warn" (click)="cancel()">Cancelar</button>
   </div>
 </div>

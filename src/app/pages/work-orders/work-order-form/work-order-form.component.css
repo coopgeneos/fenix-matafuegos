@@ -1,11 +1,4 @@
-.orderForm {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 50%
-}
-
-.buttonActions {
-  float: right;
-  margin-left: 2px;
+::ng-deep mat-list-item .mat-list-item-content {
+  justify-content: space-between;
+  width: 35%;
 }

@@ -13,7 +13,6 @@ const routes: Routes = [
       .then(m => m.PagesModule),
   },
   { path: 'signin', redirectTo: 'auth/signin', pathMatch: 'full' },
-  { path: 'signup', redirectTo: 'auth/signup', pathMatch: 'full' },
   { path: '', redirectTo: 'pages', pathMatch: 'full' },
   { path: '**', redirectTo: 'pages' },
 ];

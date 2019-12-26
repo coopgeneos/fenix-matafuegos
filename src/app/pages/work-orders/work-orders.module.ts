@@ -23,6 +23,7 @@ import { WorkOrderMadeFormComponent } from './work-order-made-form/work-order-ma
 import { CancelPopupComponent } from './cancel-popup/cancel-popup.component';
 import { WorkOrderInvoiceListComponent } from './work-order-invoice-list/work-order-invoice-list.component';
 import { InvoicePopupComponent } from './invoice-popup/invoice-popup.component';
+import { ClosePopupComponent } from './close-popup/close-popup.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { InvoicePopupComponent } from './invoice-popup/invoice-popup.component';
     WorkOrderMadeFormComponent,
     CancelPopupComponent,
     WorkOrderInvoiceListComponent,
-    InvoicePopupComponent
+    InvoicePopupComponent,
+    ClosePopupComponent
   ],
   imports: [
     CommonModule,
@@ -50,6 +52,6 @@ import { InvoicePopupComponent } from './invoice-popup/invoice-popup.component';
     FormsModule
   ],
   providers: [WorkOrdersService],
-  entryComponents: [ CancelPopupComponent, InvoicePopupComponent ],
+  entryComponents: [ CancelPopupComponent, InvoicePopupComponent, ClosePopupComponent ],
 })
 export class WorkOrdersModule { }

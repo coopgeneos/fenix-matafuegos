@@ -1,11 +1,17 @@
-.userForm {
+app-user-form {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 50%
+  flex-direction: row;
+  justify-content: space-around;
 }
 
-.buttonActions {
+.user-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 80%
+}
+
+.button-actions {
   float: right;
-  margin-left: 2px;
+  margin-left: 3px;
 }

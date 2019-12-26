@@ -2,3 +2,50 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.mat-drawer-container {
+  min-height: 100vh;
+}
+
+.mat-dialog-actions {
+  justify-content: flex-end;
+}
+
+app-auth {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+app-user-form, app-customers-form, app-extinguisher-type-form, app-extinguisher-form, app-work-order-form, app-work-order-made-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+app-invoice-popup, app-cancel-popup, app-close-popup {
+  display: flex;
+  flex-direction: column;
+}
+
+app-invoice-popup mat-form-field, app-cancel-popup mat-form-field {
+  width: 100%;
+}
+
+.general-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 80%
+}
+
+.div-button-actions {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+}
+
+.div-button-actions .button-actions {
+  margin-left: 3px;
+}

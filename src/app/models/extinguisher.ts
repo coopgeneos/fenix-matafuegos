@@ -17,8 +17,8 @@ export class Extinguisher {
   factoryNo: number;
   bvNo: number;
   manufacturingDate: Date;
-  lastLoad: Date;
-  lastHydraulicTest: Date;
+  lastLoad: string;
+  lastHydraulicTest: string;
   idCar: string;
 
   constructor() {

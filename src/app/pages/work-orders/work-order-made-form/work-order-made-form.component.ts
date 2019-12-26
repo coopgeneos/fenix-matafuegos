@@ -2,10 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { WorkOrder, WOrderState } from 'src/app/models/workOrder';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkOrdersService } from '../work-orders.service';
-import { MatSnackBar } from '@angular/material';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/auth/auth.service';
 import * as moment from 'moment';
+import { ExtinguisherJobs } from '../const-data';
+import { CustomSnackService } from 'src/app/services/custom-snack.service';
+import { Extinguisher } from 'src/app/models/extinguisher';
+import { ExtinguishersService } from '../../extinguishers/extinguisher.service';
 
 @Component({
   selector: 'app-work-order-made-form',
@@ -17,16 +20,9 @@ export class WorkOrderMadeFormComponent implements OnInit {
   id: number = 0;
   order: WorkOrder = new WorkOrder();
 
-  madeList: any[] = [
-    {name: 'Control y mantenimiento', todo: false, doit: false},
-    {name: 'Carga completa', todo: false, doit: false},
-    {name: 'Reemplazo de manómetro', todo: false, doit: false},
-    {name: 'Reemplazo de válvula', todo: false, doit: false},
-    {name: 'Reemplazo de manguera', todo: false, doit: false},
-    {name: 'Prueba hidráulica', todo: false, doit: false},
-    {name: 'Colocación de calco', todo: false, doit: false},
-    {name: 'Cambio de zuncho', todo: false, doit: false}
-  ];
+  madeList: any[] = ExtinguisherJobs.map(job => {
+    return {name: job, value: false}
+  })
 
   state: WOrderState;
   iNote: string;
@@ -34,9 +30,9 @@ export class WorkOrderMadeFormComponent implements OnInit {
   constructor(
     private activatedRouter: ActivatedRoute,
     private service: WorkOrdersService,
-    private _snackBar: MatSnackBar,
+    private _snackBar: CustomSnackService,
     private router: Router,
-    private authSerive: AuthService) { 
+    private authService: AuthService) { 
     this.activatedRouter.params.subscribe(
       params => { 
         this.id = Number(params['id']); 
@@ -51,7 +47,7 @@ export class WorkOrderMadeFormComponent implements OnInit {
           this.order = data;
           this.state = data.state;
           this.iNote = data.invoiceNote ? 
-            `Nro: ${data.invoiceNo}\nFecha: ${data.invoiceDate}\nNota: ${data.invoiceNote}` : 
+            `Nro Fact: ${data.invoiceNo}\nFecha: ${moment(data.invoiceDate).format('YYYY-MM-DD')}\nNota: ${data.invoiceNote}` : 
             null;
 
           let aux = data.doneList ? data.doneList.split(',') : [];
@@ -73,11 +69,9 @@ export class WorkOrderMadeFormComponent implements OnInit {
               }
             }
           }
-
-          console.log(this.iNote)
         },
         error => {
-          this._snackBar.open("Error fetching the order!", "Close", { duration: 2000 });
+          this._snackBar.showError("Error obteniendo las ordenes!");
         }
       )
     }
@@ -92,12 +86,12 @@ export class WorkOrderMadeFormComponent implements OnInit {
                       .map(serv => {return serv.name})
                       .toString();
     order.doneBy = new User();
-    order.doneBy.id = this.authSerive.getLoggedUser().id;
+    order.doneBy.id = this.authService.getLoggedUser().id;
     order.doneDate = moment().format("YYYY-MM-DD")
     order.state = WOrderState.COMPLETANDOSE;
 
-    //Borro los campos innecesarios para el update
-    let fields = ['id','doneList','doneBy','doneDate','state'];
+    //Campos a actualizar
+    let fields = ['doneList','doneBy','doneDate','state'];
     for(let key in order) {
       if(fields.includes(key))
         continue
@@ -107,15 +101,15 @@ export class WorkOrderMadeFormComponent implements OnInit {
     if(this.validate(order)) {
       this.service.update(this.id, order).subscribe(
         _ => {
-          this._snackBar.open("Order saved!", "Close", { duration: 2000 });
+          this._snackBar.showSuccess("Orden guardada!");
           this.router.navigate(['/pages/workorders'])
         },
         error => {
-          this._snackBar.open("Error updating order!" + error, "Close", { duration: 2000 });
+          this._snackBar.showError("Error actualizando la orden!" + error);
         }
-      )
+      );
     } else
-    this._snackBar.open("Please check fields!","Close", { duration: 2000 });
+    this._snackBar.showInfo("Verifique los campos!");
   }
 
   cancel() : void {
