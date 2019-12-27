@@ -1,7 +1,13 @@
-<div class="divCS">
-  <input matInput (keyup)="searchElement($event.target.value)" class="inputCS">
-  <select (change)="selectElement($event.target.value)" class="selectCS"> 
-    <option [value]="notSelected">Seleccione...</option>
-    <option *ngFor="let elem of filteredList" [(value)]="elem[key]">{{elem[label]}}</option> 
-  </select>    
-</div>
+<mat-form-field>
+  <mat-label>{{placeholder}}</mat-label>
+  <mat-select (selectionChange)="selectElement($event.value)" (openedChange)="cleanSearch($event)">
+    <input placeholder="{{inputPlaceholder}}" matInput (keyup)="searchElement($event.target.value)" class="inputCS" [(ngModel)]="inputValue">
+    <button mat-button *ngIf="inputValue" matSuffix mat-icon-button aria-label="Clear" (click)="cleanSearch(false)">
+      <mat-icon>close</mat-icon>
+    </button>
+    <mat-option>--</mat-option>
+    <mat-option *ngFor="let elem of filteredList" [(value)]="elem[key]">
+      {{elem[label]}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>

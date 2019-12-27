@@ -1,4 +1,21 @@
-<div class="button-row" *ngIf="authService.isAdmin()">
+<div class="div-filter">
+  <div class="div-filter-list">
+    <input matInput placeholder="Identificador" [(ngModel)]="codeFilter" class="formField-filter-list">
+    <app-custom-select 
+      [service]="customerService"
+      [key]="'id'" 
+      [label]="'name'" 
+      [placeholder]="'Seleccione cliente'" 
+      [inputPlaceholder]="'Escriba para filtrar'"
+      (selectChange)="selectCustomer($event)"
+      class="formField-filter-list">
+    </app-custom-select>
+    <input matInput placeholder="Matafuego" [(ngModel)]="extinguisherFilter" class="formField-filter-list">
+  </div>  
+  <button mat-raised-button (click)="filter()">Filtrar</button>
+</div>
+
+<div class="button-add-row" *ngIf="isAdmin">
   <button mat-fab color="warn" (click)="create()"><mat-icon>add</mat-icon></button>
 </div>
 
@@ -44,7 +61,7 @@
   <ng-container matColumnDef="edit">
     <th mat-header-cell *matHeaderCellDef> Opciones </th>
     <td mat-cell *matCellDef="let element">
-      <button mat-icon-button aria-label="edit" matTooltip="Edit" (click)="edit(element)" *ngIf="authService.isAdmin() && (element.state == 'CREADA' || element.state == 'COMPLETANDOSE')">
+      <button mat-icon-button aria-label="edit" matTooltip="Edit" (click)="edit(element)" *ngIf="isAdmin && (element.state == 'CREADA' || element.state == 'COMPLETANDOSE')">
         <mat-icon aria-hidden="false" aria-label="edit">edit</mat-icon>
       </button>
       <button mat-icon-button aria-label="view" matTooltip="View" (click)="edit(element)" *ngIf="element.state == 'CANCELADA'">
@@ -53,7 +70,7 @@
       <button mat-icon-button aria-label="view" matTooltip="View" (click)="update(element)" *ngIf="element.state == 'FACTURADA' || element.state == 'CERRADA'">
         <mat-icon aria-hidden="false" aria-label="visibility">visibility</mat-icon>
       </button>
-      <!-- <a (click)="delete(element)" *ngIf="authService.isAdmin()">
+      <!-- <a (click)="delete(element)" *ngIf="isAdmin">
         <mat-icon aria-hidden="false" aria-label="delete">delete</mat-icon>
       </a> -->
       <button mat-icon-button aria-label="update" matTooltip="Complete" (click)="update(element)" *ngIf="element.state == 'CREADA' || element.state == 'COMPLETANDOSE'">

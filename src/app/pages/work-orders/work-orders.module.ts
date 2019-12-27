@@ -14,6 +14,7 @@ import {
   MatPaginatorModule
 } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { CommonsModule } from 'src/app/commons/commons.module';
 
 import { WorkOrdersService } from './work-orders.service';
 
@@ -49,7 +50,8 @@ import { ClosePopupComponent } from './close-popup/close-popup.component';
     MatListModule,
     MatDialogModule,
     MatPaginatorModule,
-    FormsModule
+    FormsModule,
+    CommonsModule
   ],
   providers: [WorkOrdersService],
   entryComponents: [ CancelPopupComponent, InvoicePopupComponent, ClosePopupComponent ],

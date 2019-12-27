@@ -81,7 +81,8 @@ export class ExtinguisherListComponent extends BaseListComponent<Extinguisher> i
   }
 
   selectCustomer(id: any) : void {
-    this.customerFilter = id == 'null' ? null : id;
+    console.log("Selected:", id)
+    this.customerFilter = (!id || id == 'null') ? null : id;
   }
 
 }

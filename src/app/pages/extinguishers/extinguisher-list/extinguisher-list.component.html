@@ -1,15 +1,20 @@
-<div class="filters">
-  <app-custom-select 
-    [service]="customerService"
-    [key]="'id'" 
-    [label]="'name'" 
-    (selectChange)="selectCustomer($event)">
-  </app-custom-select>
-  <input matInput placeholder="Código" [(ngModel)]="codeFilter">
+<div class="div-filter">
+  <div class="div-filter-list">
+    <app-custom-select 
+      [service]="customerService"
+      [key]="'id'" 
+      [label]="'name'" 
+      [placeholder]="'Seleccione cliente'" 
+      [inputPlaceholder]="'Escriba para filtrar'"
+      (selectChange)="selectCustomer($event)"
+      class="formField-filter-list">
+    </app-custom-select>
+    <input matInput placeholder="Identificador" [(ngModel)]="codeFilter" class="formField-filter-list">
+  </div>  
   <button mat-raised-button (click)="filter()">Filtrar</button>
 </div>
 
-<div class="button-row">
+<div class="button-add-row">
   <button mat-fab color="warn" (click)="create()"><mat-icon>add</mat-icon></button>
 </div>
 

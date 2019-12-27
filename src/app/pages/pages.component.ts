@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { AuthService, LoggedUser } from '../auth/auth.service';
 import { Router } from '@angular/router';
 import { UserIdleService } from 'angular-user-idle';
@@ -11,14 +11,15 @@ import { UserIdleService } from 'angular-user-idle';
 export class PagesComponent implements OnInit {
 
   logged: LoggedUser;
+  isAdmin: boolean = null;
   
   menuEntries = [
-    {label: "Usuarios", path: "users", show: this.authService.isAdmin()},
-    {label: "Clientes", path: "customers", show: this.authService.isAdmin()},
-    {label: "Tipo de matafuegos", path: "extinguisherstype", show: this.authService.isAdmin()},
-    {label: "Matafuegos", path: "extinguishers", show: this.authService.isAdmin()},
-    {label: "Ordenes", path: "workorders", show: true},
-    {label: "Facturación", path: "workordersinvoice", show: this.authService.isAdmin()},
+    {label: "Usuarios", path: "users", show: ["isAdmin"]},
+    {label: "Clientes", path: "customers", show: ["isAdmin"]},
+    {label: "Tipo de matafuegos", path: "extinguisherstype", show: ["isAdmin"]},
+    {label: "Matafuegos", path: "extinguishers", show: ["isAdmin"]},
+    {label: "Ordenes", path: "workorders", show: []},
+    {label: "Facturación", path: "workordersinvoice", show: ["isAdmin"]},
   ]
 
   menu = this.menuEntries.filter(entry => {return entry.show});
@@ -32,6 +33,20 @@ export class PagesComponent implements OnInit {
 
   ngOnInit() {
     this.logged = this.authService.getLoggedUser();
+    this.authService.isAdmin().subscribe(
+      resp => {
+        this.menu = this.menuEntries.filter(entry => {
+          if(entry.show.length > 0) {
+            if(entry.show.includes('isAdmin')) {
+              return resp;
+            } else return true;
+          } else return true;
+        });
+      },
+      error => {
+        console.error(error)
+      }
+    )
   }
 
   logout() : void {

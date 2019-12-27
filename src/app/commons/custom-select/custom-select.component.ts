@@ -13,14 +13,23 @@ export class CustomSelectComponent<T> implements OnInit {
   @Input() service: BaseServiceAPI<T>
   @Input() key: string;
   @Input() label: string;
+  @Input() placeholder: string;
+  @Input() inputPlaceholder: string;
   @Output() selectChange = new EventEmitter<any>();
 
   filteredList: T[];
-  notSelected: string = null;
+  selected: any = null;
+  inputValue: string = null;
 
   constructor(private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
+    this.placeholder = this.placeholder ? this.placeholder : "Select";
+    this.inputPlaceholder = this.inputPlaceholder ? this.inputPlaceholder : "Write for filter"
+    this.search();
+  }
+
+  search() {
     this.service.search()
       .then(list => {this.filteredList = list})
       .catch(err => {this._snackBar.open("Error consultando la lista", "Close", { duration: 2000 })});
@@ -30,14 +39,19 @@ export class CustomSelectComponent<T> implements OnInit {
     this.service.clearState();
     let filters = [];
     if(value && value != "") filters.push({column: this.label, condition: Condition.contains, value: value}); 
-    this.service.filters = filters;
-    this.service.search()
-      .then(list => {this.filteredList = list})
-      .catch(err => {this._snackBar.open("Error filtrando la lista", "Close", { duration: 2000 })})
+    filters.length > 0 ? this.service.filters = filters : null;
+    this.search();
   }
 
   selectElement(value: any){
-    this.selectChange.emit(value);
+    this.selectChange.emit(value ? value : null);
+  }
+
+  cleanSearch(isOpen: any) {
+    if(!isOpen) {
+      this.searchElement(null);
+    }
+    this.inputValue = null;
   }
 
 }

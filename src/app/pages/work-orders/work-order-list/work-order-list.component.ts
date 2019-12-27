@@ -11,6 +11,8 @@ import { BaseListComponent } from 'src/app/commons/base-list-component';
 import { CustomSnackService } from 'src/app/services/custom-snack.service';
 import { ClosePopupComponent } from '../close-popup/close-popup.component';
 import { ExtinguishersService } from '../../extinguishers/extinguisher.service';
+import { CustomersService } from '../../customers/customers.service';
+import { Condition } from 'src/app/commons/directives/filterable.directive';
 
 @Component({
   selector: 'app-work-order-list',
@@ -22,18 +24,34 @@ export class WorkOrderListComponent extends BaseListComponent<WorkOrder> impleme
   displayedColumns: string[] = ['orderNo', 'customer', 'extinguisher', 'closeBy', 'closeDate', 'state', 'edit'];
   dataSource: WorkOrder[];
 
+  //Filters
+  codeFilter: string = null;
+  customerFilter: number;
+  extinguisherFilter: string = null;
+
+  isAdmin: boolean = false;
+
   constructor(
     public service: WorkOrdersService, 
     protected router: Router,
     private _snackBar: CustomSnackService,
     private authService: AuthService,
     public dialog: MatDialog,
-    private extinguisherService: ExtinguishersService) { 
+    private extinguisherService: ExtinguishersService,
+    private customerService: CustomersService) { 
       super(service);
     }
 
   ngOnInit() {
     // this.loadData();
+    this.authService.isAdmin().subscribe(
+      resp => {
+        this.isAdmin = resp;
+      },
+      error => {
+        this._snackBar.showError("Error obteniendo los permisos")
+      }
+    )
     this.service.clearState();
     this.service.search();
   }
@@ -165,6 +183,24 @@ export class WorkOrderListComponent extends BaseListComponent<WorkOrder> impleme
         )
       }
     });
+  }
+
+  filter() : void {
+    this.service.clearState();
+    let filters = [];
+    if(this.codeFilter && this.codeFilter != "")
+      filters.push({column: 'orderNo', condition: Condition["="], value: this.codeFilter}) 
+    if(this.customerFilter)
+      filters.push({column: 'customer', condition: Condition["="], value: this.customerFilter}) 
+    if(this.extinguisherFilter && this.extinguisherFilter != "")
+      filters.push({column: 'extinguisher', condition: Condition["="], value: this.extinguisherFilter}) 
+    if(filters.length > 0)
+      this.service.filters = filters;
+    this.service.search()
+  }
+
+  selectCustomer(id: any) : void {
+    this.customerFilter = (!id || id == 'null') ? null : id;
   }
 
 }

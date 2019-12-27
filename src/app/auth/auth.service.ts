@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-// import { map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 export class LoggedUser {
   id: number;
@@ -58,12 +58,16 @@ export class AuthService {
     return false;
   }
 
-  isAdmin() : boolean {
-    let userData = localStorage.getItem('currentUser')
-    if(userData && JSON.parse(userData)){
-      userData = JSON.parse(userData);
-      return userData['role'] == 'ADMIN';
-    }
-    return false;
+  isAdmin() : Observable<boolean> {
+    return this.http.get(environment.api_url+"isAdmin").pipe(
+      map(resp => {
+        if(resp['error']) {
+          return false;
+        }
+        else {
+          return resp['data']
+        }
+      })
+    )
   }
 }

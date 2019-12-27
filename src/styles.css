@@ -49,3 +49,34 @@ app-invoice-popup mat-form-field, app-cancel-popup mat-form-field {
 .div-button-actions .button-actions {
   margin-left: 3px;
 }
+
+/* Filtro de listados */
+.div-filter {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1%;
+  border: 2px solid #c3c3c3;
+  border-radius: 5px;
+  align-items: center;
+  padding: 10px;
+}
+
+.div-filter .div-filter-list {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.div-filter-list .formField-filter-list {
+  margin-left: 20px;
+}
+
+.div-filter button {
+  height: 70%;
+}
+
+.button-add-row {
+  position: fixed;
+  top: 70%;
+  left: 95%;
+}

@@ -1,11 +1,13 @@
-<div class="filters">
-  <input matInput placeholder="Nombre" [(ngModel)]="nameFilter">
-  <input matInput placeholder="Teléfono" [(ngModel)]="phoneFilter">
-  <input matInput placeholder="Email" [(ngModel)]="emailFilter">
+<div class="div-filter">
+  <div class="div-filter-list">
+    <input matInput placeholder="Nombre" [(ngModel)]="nameFilter" class="formField-filter-list">
+    <input matInput placeholder="Teléfono" [(ngModel)]="phoneFilter" class="formField-filter-list">
+    <input matInput placeholder="Email" [(ngModel)]="emailFilter" class="formField-filter-list">
+  </div>  
   <button mat-raised-button (click)="filter()">Filtrar</button>
 </div>
 
-<div class="button-row">
+<div class="button-add-row">
   <button mat-fab color="warn" (click)="create()"><mat-icon>add</mat-icon></button>
 </div>
   
