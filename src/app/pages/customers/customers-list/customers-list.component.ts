@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { MatSnackBar, PageEvent } from '@angular/material';
 import { BaseListComponent } from 'src/app/commons/base-list-component';
 import { Condition } from 'src/app/commons/directives/filterable.directive';
+import { CustomSnackService } from 'src/app/services/custom-snack.service';
 
 @Component({
   selector: 'app-customers-list',
@@ -23,7 +24,7 @@ export class CustomersListComponent extends BaseListComponent<Customer> implemen
   constructor(
     public service: CustomersService, 
     protected router: Router,
-    private _snackBar: MatSnackBar) { 
+    private _snackBar: CustomSnackService) { 
       super(service);
     }
 
@@ -39,7 +40,7 @@ export class CustomersListComponent extends BaseListComponent<Customer> implemen
         this.dataSource = list;
       })
       .catch(err => {
-        this._snackBar.open("Error retrieving data! " + err, "Close", { duration: 3000 });
+        this._snackBar.showError("Error retrieving data! " + err);
       })
   }
 
@@ -54,11 +55,11 @@ export class CustomersListComponent extends BaseListComponent<Customer> implemen
   delete(user: any) : void {
     this.service.delete(user.id).subscribe(
       _ => {
-        this._snackBar.open("Customer deleted!", "Close", { duration: 3000 });
+        this._snackBar.showSuccess("Customer deleted!");
         this.service.search();
       },
       error => {
-        this._snackBar.open("Error deleting customer!", "Close", { duration: 3000 });
+        this._snackBar.showError("Error deleting customer!");
       }
     )
   }

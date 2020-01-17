@@ -57,7 +57,8 @@ export class PagesComponent implements OnInit {
         this.router.navigate(['/signin']);
       },
       error => {
-        console.error("Error en el logout "+JSON.stringify(error))
+        console.error("Error en el logout "+JSON.stringify(error));
+        this.router.navigate(['/signin']);
       }
     )
   }

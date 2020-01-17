@@ -7,6 +7,7 @@ import { BaseListComponent } from 'src/app/commons/base-list-component';
 import { CustomersService } from '../../customers/customers.service';
 import { Condition } from 'src/app/commons/directives/filterable.directive';
 import { CustomSnackService } from 'src/app/services/custom-snack.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-extinguisher-list',
@@ -66,6 +67,10 @@ export class ExtinguisherListComponent extends BaseListComponent<Extinguisher> i
 
   create() : void {
     this.router.navigate(['/pages/extinguishers/0']);
+  }
+
+  print(ext: any) : void {
+    window.open(environment.api_url+"extinguisher/print?id="+ext.id, "_blank");
   }
 
   filter() : void {
