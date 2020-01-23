@@ -5,7 +5,7 @@ export enum CustomerType {
 
 export class Customer {
   id: number;
-  code: string;
+  // code: string;
   name: string;
   address: string;
   phone: string;
@@ -14,7 +14,7 @@ export class Customer {
   type: CustomerType;
 
   constructor() {
-    this.code = ""; 
+    // this.code = ""; 
     this.name = "";
     this.address = "";
     this.phone = "";

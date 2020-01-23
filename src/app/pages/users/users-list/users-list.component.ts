@@ -3,6 +3,9 @@ import { User } from 'src/app/models/user';
 import { UsersService } from 'src/app/pages/users/users.service';
 import { Router } from '@angular/router';
 import { CustomSnackService } from 'src/app/services/custom-snack.service';
+import { MatDialog } from '@angular/material';
+import { DeletePopupComponent } from 'src/app/commons/delete-popup/delete-popup.component';
+import { Condition } from 'src/app/commons/directives/filterable.directive';
 
 @Component({
   selector: 'app-users-list',
@@ -16,7 +19,8 @@ export class UsersListComponent implements OnInit {
   constructor(
     private service: UsersService, 
     protected router: Router,
-    private _snackBar: CustomSnackService) { }
+    private _snackBar: CustomSnackService,
+    private dialog: MatDialog) { }
 
   ngOnInit() {
     this.loadData();
@@ -38,15 +42,24 @@ export class UsersListComponent implements OnInit {
   }
 
   delete(user: any) : void {
-    this.service.delete(user.id).subscribe(
-      _ => {
-        this._snackBar.showSuccess("Usuario eliminado!");
-        this.loadData();
-      },
-      error => {
-        this._snackBar.showError("Error eliminando el usuario!");
+    const dialogRef = this.dialog.open(DeletePopupComponent, {
+      width: '400px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log("result", result)
+      if(result) {
+        this.service.delete(user.id).subscribe(
+          _ => {
+            this._snackBar.showSuccess("Usuario eliminado!");
+            this.loadData();
+          },
+          error => {
+            this._snackBar.showError("Error eliminando el usuario!");
+          }
+        )
       }
-    )
+    })
   }
 
   create() : void {

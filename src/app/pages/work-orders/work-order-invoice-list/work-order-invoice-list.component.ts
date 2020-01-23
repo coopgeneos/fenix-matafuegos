@@ -14,7 +14,7 @@ import { CustomSnackService } from 'src/app/services/custom-snack.service';
 })
 export class WorkOrderInvoiceListComponent implements OnInit {
 
-  displayedColumns: string[] = ['selection','orderNo', 'customer', 'extinguisher', 'costCenter', 'doneList'];
+  displayedColumns: string[] = ['selection',/* 'orderNo', */ 'customer', 'extinguisher', 'costCenter', 'doneList'];
   dataSource: any[];
 
   constructor(

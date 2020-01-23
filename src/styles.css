@@ -44,6 +44,7 @@ app-invoice-popup mat-form-field, app-cancel-popup mat-form-field {
   display: flex;
   flex-direction: row-reverse;
   justify-content: flex-start;
+  margin-bottom: 30px;
 }
 
 .div-button-actions .button-actions {

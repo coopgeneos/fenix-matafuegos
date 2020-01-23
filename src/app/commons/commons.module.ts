@@ -13,12 +13,14 @@ import {
 import { NgbdSortableHeader } from './directives/sortable.directive';
 import { NgbdFilterableHeader } from './directives/filterable.directive';
 import { CustomSelectComponent } from './custom-select/custom-select.component';
+import { DeletePopupComponent } from './delete-popup/delete-popup.component';
 
 @NgModule({
   declarations: [
     CustomSelectComponent,
     NgbdSortableHeader,
-    NgbdFilterableHeader
+    NgbdFilterableHeader,
+    DeletePopupComponent
   ],
   imports: [
     CommonModule,
@@ -31,7 +33,7 @@ import { CustomSelectComponent } from './custom-select/custom-select.component';
     MatButtonModule
   ],
   exports: [
-    CustomSelectComponent
+    CustomSelectComponent, DeletePopupComponent
   ]
 })
 export class CommonsModule { }

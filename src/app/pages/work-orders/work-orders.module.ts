@@ -11,7 +11,8 @@ import {
   MatCheckboxModule,
   MatListModule,
   MatDialogModule,
-  MatPaginatorModule
+  MatPaginatorModule,
+  MatTooltipModule
 } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonsModule } from 'src/app/commons/commons.module';
@@ -25,6 +26,7 @@ import { CancelPopupComponent } from './cancel-popup/cancel-popup.component';
 import { WorkOrderInvoiceListComponent } from './work-order-invoice-list/work-order-invoice-list.component';
 import { InvoicePopupComponent } from './invoice-popup/invoice-popup.component';
 import { ClosePopupComponent } from './close-popup/close-popup.component';
+import { DeletePopupComponent } from 'src/app/commons/delete-popup/delete-popup.component';
 
 @NgModule({
   declarations: [
@@ -49,11 +51,12 @@ import { ClosePopupComponent } from './close-popup/close-popup.component';
     MatCheckboxModule,
     MatListModule,
     MatDialogModule,
+    MatTooltipModule,
     MatPaginatorModule,
     FormsModule,
     CommonsModule
   ],
   providers: [WorkOrdersService],
-  entryComponents: [ CancelPopupComponent, InvoicePopupComponent, ClosePopupComponent ],
+  entryComponents: [ CancelPopupComponent, InvoicePopupComponent, ClosePopupComponent, DeletePopupComponent ],
 })
 export class WorkOrdersModule { }

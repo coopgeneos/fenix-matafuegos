@@ -1,6 +1,6 @@
 <div class="general-form">
   <mat-form-field class="orderFormField">
-    <input matInput placeholder="Nro" readonly="true" [value]="order.orderNo">
+    <input matInput placeholder="Nro" readonly [value]="order.id">
   </mat-form-field>
 
   <mat-form-field class="orderFormField">
@@ -26,6 +26,7 @@
   </mat-form-field>
 
   <div class="div-button-actions">
+    <button mat-raised-button class="saveAndClose button-actions" color="success" *ngIf="state == 'CREADA' || state == 'COMPLETANDOSE'" (click)="saveAndClose()">Guardar y Cerrar</button>
     <button mat-raised-button class="button-actions" color="primary" *ngIf="state == 'CREADA' || state == 'COMPLETANDOSE'" (click)="save()">Guardar</button>
     <button mat-raised-button class="button-actions" color="warn" *ngIf="state == 'CREADA' || state == 'COMPLETANDOSE'" (click)="cancel()">Cancelar</button>
     <button mat-raised-button class="button-actions" color="primary" *ngIf="state == 'FACTURADA' || state == 'CERRADA'" (click)="cancel()">Ok</button>

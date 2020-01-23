@@ -61,7 +61,7 @@ export class WorkOrderFormComponent implements OnInit {
     if(this.id != 0) {
       this.service.get(this.id).subscribe(
         data => {
-          this.orderNo.setValue(data.orderNo);
+          // this.orderNo.setValue(data.orderNo);
           this.customerId = data.customer.id.toString();
           this.extinguisherId = data.extinguisher.id.toString();
           this.userId = data.closeBy ? data.closeBy.id.toString() : null;
@@ -115,27 +115,35 @@ export class WorkOrderFormComponent implements OnInit {
   }
 
   save() : void {
+    let order = this.__prepareOrder();
+    this.__save(order);
+  }
+
+  __prepareOrder() : WorkOrder {
     let order = new WorkOrder();
-    this.orderNo.value && this.orderNo.value != "" ? order.orderNo = this.orderNo.value : delete order.orderNo;
+    // this.orderNo.value && this.orderNo.value != "" ? order.orderNo = this.orderNo.value : delete order.orderNo;
     
+    // Preparo el Customer
     if(this.customerId) {
       order.customer = new Customer();
       order.customer.id = Number(this.customerId);
     } else 
       delete order.customer;
-      
+    
+    // Preparo el matafuego
     if(this.extinguisherId) {
       order.extinguisher = new Extinguisher();
       order.extinguisher.id = Number(this.extinguisherId);
     } else 
       delete order.extinguisher;
 
+    // Lista de servicios a hacerle al matafuego
     order.toDoList = this.servicesList
                       .filter(serv => {return serv.value})
                       .map(serv => {return serv.name})
                       .toString();
 
-    //Borro los campos innecesarios
+    //Borro los campos innecesarios. Solo dejo los que estan nombrados en el arreglo fields
     let fields = ['orderNo','customer','extinguisher','toDoList','state'];
     for(let key in order) {
       if(fields.includes(key))
@@ -143,8 +151,13 @@ export class WorkOrderFormComponent implements OnInit {
       delete order[key];
     }
 
-    if(this.validate(order)) {
-      if(this.id == 0) {
+    return order;
+  }
+
+  __save(order: WorkOrder) : void {
+    if(this.__validate(order)) {
+      //Creo nueva orden
+      if(this.id == 0) { 
         order.state = WOrderState.CREADA;
         this.service.add(order).subscribe(
           _ => {
@@ -155,7 +168,7 @@ export class WorkOrderFormComponent implements OnInit {
             this._snackBar.showError("Error guardando la orden! " + error);
           }
         )
-      } else {
+      } else { //Actualizo una orden existente
         order.state = WOrderState.COMPLETANDOSE;
         this.service.update(this.id, order).subscribe(
           _ => {
@@ -175,10 +188,10 @@ export class WorkOrderFormComponent implements OnInit {
     this.router.navigate(['/pages/workorders'])
   }
 
-  validate(order: WorkOrder) : boolean {
+  __validate(order: WorkOrder) : boolean {
     let error = false;
     return !error && 
-      (order.orderNo && order.orderNo != "") && 
+      // (order.orderNo && order.orderNo != "") && 
       order.customer && 
       order.extinguisher && 
       (order.toDoList && order.toDoList != "")

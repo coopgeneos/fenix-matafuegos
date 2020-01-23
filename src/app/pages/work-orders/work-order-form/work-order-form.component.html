@@ -1,9 +1,6 @@
 <div class="general-form">
-  <mat-form-field class="orderFormField">
-    <input matInput placeholder="Nro de orden" [formControl]="orderNo" readonly="{{state == 'CANCELADA' || state == 'FACTURADA'  || state == 'CERRADA'}}">
-    <mat-error *ngIf="orderNo.hasError('required')">
-      El nro es <strong>obligatorio</strong>
-    </mat-error>
+  <mat-form-field class="orderFormField" *ngIf="id">
+    <input matInput placeholder="Nro de orden" [value]="id" readonly>
   </mat-form-field>
 
   <mat-form-field class="orderFormField">
@@ -49,6 +46,5 @@
     <button mat-raised-button class="button-actions" color="primary" (click)="save()" *ngIf="state == 'CREADA' || state == 'COMPLETANDOSE'">Guardar</button>
     <button mat-raised-button class="button-actions" color="warn" (click)="cancel()" *ngIf="state == 'CREADA' || state == 'COMPLETANDOSE'">Cancelar</button>
     <button mat-raised-button class="button-actions" color="primary" (click)="cancel()" *ngIf="state == 'CANCELADA' || state == 'CERRADA'">Ok</button>
-
   </div>
 </div>

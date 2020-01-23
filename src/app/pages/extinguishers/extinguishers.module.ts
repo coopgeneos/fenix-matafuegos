@@ -8,7 +8,8 @@ import {
   MatButtonModule,
   MatSnackBarModule,
   MatSelectModule,
-  MatPaginatorModule
+  MatPaginatorModule,
+  MatTooltipModule
 } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
@@ -20,6 +21,7 @@ import { ExtinguisherFormComponent } from './extinguisher-form/extinguisher-form
 import { ExtinguisherListComponent } from './extinguisher-list/extinguisher-list.component';
 import { ExtinguishersService } from './extinguisher.service';
 import { CommonsModule } from 'src/app/commons/commons.module';
+import { DeletePopupComponent } from 'src/app/commons/delete-popup/delete-popup.component';
 
 @NgModule({
   declarations: [
@@ -39,12 +41,14 @@ import { CommonsModule } from 'src/app/commons/commons.module';
     MatButtonModule,
     MatSnackBarModule,
     MatSelectModule,
+    MatTooltipModule,
     MatPaginatorModule,
     CommonsModule
   ],
   providers: [
     ExtinguisherTypeService, 
     ExtinguishersService
-  ]
+  ],
+  entryComponents: [ DeletePopupComponent ]
 })
 export class ExtinguishersModule { }

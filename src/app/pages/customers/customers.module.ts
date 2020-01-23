@@ -8,7 +8,8 @@ import {
   MatButtonModule,
   MatSnackBarModule,
   MatSelectModule,
-  MatPaginatorModule
+  MatPaginatorModule,
+  MatTooltipModule
 } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
@@ -17,6 +18,7 @@ import { CustomersListComponent } from './customers-list/customers-list.componen
 
 import { CustomersService } from './customers.service';
 import { CommonsModule } from 'src/app/commons/commons.module';
+import { DeletePopupComponent } from 'src/app/commons/delete-popup/delete-popup.component';
 
 @NgModule({
   declarations: [
@@ -35,9 +37,11 @@ import { CommonsModule } from 'src/app/commons/commons.module';
     MatSnackBarModule,
     MatSelectModule,
     MatSnackBarModule,
+    MatTooltipModule,
     MatPaginatorModule,
     CommonsModule
   ],
-  providers: [CustomersService]
+  providers: [CustomersService],
+  entryComponents: [ DeletePopupComponent ]
 })
 export class CustomersModule { }

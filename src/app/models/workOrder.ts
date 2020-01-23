@@ -11,7 +11,7 @@ export enum WOrderState {
 }
 export class WorkOrder {
   id: number;
-  orderNo: string;
+  // orderNo: string;
   customer: Customer;
   extinguisher: Extinguisher;
   toDoList: string;
@@ -27,7 +27,7 @@ export class WorkOrder {
   state: WOrderState;
 
   constructor() {
-    this.orderNo = "";
+    // this.orderNo = "";
     this.customer = null;
     this.extinguisher = null;
     this.toDoList = "";

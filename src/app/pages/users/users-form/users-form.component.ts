@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UsersService } from 'src/app/pages/users/users.service';
 import { User, Role } from 'src/app/models/user';
 import { CustomSnackService } from 'src/app/services/custom-snack.service';
+import { bindNodeCallback } from 'rxjs';
 
 @Component({
   selector: 'app-user-form',
@@ -88,16 +89,21 @@ export class UsersFormComponent implements OnInit {
     this.router.navigate(['/pages/users'])
   }
 
+  /*
+    Funcion que valida los campos.
+    Devuelve true si todo esta bien, caso contrario retorna false.
+  */
   validate() : boolean {
     let error = false
     if(this.id == 0) {
      error = this.password.hasError('required')
     }
-    if(!(this.role == Role.ADMIN || this.role == Role.OPERARIO)) {
-      error = false;
+    if(!(this.role.toLowerCase() == Role.ADMIN || this.role.toLowerCase() == Role.OPERARIO)) {
+      error = true;
     }
-    return !error && this.name.hasError('required') 
-      && this.username.hasError('required')
+    return !(error 
+      || this.name.hasError('required') 
+      || this.username.hasError('required'))
   }
 
 }

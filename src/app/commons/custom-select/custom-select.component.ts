@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChange, ChangeDetectorRef } from '@angular/core';
 import { BaseServiceAPI } from '../base-service-api';
 import { Condition } from '../directives/filterable.directive';
 import { MatSnackBar } from '@angular/material';
@@ -17,7 +17,6 @@ export class CustomSelectComponent<T> implements OnInit {
   @Input() inputPlaceholder: string;
   @Output() selectChange = new EventEmitter<any>();
 
-  filteredList: T[];
   selected: any = null;
   inputValue: string = null;
 
@@ -31,16 +30,17 @@ export class CustomSelectComponent<T> implements OnInit {
 
   search() {
     this.service.search()
-      .then(list => {this.filteredList = list})
       .catch(err => {this._snackBar.open("Error consultando la lista", "Close", { duration: 2000 })});
   }
 
   searchElement(value: any) {
     this.service.clearState();
     let filters = [];
-    if(value && value != "") filters.push({column: this.label, condition: Condition.contains, value: value}); 
-    filters.length > 0 ? this.service.filters = filters : null;
-    this.search();
+    if(value && value != "") {
+      filters.push({column: this.label, condition: Condition.contains, value: value}); 
+      this.service.filters = filters;
+      this.search();
+    }
   }
 
   selectElement(value: any){
@@ -54,4 +54,11 @@ export class CustomSelectComponent<T> implements OnInit {
     this.inputValue = null;
   }
 
+  @Input()
+  set clean(flag: boolean) {
+    if(flag && flag == true) {
+      this.cleanSearch(false);
+      this.selected = null;
+    }  
+  }
 }

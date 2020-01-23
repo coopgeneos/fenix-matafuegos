@@ -24,7 +24,7 @@
 
     <mat-form-field class="extinguishersFormField">
       <mat-select placeholder="Tipo" [(value)]="typeId">
-        <mat-option *ngFor="let type of extinguisherTypes" value="{{type.id}}">{{type.code}}</mat-option>
+        <mat-option *ngFor="let type of extinguisherTypes" value="{{type.id}}" disabled="{{type.deleted}}">{{type.category}} - {{type.volume}}</mat-option>
       </mat-select>
     </mat-form-field>
 
@@ -38,21 +38,21 @@
       <input matInput placeholder="Patente" [(ngModel)]="carID">
     </mat-form-field>
 
-    <mat-form-field class="extinguishersFormField">
+    <mat-form-field class="extinguishersFormField" *ngIf="category == 'DOMICILIARIO'">
       <input matInput placeholder="Centro de costo" [formControl]="costCenter" type="string">
       <mat-error *ngIf="costCenter.hasError('required')">
         El centro de costo es <strong>obligatorio</strong>
       </mat-error>
     </mat-form-field>
   
-    <mat-form-field class="extinguishersFormField">
+    <mat-form-field class="extinguishersFormField" *ngIf="category == 'DOMICILIARIO'">
       <input matInput placeholder="Ubicación" [formControl]="location" type="string">
       <mat-error *ngIf="location.hasError('required')">
         La ubicación es <strong>obligatorio</strong>
       </mat-error>
     </mat-form-field>
   
-    <mat-form-field class="extinguishersFormField">
+    <mat-form-field class="extinguishersFormField" *ngIf="category == 'DOMICILIARIO'">
       <input matInput placeholder="Dirección" [formControl]="address" type="string">
       <mat-error *ngIf="address.hasError('required')">
         La dirección de <strong>obligatorio</strong>

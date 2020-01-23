@@ -10,3 +10,7 @@ table {
 .button-row a {
   margin-right: 8px;
 }
+
+.filterButton {
+  margin-left: 1em
+}

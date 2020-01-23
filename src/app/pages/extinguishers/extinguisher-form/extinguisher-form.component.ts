@@ -10,6 +10,7 @@ import { Customer } from 'src/app/models/customer';
 import { ExtinguisherType, ExtinguisherTypeCategory } from 'src/app/models/extinguisherType';
 import * as moment from 'moment';
 import { CustomSnackService } from 'src/app/services/custom-snack.service';
+import { Condition } from 'src/app/commons/directives/filterable.directive';
 
 @Component({
   selector: 'app-extinguisher-form',
@@ -88,6 +89,8 @@ export class ExtinguisherFormComponent implements OnInit {
         this._snackBar.showError("Error obteniendo los clientes!");
       })
 
+    this.typeService.clearState();
+    this.typeService.filters = [{column: 'force', condition: Condition["="], value: true}]
     this.typeService.search()
       .then(list => {
         this.extinguisherTypes = list;
@@ -158,15 +161,19 @@ export class ExtinguisherFormComponent implements OnInit {
     if(this.category == ExtinguisherCategory.VEHICULAR && !this.carID) {
       error = true;
     }
-    return !error && 
-      !this.code.hasError('required') && 
-      !this.location.hasError('required') && 
-      !this.address.hasError('required') && 
-      !this.factoryNo.hasError('required') && 
-      !this.bvNo.hasError('required') && 
-      !this.manufacturing.hasError('required') && 
-      !this.lastLoad.hasError('required') && 
-      !this.lastHydraulicTest.hasError('required') 
+    if(this.category == ExtinguisherCategory.DOMICILIARIO) {
+      error = ( this.location.hasError('required') ||  
+                this.address.hasError('required') || 
+                this.costCenter.hasError('required')
+              )     
+    }
+    return !(error ||  
+      this.code.hasError('required') || 
+      this.factoryNo.hasError('required') || 
+      this.bvNo.hasError('required') || 
+      this.manufacturing.hasError('required') || 
+      this.lastLoad.hasError('required') || 
+      this.lastHydraulicTest.hasError('required'))
   }
 
 }

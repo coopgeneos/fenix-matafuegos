@@ -7,7 +7,8 @@ import {
   MatInputModule, 
   MatButtonModule,
   MatSnackBarModule,
-  MatSelectModule
+  MatSelectModule,
+  MatTooltipModule
 } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -15,6 +16,7 @@ import { UsersService } from './users.service';
 
 import { UsersListComponent } from './users-list/users-list.component';
 import { UsersFormComponent } from './users-form/users-form.component';
+import { DeletePopupComponent } from 'src/app/commons/delete-popup/delete-popup.component';
 
 
 @NgModule({
@@ -31,9 +33,11 @@ import { UsersFormComponent } from './users-form/users-form.component';
     MatInputModule, 
     MatButtonModule,
     MatSnackBarModule,
+    MatTooltipModule,
     MatSelectModule,
     MatSnackBarModule
   ],
-  providers: [UsersService]
+  providers: [UsersService],
+  entryComponents: [ DeletePopupComponent ]
 })
 export class UsersModule { }

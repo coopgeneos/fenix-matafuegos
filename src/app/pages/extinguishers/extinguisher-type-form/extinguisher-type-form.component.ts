@@ -44,7 +44,7 @@ export class ExtinguisherTypeFormComponent implements OnInit {
     if(this.id != 0) {
       this.service.get(this.id).subscribe(
         data => {
-          this.code.setValue(data.code);
+          // this.code.setValue(data.code);
           this.category = data.category;
           this.loadExpiration.setValue(data.loadExpiration);
           this.phExpiration.setValue(data.phExpiration);
@@ -60,7 +60,7 @@ export class ExtinguisherTypeFormComponent implements OnInit {
 
   save() : void {
     let type = new ExtinguisherType();
-    this.code.value && this.code.value != "" ? type.code = this.code.value : delete type.code;
+    // this.code.value && this.code.value != "" ? type.code = this.code.value : delete type.code;
     this.category ? type.category = this.category : delete type.category;
     this.loadExpiration && this.loadExpiration.value != "" ? type.loadExpiration = this.loadExpiration.value : delete type.loadExpiration;  
     this.phExpiration.value && this.phExpiration.value != "" ? type.phExpiration = this.phExpiration.value : delete type.phExpiration; 
@@ -101,12 +101,12 @@ export class ExtinguisherTypeFormComponent implements OnInit {
     // if(!this.categories.includes(this.category.toString)) {
     //   error = true;
     // }
-    return !error && 
-      !this.code.hasError('required') && 
-      !this.loadExpiration.hasError('required') && 
-      !this.phExpiration.hasError('required') && 
-      !this.weight.hasError('required') && 
-      !this.volume.hasError('required')
+    return !(error ||  
+      // this.code.hasError('required') ||  
+      this.loadExpiration.hasError('required') ||  
+      this.phExpiration.hasError('required') ||  
+      this.weight.hasError('required') || 
+      this.volume.hasError('required'))
   }
 
 }

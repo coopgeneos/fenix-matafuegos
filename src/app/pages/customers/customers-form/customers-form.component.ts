@@ -43,7 +43,7 @@ export class CustomersFormComponent implements OnInit {
     if(this.id != 0) {
       this.service.get(this.id).subscribe(
         data => {
-          this.code.setValue(data.code);
+          // this.code.setValue(data.code);
           this.name.setValue(data.name);
           this.address.setValue(data.address);
           this.phone.setValue(data.phone);
@@ -60,7 +60,7 @@ export class CustomersFormComponent implements OnInit {
 
   save() : void {
     let customer = new Customer();
-    this.code.value && this.code.value != "" ? customer.code = this.code.value : delete customer.code;
+    // this.code.value && this.code.value != "" ? customer.code = this.code.value : delete customer.code;
     this.name.value && this.name.value != "" ? customer.name = this.name.value : delete customer.name;
     this.address.value && this.address.value != "" ? customer.address = this.address.value : delete customer.address;
     this.phone.value && this.phone.value != "" ? customer.phone = this.phone.value : delete customer.phone;
@@ -101,10 +101,10 @@ export class CustomersFormComponent implements OnInit {
   validate() : boolean {
     let error = false
     if(!(this.type == CustomerType.EMPRESA || this.type == CustomerType.PARTICULAR)) {
-      error = false;
+      error = true;
     }
-    return error || !(
-      this.code.hasError('required') || 
+    return !(error || 
+      // this.code.hasError('required') || 
       this.name.hasError('required') || 
       this.address.hasError('required') || 
       this.phone.hasError('required') || 

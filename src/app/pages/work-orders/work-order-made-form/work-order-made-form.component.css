@@ -8,3 +8,8 @@
   flex-basis: 50px;
   justify-content: space-between;
 }
+
+.saveAndClose {
+  background-color: limegreen;
+  color: white
+}

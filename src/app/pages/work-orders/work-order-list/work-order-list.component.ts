@@ -13,6 +13,7 @@ import { ClosePopupComponent } from '../close-popup/close-popup.component';
 import { ExtinguishersService } from '../../extinguishers/extinguisher.service';
 import { CustomersService } from '../../customers/customers.service';
 import { Condition } from 'src/app/commons/directives/filterable.directive';
+import { DeletePopupComponent } from 'src/app/commons/delete-popup/delete-popup.component';
 
 @Component({
   selector: 'app-work-order-list',
@@ -21,13 +22,17 @@ import { Condition } from 'src/app/commons/directives/filterable.directive';
 })
 export class WorkOrderListComponent extends BaseListComponent<WorkOrder> implements OnInit {
 
-  displayedColumns: string[] = ['orderNo', 'customer', 'extinguisher', 'closeBy', 'closeDate', 'state', 'edit'];
+  displayedColumns: string[] = [/* 'orderNo', */ 'customer', 'extinguisher', 'closeBy', 'closeDate', 'state', 'edit'];
   dataSource: WorkOrder[];
+
+  states: string[] = [];
 
   //Filters
   codeFilter: string = null;
   customerFilter: number;
-  extinguisherFilter: string = null;
+  extinguisherFilter: number;
+  stateFilter: string = null;
+  cleanFilters: boolean = false;
 
   isAdmin: boolean = false;
 
@@ -54,6 +59,7 @@ export class WorkOrderListComponent extends BaseListComponent<WorkOrder> impleme
     )
     this.service.clearState();
     this.service.search();
+    this.states = Object.keys(WOrderState);
   }
   
   loadData() : void {
@@ -72,15 +78,24 @@ export class WorkOrderListComponent extends BaseListComponent<WorkOrder> impleme
   }
 
   delete(order: any) : void {
-    this.service.delete(order.id).subscribe(
-      _ => {
-        this._snackBar.showSuccess("Orden borrada!");
-        this.loadData();
-      },
-      error => {
-        this._snackBar.showError("Error borrando la orden!");
+    const dialogRef = this.dialog.open(DeletePopupComponent, {
+      width: '400px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.service.delete(order.id).subscribe(
+          _ => {
+            this._snackBar.showSuccess("Orden borrada!");
+            this.loadData();
+          },
+          error => {
+            this._snackBar.showError("Error borrando la orden!");
+          }
+        )
       }
-    )
+    })
+    
   }
 
   create() : void {
@@ -188,19 +203,41 @@ export class WorkOrderListComponent extends BaseListComponent<WorkOrder> impleme
   filter() : void {
     this.service.clearState();
     let filters = [];
-    if(this.codeFilter && this.codeFilter != "")
-      filters.push({column: 'orderNo', condition: Condition["="], value: this.codeFilter}) 
+    // if(this.codeFilter && this.codeFilter != "")
+    //   filters.push({column: 'orderNo', condition: Condition["="], value: this.codeFilter}) 
     if(this.customerFilter)
       filters.push({column: 'customer', condition: Condition["="], value: this.customerFilter}) 
-    if(this.extinguisherFilter && this.extinguisherFilter != "")
+    if(this.extinguisherFilter && this.extinguisherFilter > 0)
       filters.push({column: 'extinguisher', condition: Condition["="], value: this.extinguisherFilter}) 
-    if(filters.length > 0)
+    if(this.stateFilter && this.stateFilter != "")
+      filters.push({column: 'state', condition: Condition["="], value: this.stateFilter}) 
+    if(filters.length > 0) {
       this.service.filters = filters;
+    }
     this.service.search()
   }
 
+  cleanFilter() : void {
+    this.customerFilter = null;
+    this.extinguisherFilter = null;
+    this.stateFilter = null;
+    this.cleanFilters = true;
+  }
+
   selectCustomer(id: any) : void {
+    this.cleanFilters = false;
     this.customerFilter = (!id || id == 'null') ? null : id;
+    this.extinguisherFilter = null;
+    if(this.customerFilter){
+      this.extinguisherService.clearState();
+      this.extinguisherService.filters = [{column: 'customer', condition: Condition["="], value: id}];
+      this.extinguisherService.search();
+    }
+  }
+
+  selectExtinguisher(id: any) : void {
+    this.cleanFilters = false;
+    this.extinguisherFilter = (!id || id == 'null') ? null : id;
   }
 
 }

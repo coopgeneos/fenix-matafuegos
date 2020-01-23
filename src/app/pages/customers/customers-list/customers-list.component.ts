@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Customer } from 'src/app/models/customer';
 import { CustomersService } from '../customers.service';
 import { Router } from '@angular/router';
-import { MatSnackBar, PageEvent } from '@angular/material';
+import { MatSnackBar, PageEvent, MatDialog } from '@angular/material';
 import { BaseListComponent } from 'src/app/commons/base-list-component';
 import { Condition } from 'src/app/commons/directives/filterable.directive';
 import { CustomSnackService } from 'src/app/services/custom-snack.service';
+import { DeletePopupComponent } from 'src/app/commons/delete-popup/delete-popup.component';
 
 @Component({
   selector: 'app-customers-list',
@@ -14,7 +15,7 @@ import { CustomSnackService } from 'src/app/services/custom-snack.service';
 })
 export class CustomersListComponent extends BaseListComponent<Customer> implements OnInit {
 
-  displayedColumns: string[] = ['code', 'name', 'address', 'phone', 'email', 'web', 'type', 'edit'];
+  displayedColumns: string[] = [/* 'code',  */'name', 'address', 'phone', 'email', 'web', 'type', 'edit'];
   dataSource: Customer[];
   
   nameFilter: string = null;
@@ -24,7 +25,8 @@ export class CustomersListComponent extends BaseListComponent<Customer> implemen
   constructor(
     public service: CustomersService, 
     protected router: Router,
-    private _snackBar: CustomSnackService) { 
+    private _snackBar: CustomSnackService,
+    public dialog: MatDialog) { 
       super(service);
     }
 
@@ -40,7 +42,7 @@ export class CustomersListComponent extends BaseListComponent<Customer> implemen
         this.dataSource = list;
       })
       .catch(err => {
-        this._snackBar.showError("Error retrieving data! " + err);
+        this._snackBar.showError("Error obteniendo los clientes! " + err);
       })
   }
 
@@ -53,15 +55,24 @@ export class CustomersListComponent extends BaseListComponent<Customer> implemen
   }
 
   delete(user: any) : void {
-    this.service.delete(user.id).subscribe(
-      _ => {
-        this._snackBar.showSuccess("Customer deleted!");
-        this.service.search();
-      },
-      error => {
-        this._snackBar.showError("Error deleting customer!");
+    const dialogRef = this.dialog.open(DeletePopupComponent, {
+      width: '400px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.service.delete(user.id).subscribe(
+          _ => {
+            this._snackBar.showSuccess("Cliente eliminado!");
+            this.service.search();
+          },
+          error => {
+            this._snackBar.showError("Error eliminando el cliente!");
+          }
+        )
       }
-    )
+    })
+    
   }
 
   filter() : void {
@@ -76,6 +87,12 @@ export class CustomersListComponent extends BaseListComponent<Customer> implemen
     if(filters.length > 0)
       this.service.filters = filters;
     this.service.search()
+  }
+
+  cleanFilter() : void {
+    this.phoneFilter = null;
+    this.emailFilter = null;
+    this.nameFilter = null;
   }
 
 }

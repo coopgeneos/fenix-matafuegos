@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ExtinguisherType } from 'src/app/models/extinguisherType';
 import { ExtinguisherTypeService } from '../extinguisher-type.service';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialog } from '@angular/material';
 import { CustomSnackService } from 'src/app/services/custom-snack.service';
+import { DeletePopupComponent } from 'src/app/commons/delete-popup/delete-popup.component';
 
 @Component({
   selector: 'app-extinguisher-type-list',
@@ -12,19 +13,21 @@ import { CustomSnackService } from 'src/app/services/custom-snack.service';
 })
 export class ExtinguisherTypeListComponent implements OnInit {
 
-  displayedColumns: string[] = ['code', 'category', 'loadExpiration', 'phExpiration', 'weight', 'volume', 'edit'];
+  displayedColumns: string[] = [/* 'code', */ 'category', 'loadExpiration', 'phExpiration', 'weight', 'volume', 'edit'];
   dataSource: ExtinguisherType[];
 
   constructor(
     private service: ExtinguisherTypeService, 
     protected router: Router,
-    private _snackBar: CustomSnackService) { }
+    private _snackBar: CustomSnackService,
+    private dialog: MatDialog) { }
 
   ngOnInit() {
     this.loadData();
   }
   
   loadData() : void {
+    this.service.clearState();
     this.service.search()
       .then(list => {
         this.dataSource = list;
@@ -40,15 +43,23 @@ export class ExtinguisherTypeListComponent implements OnInit {
   }
 
   delete(extType: any) : void {
-    this.service.delete(extType.id).subscribe(
-      _ => {
-        this._snackBar.showSuccess("Tipo de matafuego borrado!");
-        this.loadData();
-      },
-      error => {
-        this._snackBar.showError("Error borrando el tipo de matafuego!");
+    const dialogRef = this.dialog.open(DeletePopupComponent, {
+      width: '400px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.service.delete(extType.id).subscribe(
+          _ => {
+            this._snackBar.showSuccess("Tipo de matafuego borrado!");
+            this.loadData();
+          },
+          error => {
+            this._snackBar.showError("Error borrando el tipo de matafuego!");
+          }
+        )
       }
-    )
+    })
   }
 
   create() : void {
