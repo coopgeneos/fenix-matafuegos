@@ -12,7 +12,7 @@ import { CustomSnackService } from 'src/app/services/custom-snack.service';
   templateUrl: './work-order-invoice-list.component.html',
   styleUrls: ['./work-order-invoice-list.component.css']
 })
-export class WorkOrderInvoiceListComponent implements OnInit {
+export class WorkOrderInvoiceListComponent extends BaseListComponent<WorkOrder> implements OnInit {
 
   displayedColumns: string[] = ['selection',/* 'orderNo', */ 'customer', 'extinguisher', 'costCenter', 'doneList'];
   dataSource: any[];
@@ -21,7 +21,9 @@ export class WorkOrderInvoiceListComponent implements OnInit {
     public service: WorkOrdersService, 
     protected router: Router,
     private _snackBar: CustomSnackService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog) {
+      super(service);
+    }
 
   ngOnInit() {
     this.loadData();

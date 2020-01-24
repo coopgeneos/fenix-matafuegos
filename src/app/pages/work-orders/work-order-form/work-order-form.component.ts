@@ -50,8 +50,8 @@ export class WorkOrderFormComponent implements OnInit {
     private _snackBar: CustomSnackService,
     private router: Router,
     private userService: UsersService,
-    private customerService: CustomersService,
-    private extinguisherService: ExtinguishersService) { 
+    public customerService: CustomersService,
+    public extinguisherService: ExtinguishersService) { 
     this.activatedRouter.params.subscribe(
       params => { 
         this.id = Number(params['id']); 

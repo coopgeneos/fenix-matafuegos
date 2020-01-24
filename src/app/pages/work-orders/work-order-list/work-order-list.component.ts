@@ -42,8 +42,8 @@ export class WorkOrderListComponent extends BaseListComponent<WorkOrder> impleme
     private _snackBar: CustomSnackService,
     private authService: AuthService,
     public dialog: MatDialog,
-    private extinguisherService: ExtinguishersService,
-    private customerService: CustomersService) { 
+    public extinguisherService: ExtinguishersService,
+    public customerService: CustomersService) { 
       super(service);
     }
 

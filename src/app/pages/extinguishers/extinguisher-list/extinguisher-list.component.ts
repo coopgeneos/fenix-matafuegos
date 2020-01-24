@@ -30,7 +30,7 @@ export class ExtinguisherListComponent extends BaseListComponent<Extinguisher> i
     public service: ExtinguishersService, 
     protected router: Router,
     private _snackBar: CustomSnackService,
-    private customerService: CustomersService,
+    public customerService: CustomersService,
     private dialog: MatDialog) { 
       super(service)
     }
