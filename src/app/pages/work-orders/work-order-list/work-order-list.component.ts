@@ -228,11 +228,11 @@ export class WorkOrderListComponent extends BaseListComponent<WorkOrder> impleme
     this.cleanFilters = false;
     this.customerFilter = (!id || id == 'null') ? null : id;
     this.extinguisherFilter = null;
+    this.extinguisherService.clearState();
     if(this.customerFilter){
-      this.extinguisherService.clearState();
       this.extinguisherService.filters = [{column: 'customer', condition: Condition["="], value: id}];
-      this.extinguisherService.search();
     }
+    this.extinguisherService.search();
   }
 
   selectExtinguisher(id: any) : void {

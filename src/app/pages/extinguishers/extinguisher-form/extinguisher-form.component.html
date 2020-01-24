@@ -7,20 +7,23 @@
       </mat-error>
     </mat-form-field>
   
-    <!-- <div class="customSelect">
-      <app-custom-select 
-        [service]="customerService"
-        [key]="'id'" 
-        [label]="'name'" 
-        (selectChange)="selectCustomer($event)">
-      </app-custom-select>
-    </div> -->
+    <app-custom-select 
+      [service]="customerService"
+      [key]="'id'" 
+      [label]="'name'" 
+      [placeholder]="'Cliente'" 
+      [inputPlaceholder]="'Escriba para filtrar'"
+      [force]="true" 
+      [selected]="customerId"
+      (selectChange)="selectCustomer($event)"
+      class="extinguishersFormField">
+    </app-custom-select>
 
-    <mat-form-field class="extinguishersFormField">
+    <!-- <mat-form-field class="extinguishersFormField">
       <mat-select placeholder="Cliente" [(value)]="customerId">
-        <mat-option *ngFor="let c of customers" value="{{c.id}}">{{c.name}}</mat-option>
+        <mat-option *ngFor="let c of customers" value="{{c.id}}" disabled="{{c.deleted}}">{{c.name}}</mat-option>
       </mat-select>
-    </mat-form-field>
+    </mat-form-field> -->
 
     <mat-form-field class="extinguishersFormField">
       <mat-select placeholder="Tipo" [(value)]="typeId">

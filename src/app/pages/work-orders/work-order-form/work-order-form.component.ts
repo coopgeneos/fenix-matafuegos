@@ -13,7 +13,7 @@ import { CustomersService } from '../../customers/customers.service';
 import { ExtinguishersService } from '../../extinguishers/extinguisher.service';
 import { CustomSnackService } from 'src/app/services/custom-snack.service';
 import { ExtinguisherJobs } from '../const-data';
-import { Condition } from '../../../commons/directives/filterable.directive'
+import { Condition, FilterEvent } from '../../../commons/directives/filterable.directive'
 
 @Component({
   selector: 'app-work-order-form',
@@ -38,9 +38,11 @@ export class WorkOrderFormComponent implements OnInit {
   extinguishers: Extinguisher[];
   users: User[];
 
-  servicesList: any[] = ExtinguisherJobs.map(job => {
-    return {name: job, value: false}
-  })
+  _disabled: boolean = false;
+  _force: boolean = false;
+  extinguisherFilters: FilterEvent[] = [];
+
+  servicesList: any[] = [];
   
   constructor(
     private activatedRouter: ActivatedRoute,
@@ -70,8 +72,10 @@ export class WorkOrderFormComponent implements OnInit {
             this.closeDate.setValue(moment(data.closeDate).format("YYYY-MM-DD")) :
             this.closeDate.setValue(null);
           this.cancelNote = data.cancelNote ? data.cancelNote : null;
-          
           this.state = data.state
+          this._disabled = (this.state == 'CANCELADA' || this.state == 'FACTURADA'  || this.state == 'CERRADA');
+          this.extinguisherFilters = [{column: "customer", condition: Condition["="], value: this.customerId}]
+          this._force = true;
           
           let aux = this.services.split(',');
           for(let i=0; i<aux.length; i++) {
@@ -89,7 +93,18 @@ export class WorkOrderFormComponent implements OnInit {
       )
     }
 
-    this.userService.search()
+    this.service.getAllServices().subscribe(
+      data => {
+        this.servicesList = data.map(job => {
+          return {name: job.name, value: false}
+        })
+      },
+      error => {
+        this._snackBar.showError("Error obteniendo los servicios!");
+      }
+    )
+
+    /* this.userService.search()
       .then(list => {
         this.users = list;
       })
@@ -97,6 +112,8 @@ export class WorkOrderFormComponent implements OnInit {
         this._snackBar.showError("Error obteniendo los usuarios!");
       })
 
+    this.customerService.clearState();
+    this.customerService.filters = [{column: 'force', condition: Condition["="], value: true}]
     this.customerService.search()
       .then(list => {
         this.customers = list;
@@ -105,13 +122,15 @@ export class WorkOrderFormComponent implements OnInit {
         this._snackBar.showError("Error obteniendo los clientes!");
       })
 
+    this.extinguisherService.clearState();
+    this.extinguisherService.filters = [{column: 'force', condition: Condition["="], value: true}]
     this.extinguisherService.search()
       .then(list => {
         this.extinguishers = list;
       })
       .catch(err => {
         this._snackBar.showError("Error obteniendo los matafuegos!");
-      })
+      }) */
   }
 
   save() : void {
@@ -201,16 +220,25 @@ export class WorkOrderFormComponent implements OnInit {
     this.servicesList[i].value = !this.servicesList[i].value;
   }
 
-  loadExtinguishers() : void {
-    this.extinguisherService.clearState();
-    this.extinguisherService.filter = {column: "customer", value: this.customerId, condition: Condition["="]}
-    this.extinguisherService.search()
-      .then(list => {
-        this.extinguishers = list;
-      })
-      .catch(err => {
-        this._snackBar.showError("Error obteniendo los matafuegos!");
-      })
+  // loadExtinguishers() : void {
+  //   this.extinguisherService.clearState();
+  //   this.extinguisherService.filter = {column: "customer", value: this.customerId, condition: Condition["="]}
+  //   this.extinguisherService.search()
+  //     .then(list => {
+  //       this.extinguishers = list;
+  //     })
+  //     .catch(err => {
+  //       this._snackBar.showError("Error obteniendo los matafuegos!");
+  //     })
+  // }
+
+  selectCustomer(id: any) : void {
+    this.customerId = id;
+    this.extinguisherFilters = [{column: "customer", condition: Condition["="], value: this.customerId}]
+  }
+
+  selectExtinguisher(id: any) : void {
+    this.extinguisherId = id;
   }
 
 }

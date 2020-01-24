@@ -8,6 +8,8 @@
       [placeholder]="'Seleccione cliente'" 
       [inputPlaceholder]="'Escriba para filtrar'"
       [clean]="cleanFilters" 
+      [force]="true" 
+      [enableAll]="true" 
       (selectChange)="selectCustomer($event)" 
       class="formField-filter-list">
     </app-custom-select>
@@ -18,7 +20,9 @@
       [placeholder]="'Seleccione matafuego'" 
       [inputPlaceholder]="'Escriba para filtrar'"
       [clean]="cleanFilters" 
+      [force]="true" 
       (selectChange)="selectExtinguisher($event)"
+      [enableAll]="true" 
       class="formField-filter-list">
     </app-custom-select>
     <mat-form-field class="formField-filter-list">

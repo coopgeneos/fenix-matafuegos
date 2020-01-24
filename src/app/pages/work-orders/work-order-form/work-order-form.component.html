@@ -3,20 +3,45 @@
     <input matInput placeholder="Nro de orden" [value]="id" readonly>
   </mat-form-field>
 
-  <mat-form-field class="orderFormField">
+  <!-- <mat-form-field class="orderFormField">
     <mat-select placeholder="Cliente" [(value)]="customerId" 
       disabled="{{state == 'CANCELADA' || state == 'FACTURADA'  || state == 'CERRADA'}}"
       (selectionChange)=loadExtinguishers()>
-      <mat-option *ngFor="let c of customers" value="{{c.id}}">{{c.name}}</mat-option>
+      <mat-option *ngFor="let c of customers" value="{{c.id}}" disabled="{{c.deleted}}">{{c.name}}</mat-option>
     </mat-select>
-  </mat-form-field>
+  </mat-form-field> -->
+  <app-custom-select 
+    [service]="customerService"
+    [key]="'id'" 
+    [label]="'name'" 
+    [placeholder]="'Cliente'" 
+    [inputPlaceholder]="'Escriba para filtrar'"
+    [force]="_force" 
+    [disabled]="_disabled" 
+    [selected]="customerId" 
+    (selectChange)="selectCustomer($event)"
+    class="orderFormField">
+  </app-custom-select>
 
-  <mat-form-field class="orderFormField" *ngIf="customerId">
+  <!-- <mat-form-field class="orderFormField" *ngIf="customerId">
     <mat-select placeholder="Matafuego" [(value)]="extinguisherId" 
       disabled="{{state == 'CANCELADA' || state == 'FACTURADA'  || state == 'CERRADA'}}">
-      <mat-option *ngFor="let e of extinguishers" value="{{e.id}}">{{e.code}}</mat-option>
+      <mat-option *ngFor="let e of extinguishers" value="{{e.id}}" disabled="{{e.deleted}}">{{e.code}}</mat-option>
     </mat-select>
-  </mat-form-field>
+  </mat-form-field> -->
+  <app-custom-select 
+    [service]="extinguisherService"
+    [key]="'id'" 
+    [label]="'code'" 
+    [placeholder]="'Matafuego'" 
+    [inputPlaceholder]="'Escriba para filtrar'"
+    [force]="_force" 
+    [disabled]="_disabled" 
+    [selected]="extinguisherId" 
+    [filters]="extinguisherFilters"
+    (selectChange)="selectExtinguisher($event)"
+    class="orderFormField">
+  </app-custom-select>
 
   <mat-selection-list >
     <mat-list-item *ngFor="let serv of servicesList; let i=index">  

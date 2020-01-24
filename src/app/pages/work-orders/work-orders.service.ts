@@ -27,4 +27,8 @@ export class WorkOrdersService extends BaseServiceAPI<WorkOrder>{
     }
     return this.httpClient.post(environment.api_url+'workorder/invoice', body)
   }
+
+  getAllServices() : Observable<any> {
+    return this.httpClient.get(environment.api_url+'job')
+  }
 }

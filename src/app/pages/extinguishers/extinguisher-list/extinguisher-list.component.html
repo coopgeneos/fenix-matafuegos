@@ -8,6 +8,8 @@
       [placeholder]="'Seleccione cliente'" 
       [inputPlaceholder]="'Escriba para filtrar'"
       [clean]="clean" 
+      [force]="true" 
+      [enableAll]="true" 
       (selectChange)="selectCustomer($event)"
       class="formField-filter-list">
     </app-custom-select>

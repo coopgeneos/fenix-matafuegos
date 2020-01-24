@@ -22,9 +22,7 @@ export class WorkOrderMadeFormComponent implements OnInit {
   id: number = 0;
   order: WorkOrder = new WorkOrder();
 
-  madeList: any[] = ExtinguisherJobs.map(job => {
-    return {name: job, value: false}
-  })
+  madeList: any[] = [];
 
   state: WOrderState;
   iNote: string;
@@ -45,40 +43,57 @@ export class WorkOrderMadeFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(this.id != 0) {
-      this.service.get(this.id).subscribe(
-        data => {
-          this.order = data;
-          this.state = data.state;
-          this.iNote = data.invoiceNote ? 
-            `Nro Fact: ${data.invoiceNo}\nFecha: ${moment(data.invoiceDate).format('YYYY-MM-DD')}\nNota: ${data.invoiceNote}` : 
-            null;
+    this.service.getAllServices().subscribe(
+      data => {
+        this.madeList = data.map(job => {
+          return {name: job.name, value: false}
+        });
 
-          let aux = data.doneList ? data.doneList.split(',') : [];
-          for(let i=0; i<aux.length; i++) {
-            for(let j=0; j<this.madeList.length; j++) {
-              if(aux[i] == this.madeList[j].name) {
-                this.madeList[j].doit = true;
-                break;
+        if(this.id != 0) {
+          this.service.get(this.id).subscribe(
+            data => {
+              this.order = data;
+              this.state = data.state;
+              this.iNote = data.invoiceNote ? 
+                `Nro Fact: ${data.invoiceNo}\nFecha: ${moment(data.invoiceDate).format('YYYY-MM-DD')}\nNota: ${data.invoiceNote}` : 
+                null;
+    
+              // Seteo el campo doIt de los objeto de la lista
+              // Este campo indica si el trabajo esta hecho
+              let aux = data.doneList ? data.doneList.split(',') : [];
+              for(let i=0; i<aux.length; i++) {
+                for(let j=0; j<this.madeList.length; j++) {
+                  if(aux[i] == this.madeList[j].name) {
+                    this.madeList[j].doit = true;
+                    break;
+                  }
+                }
               }
-            }
-          }
-
-          aux = data.toDoList ? data.toDoList.split(',') : [];
-          for(let i=0; i<aux.length; i++) {
-            for(let j=0; j<this.madeList.length; j++) {
-              if(aux[i] == this.madeList[j].name) {
-                this.madeList[j].todo = true;
-                break;
+    
+              // Seteo el campo doIt de los objeto de la lista
+              // Este campo indica si el trabajo esta para hacerse
+              aux = data.toDoList ? data.toDoList.split(',') : [];
+              for(let i=0; i<aux.length; i++) {
+                for(let j=0; j<this.madeList.length; j++) {
+                  if(aux[i] == this.madeList[j].name) {
+                    this.madeList[j].todo = true;
+                    break;
+                  }
+                }
               }
+            },
+            error => {
+              this._snackBar.showError("Error obteniendo las ordenes!");
             }
-          }
-        },
-        error => {
-          this._snackBar.showError("Error obteniendo las ordenes!");
+          )
         }
-      )
-    }
+      },
+      error => {
+        this._snackBar.showError("Error obteniendo los servicios!");
+      }
+    )
+
+    
 
   }
 

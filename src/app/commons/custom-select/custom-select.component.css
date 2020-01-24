@@ -5,6 +5,6 @@
   width: 80%;
   height: 50px;
 }
-.selectCS {
+.selectCS, .custom-select-ff {
   width: 100%
 }

@@ -81,13 +81,15 @@ export class ExtinguisherFormComponent implements OnInit {
       )
     }
 
-    this.customerService.search()
-      .then(list => {
-        this.customers = list;
-      })
-      .catch(err => {
-        this._snackBar.showError("Error obteniendo los clientes!");
-      })
+    // this.customerService.clearState();
+    // this.customerService.filters = [{column: 'force', condition: Condition["="], value: true}]
+    // this.customerService.search()
+    //   .then(list => {
+    //     this.customers = list;
+    //   })
+    //   .catch(err => {
+    //     this._snackBar.showError("Error obteniendo los clientes!");
+    //   })
 
     this.typeService.clearState();
     this.typeService.filters = [{column: 'force', condition: Condition["="], value: true}]
@@ -174,6 +176,10 @@ export class ExtinguisherFormComponent implements OnInit {
       this.manufacturing.hasError('required') || 
       this.lastLoad.hasError('required') || 
       this.lastHydraulicTest.hasError('required'))
+  }
+
+  selectCustomer(id: any) {
+    this.customerId = id;
   }
 
 }
