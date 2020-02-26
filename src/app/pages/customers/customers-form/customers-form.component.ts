@@ -15,12 +15,13 @@ export class CustomersFormComponent implements OnInit {
   id: number = 0;
   customer: Customer;
 
-  code = new FormControl('', [Validators.required]);
+  cNumber = new FormControl('', [Validators.required]);
+  cuit = new FormControl('', [Validators.required]);
   name = new FormControl('', [Validators.required]);
   address = new FormControl('', [Validators.required]);
-  phone = new FormControl('', [Validators.required]);
-  email = new FormControl('', [Validators.required]);
-  web = new FormControl('', [Validators.required]);
+  phone = new FormControl('');
+  email = new FormControl('');
+  web = new FormControl('');
   type: CustomerType = CustomerType.EMPRESA;
 
   types = () => {
@@ -49,7 +50,9 @@ export class CustomersFormComponent implements OnInit {
           this.phone.setValue(data.phone);
           this.email.setValue(data.email);
           this.web.setValue(data.web);
-          this.type = CustomerType[data.type]
+          this.type = CustomerType[data.type];
+          this.cNumber.setValue(data.cNumber);
+          this.cuit.setValue(data.cuit);
         },
         error => {
           this._snackBar.showError("Error obteniendo el cliente!");
@@ -67,6 +70,8 @@ export class CustomersFormComponent implements OnInit {
     this.email.value && this.email.value != "" ? customer.email = this.email.value : delete customer.email;
     this.web.value && this.web.value != "" ? customer.web = this.web.value : delete customer.web;
     this.type ? customer.type = CustomerType[this.type] : delete customer.type; 
+    this.cuit.value && this.cuit.value != "" ? customer.cuit = this.cuit.value : delete customer.cuit;
+    this.cNumber.value && this.cNumber.value != "" ? customer.cNumber = this.cNumber.value : delete customer.cNumber;
         
     if(this.validate()) {
       if(this.id == 0) {
@@ -107,8 +112,8 @@ export class CustomersFormComponent implements OnInit {
       // this.code.hasError('required') || 
       this.name.hasError('required') || 
       this.address.hasError('required') || 
-      this.phone.hasError('required') || 
-      this.email.hasError('required') 
+      this.cuit.hasError('required') || 
+      this.cNumber.hasError('required') 
     )
   }
 

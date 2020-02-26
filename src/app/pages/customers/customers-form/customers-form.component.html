@@ -1,38 +1,39 @@
 <div class="general-form">
 
-  <!-- <mat-form-field class="customerFormField">
-    <input matInput placeholder="Identificador" [formControl]="code">
-    <mat-error *ngIf="code.hasError('required')">
-      El código es <strong>required</strong>
+  <mat-form-field class="customerFormField">
+    <input matInput placeholder="Nro de cliente" [formControl]="cNumber">
+    <mat-error *ngIf="cNumber.hasError('required')">
+      El nro de cliente es <strong>obligatorio</strong>
     </mat-error>
-  </mat-form-field> -->
+  </mat-form-field>
+
+  <mat-form-field class="customerFormField">
+    <input matInput placeholder="CUIT" [formControl]="cuit">
+    <mat-error *ngIf="cuit.hasError('required')">
+      El cuit es <strong>obligatorio</strong>
+    </mat-error>
+  </mat-form-field>
 
   <mat-form-field class="customerFormField">
     <input matInput placeholder="Nombre" [formControl]="name">
     <mat-error *ngIf="name.hasError('required')">
-      El nombre es <strong>required</strong>
+      El nombre es <strong>obligatorio</strong>
     </mat-error>
   </mat-form-field>
 
   <mat-form-field class="customerFormField">
     <input matInput placeholder="Dirección" [formControl]="address">
     <mat-error *ngIf="address.hasError('required')">
-      La dirección es <strong>required</strong>
+      La dirección es <strong>obligatoria</strong>
     </mat-error>
   </mat-form-field>
 
   <mat-form-field class="customerFormField">
     <input matInput placeholder="Teléfono" [formControl]="phone">
-    <mat-error *ngIf="phone.hasError('required')">
-      El teléfono es <strong>required</strong>
-    </mat-error>
   </mat-form-field>
 
   <mat-form-field class="customerFormField">
     <input matInput placeholder="Email" [formControl]="email">
-    <mat-error *ngIf="email.hasError('required')">
-      El email es <strong>required</strong>
-    </mat-error>
   </mat-form-field>
 
   <mat-form-field class="customerFormField">

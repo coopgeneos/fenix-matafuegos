@@ -12,6 +12,8 @@ export class Customer {
   email: string;
   web: string;
   type: CustomerType;
+  cuit: number;
+  cNumber: number;
 
   constructor() {
     // this.code = ""; 
