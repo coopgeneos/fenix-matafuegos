@@ -1,12 +1,13 @@
 export enum ExtinguisherTypeCategory {
   A = "A",
-  ABC = "ABC",
-  AC = "AC",
-  AB = "AB",
-  BC = "BC",
-  ABCD = "ABCD",
   D = "D",
-  K = "K"
+  K = "K",
+  AC = "AC",
+  BC_GAS = "BC GAS",
+  BC_POLVO = "BC POLVO",
+  AK = "AK",
+  ABC = "ABC",
+  HCFC = "HCFC"
 }
 export class ExtinguisherType {
   id: number;
