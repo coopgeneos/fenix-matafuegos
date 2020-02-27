@@ -13,7 +13,7 @@
       (selectChange)="selectCustomer($event)"
       class="formField-filter-list">
     </app-custom-select>
-    <input matInput placeholder="Nro fabricacion" [(ngModel)]="factoryFilter" class="formField-filter-list">
+    <!-- <input matInput placeholder="Nro fabricacion" [(ngModel)]="factoryFilter" class="formField-filter-list"> -->
   </div>  
   <div>
     <button mat-raised-button (click)="cleanFilter()">Limpiar</button>
@@ -27,10 +27,16 @@
 
 <table mat-table [dataSource]="service.listData" class="mat-elevation-z8">
 
-  <!-- Code Column -->
-  <ng-container matColumnDef="code">
+  <!-- ExtinguisherNo Column -->
+  <ng-container matColumnDef="extinguisherNo">
     <th mat-header-cell *matHeaderCellDef> Identificador </th>
-    <td mat-cell *matCellDef="let element"> {{element.code}} </td>
+    <td mat-cell *matCellDef="let element"> {{element.extinguisherNo}} </td>
+  </ng-container>
+
+  <!-- Mark Column -->
+  <ng-container matColumnDef="mark">
+    <th mat-header-cell *matHeaderCellDef> Marca </th>
+    <td mat-cell *matCellDef="let element"> {{element.mark}} </td>
   </ng-container>
 
   <!-- Customer Column -->
@@ -70,16 +76,16 @@
   </ng-container> -->
   
   <!-- FactoryNo Column -->
-  <ng-container matColumnDef="factoryNo">
+  <!-- <ng-container matColumnDef="factoryNo">
     <th mat-header-cell *matHeaderCellDef> Nro de Fabric. </th>
     <td mat-cell *matCellDef="let element"> {{element.factoryNo}} </td>
-  </ng-container>
+  </ng-container> -->
   
   <!-- BvNo Column -->
-  <ng-container matColumnDef="bvNo">
+  <!-- <ng-container matColumnDef="bvNo">
     <th mat-header-cell *matHeaderCellDef> Nro de BV </th>
     <td mat-cell *matCellDef="let element"> {{element.bvNo}} </td>
-  </ng-container>
+  </ng-container> -->
 
   <!-- ManufacturingDate Column -->
   <ng-container matColumnDef="manufacturingDate">

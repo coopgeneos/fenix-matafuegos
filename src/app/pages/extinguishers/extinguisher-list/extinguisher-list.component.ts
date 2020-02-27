@@ -17,7 +17,7 @@ import { DeletePopupComponent } from 'src/app/commons/delete-popup/delete-popup.
 })
 export class ExtinguisherListComponent extends BaseListComponent<Extinguisher> implements OnInit {
 
-  displayedColumns: string[] = ['code', 'customer', 'type', 'category', /* 'location', 'costCenter', 'address', */ 'factoryNo', 'bvNo', 'manufacturingDate', 'lastLoad', 'lastHydraulicTest', 'edit'];
+  displayedColumns: string[] = ['extinguisherNo', 'mark', 'customer', 'type', 'category', 'manufacturingDate', 'lastLoad', 'lastHydraulicTest', 'edit'];
   dataSource: Extinguisher[];
 
   //Filters

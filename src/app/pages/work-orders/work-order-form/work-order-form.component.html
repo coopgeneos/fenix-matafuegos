@@ -32,7 +32,7 @@
   <app-custom-select 
     [service]="extinguisherService"
     [key]="'id'" 
-    [label]="'code'" 
+    [label]="'extinguisherNo'" 
     [placeholder]="'Matafuego'" 
     [inputPlaceholder]="'Escriba para filtrar'"
     [force]="_force" 
@@ -43,12 +43,33 @@
     class="orderFormField">
   </app-custom-select>
 
+  <mat-form-field class="extinguishersFormField">
+    <input matInput placeholder="Recibido" [formControl]="receptionDate" type="date">
+    <mat-error *ngIf="receptionDate.hasError('required')">
+      Fecha de recepción es <strong>obligatorio</strong>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="extinguishersFormField">
+    <input matInput placeholder="Entrega" [formControl]="deliveryDate" type="date">
+    <mat-error *ngIf="deliveryDate.hasError('required')">
+      Fecha de entrega es <strong>obligatorio</strong>
+    </mat-error>
+  </mat-form-field>
+
   <mat-selection-list >
     <mat-list-item *ngFor="let serv of servicesList; let i=index">  
       <p>{{serv.name}}</p>
       <mat-checkbox [checked]="serv.value" (change)="checkService(i)" disabled="{{state == 'CANCELADA' || state == 'FACTURADA'  || state == 'CERRADA'}}"></mat-checkbox>
     </mat-list-item>
   </mat-selection-list>
+
+  <mat-form-field class="extinguishersFormField" *ngIf="_partialIsSelected">
+    <input matInput placeholder="Carga parcial" [formControl]="partialLoad" type="number">
+    <mat-error *ngIf="partialLoad.hasError('required')">
+      Carga parcial es <strong>obligatorio</strong> si selecciona el servicio
+    </mat-error>
+  </mat-form-field>
 
   <!-- <mat-form-field class="orderFormField">
     <mat-select placeholder="Select user" [(value)]="userId">

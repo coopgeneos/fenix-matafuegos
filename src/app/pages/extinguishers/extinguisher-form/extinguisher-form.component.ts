@@ -26,10 +26,10 @@ export class ExtinguisherFormComponent implements OnInit {
   code = new FormControl('', [Validators.required]);
   location = new FormControl('', [Validators.required]);
   locationNo = new FormControl('', [Validators.required]);
-  costCenter = new FormControl('', [Validators.required]);
+  costCenter = new FormControl('', []);
   address = new FormControl('', [Validators.required]);
   extinguisherNo = new FormControl('', [Validators.required]);
-  bvNo = new FormControl('', [Validators.required]);
+  bvNo = new FormControl('', []);
   manufacturing = new FormControl('', [Validators.required]);
   lastLoad = new FormControl('', [Validators.required]);
   lastHydraulicTest = new FormControl('', [Validators.required]);
@@ -38,7 +38,6 @@ export class ExtinguisherFormComponent implements OnInit {
   categories = () => {
     return Object.keys(ExtinguisherCategory)
   }
-  marks: Observable<any>;
   dps: string = "";
 
   customerId: string = null; //Uso string para que el componente select me tome el valor
@@ -47,6 +46,9 @@ export class ExtinguisherFormComponent implements OnInit {
   typeId: string = null;
   extinguisherTypes: ExtinguisherType[];
   
+  marks: Observable<any>;
+  mark: string;
+
   constructor(
     private activatedRouter: ActivatedRoute,
     private service: ExtinguishersService,
@@ -79,6 +81,7 @@ export class ExtinguisherFormComponent implements OnInit {
           this.customerId = data.customer.id.toString();
           this.typeId = data.type.id.toString();
           this.carID = data.idCar;
+          this.mark = data.mark;
         },
         error => {
           this._snackBar.showError("Error obteniendo la información!");
@@ -123,7 +126,8 @@ export class ExtinguisherFormComponent implements OnInit {
     this.lastLoad.value && this.lastLoad.value != "" ? extinguisher.lastLoad = this.lastLoad.value : delete extinguisher.lastLoad;
     this.lastHydraulicTest.value && this.lastHydraulicTest.value != "" ? extinguisher.lastHydraulicTest = this.lastHydraulicTest.value : delete extinguisher.lastHydraulicTest; 
     this.carID && this.carID != "" ? extinguisher.idCar = this.carID : delete extinguisher.idCar;
-    this.dps && this.dps != "" ? extinguisher.dps = this.dps : delete extinguisher.dps;    
+    this.dps && this.dps != "" ? extinguisher.dps = this.dps : delete extinguisher.dps; 
+    this.mark && this.mark != "" ? extinguisher.mark = this.mark : delete extinguisher.mark;   
 
     if(this.customerId) {
       extinguisher.customer = new Customer();
@@ -178,7 +182,7 @@ export class ExtinguisherFormComponent implements OnInit {
               )     
     }
     return !(error ||  
-      this.code.hasError('required') || 
+      // this.code.hasError('required') || 
       this.extinguisherNo.hasError('required') ||  
       this.manufacturing.hasError('required') || 
       this.lastLoad.hasError('required') || 

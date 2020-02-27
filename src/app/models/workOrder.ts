@@ -25,6 +25,9 @@ export class WorkOrder {
   invoiceDate: Date;
   invoiceNote: string;
   state: WOrderState;
+  reception: Date;
+  delivery: Date;
+  partialLoad: number;
 
   constructor() {
     // this.orderNo = "";
@@ -41,5 +44,8 @@ export class WorkOrder {
     this.invoiceNo = null;
     this.invoiceDate = null;
     this.invoiceNote = null;
+    this.reception = null;
+    this.delivery = null;
+    this.partialLoad = null;
   }
 }

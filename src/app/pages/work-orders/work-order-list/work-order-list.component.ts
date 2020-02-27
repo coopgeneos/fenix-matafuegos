@@ -22,7 +22,7 @@ import { DeletePopupComponent } from 'src/app/commons/delete-popup/delete-popup.
 })
 export class WorkOrderListComponent extends BaseListComponent<WorkOrder> implements OnInit {
 
-  displayedColumns: string[] = [/* 'orderNo', */ 'customer', 'extinguisher', 'closeBy', 'closeDate', 'state', 'edit'];
+  displayedColumns: string[] = [/* 'orderNo', */ 'customer', 'extinguisher', 'doneBy', 'doneDate', 'state', 'edit'];
   dataSource: WorkOrder[];
 
   states: string[] = [];

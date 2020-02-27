@@ -9,7 +9,7 @@
 
   <mat-form-field class="extinguisherTypeFormField">
     <mat-select placeholder="Categoría" [(value)]="category">
-      <mat-option *ngFor="let categ of categories()" value="{{categ}}">{{categ}}</mat-option>
+      <mat-option *ngFor="let categ of categories" value="{{categ.key}}">{{categ.value}}</mat-option>
     </mat-select>
   </mat-form-field>
 

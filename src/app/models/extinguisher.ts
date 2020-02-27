@@ -22,6 +22,7 @@ export class Extinguisher {
   lastHydraulicTest: string;
   idCar: string;
   dps: string;
+  mark: string;
 
   constructor() {
     this.id = 0;
@@ -30,15 +31,16 @@ export class Extinguisher {
     this.type = null;
     this.category = null;
     this.location = "";
-    this.locationNo = 0;
+    this.locationNo = null;
     this.costCenter = "";
     this.address = ""; 
-    this.extinguisherNo = 0;
-    this.bvNo = 0;
+    this.extinguisherNo = null;
+    this.bvNo = null;
     this.manufacturingDate = null;
     this.lastLoad = null;
     this.lastHydraulicTest = null;
     this.idCar = null;
     this.dps = null;
+    this.mark = null;
   }
 }

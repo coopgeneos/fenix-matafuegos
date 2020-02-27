@@ -5,6 +5,7 @@ import { ExtinguisherTypeService } from '../extinguisher-type.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { CustomSnackService } from 'src/app/services/custom-snack.service';
+import * as enumToArray from 'src/app/utils/enumToArray';
 
 @Component({
   selector: 'app-extinguisher-type-form',
@@ -23,9 +24,7 @@ export class ExtinguisherTypeFormComponent implements OnInit {
   volume = new FormControl('', [Validators.required]);
   category: ExtinguisherTypeCategory = ExtinguisherTypeCategory.A;
 
-  categories = () => {
-    return Object.keys(ExtinguisherTypeCategory)
-  };
+  categories = [];
   
   constructor(
     private activatedRouter: ActivatedRoute,
@@ -56,6 +55,8 @@ export class ExtinguisherTypeFormComponent implements OnInit {
         }
       )
     }
+
+    this.categories = enumToArray(ExtinguisherTypeCategory);
   }
 
   save() : void {

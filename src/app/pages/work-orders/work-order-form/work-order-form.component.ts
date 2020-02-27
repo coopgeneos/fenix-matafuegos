@@ -33,6 +33,9 @@ export class WorkOrderFormComponent implements OnInit {
   closeDate = new FormControl('', [Validators.required]);
   cancelNote: string = null;
   state: WOrderState = WOrderState.CREADA;
+  receptionDate = new FormControl('', [Validators.required]);
+  deliveryDate = new FormControl('', [Validators.required]);
+  partialLoad = new FormControl('', [Validators.required]);
 
   customers: Customer[];
   extinguishers: Extinguisher[];
@@ -43,6 +46,8 @@ export class WorkOrderFormComponent implements OnInit {
   extinguisherFilters: FilterEvent[] = [];
 
   servicesList: any[] = [];
+
+  _partialIsSelected = false;
   
   constructor(
     private activatedRouter: ActivatedRoute,
@@ -72,7 +77,10 @@ export class WorkOrderFormComponent implements OnInit {
             this.closeDate.setValue(moment(data.closeDate).format("YYYY-MM-DD")) :
             this.closeDate.setValue(null);
           this.cancelNote = data.cancelNote ? data.cancelNote : null;
-          this.state = data.state
+          this.state = data.state;
+          this.receptionDate.setValue(data.reception);
+          this.deliveryDate.setValue(data.delivery);
+          this.partialLoad.setValue(data.partialLoad);
           this._disabled = (this.state == 'CANCELADA' || this.state == 'FACTURADA'  || this.state == 'CERRADA');
           this.extinguisherFilters = [{column: "customer", condition: Condition["="], value: this.customerId}]
           this._force = true;
@@ -170,6 +178,10 @@ export class WorkOrderFormComponent implements OnInit {
       delete order[key];
     }
 
+    order.reception = this.receptionDate.value;
+    order.delivery = this.deliveryDate.value;
+    order.partialLoad = this.partialLoad.value;
+
     return order;
   }
 
@@ -218,6 +230,9 @@ export class WorkOrderFormComponent implements OnInit {
 
   checkService(i: number) {
     this.servicesList[i].value = !this.servicesList[i].value;
+    if(this.servicesList[i].name == 'Carga parcial') { 
+        this._partialIsSelected = this.servicesList[i].value;
+    }     
   }
 
   // loadExtinguishers() : void {
