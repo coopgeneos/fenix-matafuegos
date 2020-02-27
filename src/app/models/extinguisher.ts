@@ -8,18 +8,20 @@ export enum ExtinguisherCategory {
 export class Extinguisher {
   id: number;
   code: string;
+  extinguisherNo: number;
   customer: Customer;
   type: ExtinguisherType;
   category: ExtinguisherCategory;
   location: string;
+  locationNo: number;
   costCenter: string;
   address: string;
-  factoryNo: number;
   bvNo: number;
   manufacturingDate: Date;
   lastLoad: string;
   lastHydraulicTest: string;
   idCar: string;
+  dps: string;
 
   constructor() {
     this.id = 0;
@@ -28,13 +30,15 @@ export class Extinguisher {
     this.type = null;
     this.category = null;
     this.location = "";
+    this.locationNo = 0;
     this.costCenter = "";
     this.address = ""; 
-    this.factoryNo = 0;
+    this.extinguisherNo = 0;
     this.bvNo = 0;
     this.manufacturingDate = null;
     this.lastLoad = null;
     this.lastHydraulicTest = null;
     this.idCar = null;
+    this.dps = null;
   }
 }

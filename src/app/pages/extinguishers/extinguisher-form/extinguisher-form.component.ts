@@ -11,6 +11,7 @@ import { ExtinguisherType, ExtinguisherTypeCategory } from 'src/app/models/extin
 import * as moment from 'moment';
 import { CustomSnackService } from 'src/app/services/custom-snack.service';
 import { Condition } from 'src/app/commons/directives/filterable.directive';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-extinguisher-form',
@@ -24,9 +25,10 @@ export class ExtinguisherFormComponent implements OnInit {
 
   code = new FormControl('', [Validators.required]);
   location = new FormControl('', [Validators.required]);
+  locationNo = new FormControl('', [Validators.required]);
   costCenter = new FormControl('', [Validators.required]);
   address = new FormControl('', [Validators.required]);
-  factoryNo = new FormControl('', [Validators.required]);
+  extinguisherNo = new FormControl('', [Validators.required]);
   bvNo = new FormControl('', [Validators.required]);
   manufacturing = new FormControl('', [Validators.required]);
   lastLoad = new FormControl('', [Validators.required]);
@@ -36,6 +38,8 @@ export class ExtinguisherFormComponent implements OnInit {
   categories = () => {
     return Object.keys(ExtinguisherCategory)
   }
+  marks: Observable<any>;
+  dps: string = "";
 
   customerId: string = null; //Uso string para que el componente select me tome el valor
   customers: Customer[];
@@ -64,9 +68,10 @@ export class ExtinguisherFormComponent implements OnInit {
           this.code.setValue(data.code);
           this.category = data.category;
           this.location.setValue(data.location);
+          this.locationNo.setValue(data.locationNo);
           this.costCenter.setValue(data.costCenter);
           this.address.setValue(data.address);
-          this.factoryNo.setValue(data.factoryNo);
+          this.extinguisherNo.setValue(data.extinguisherNo);
           this.bvNo.setValue(data.bvNo);
           this.manufacturing.setValue(moment(data.manufacturingDate).format("YYYY-MM-DD"));
           this.lastLoad.setValue(moment(data.lastLoad).format("YYYY-MM-DD"));
@@ -100,6 +105,8 @@ export class ExtinguisherFormComponent implements OnInit {
       .catch(err => {
         this._snackBar.showError("Error obteniendo los tipos!");
       })
+
+    this.marks = this.service.getAllMarks();
   }
 
   save() : void {
@@ -108,13 +115,15 @@ export class ExtinguisherFormComponent implements OnInit {
     this.category ? extinguisher.category = this.category : delete extinguisher.category;
     this.costCenter && this.costCenter.value != "" ? extinguisher.costCenter = this.costCenter.value : delete extinguisher.costCenter;  
     this.location && this.location.value != "" ? extinguisher.location = this.location.value : delete extinguisher.location;  
+    this.locationNo && this.locationNo.value != "" ? extinguisher.locationNo = this.locationNo.value : delete extinguisher.locationNo;  
     this.address.value && this.address.value != "" ? extinguisher.address = this.address.value : delete extinguisher.address; 
-    this.factoryNo.value && this.factoryNo.value != "" ? extinguisher.factoryNo = this.factoryNo.value : delete extinguisher.factoryNo; 
+    this.extinguisherNo.value && this.extinguisherNo.value != "" ? extinguisher.extinguisherNo = this.extinguisherNo.value : delete extinguisher.extinguisherNo; 
     this.bvNo.value && this.bvNo.value != "" ? extinguisher.bvNo = this.bvNo.value : delete extinguisher.bvNo;
     this.manufacturing.value && this.manufacturing.value != "" ? extinguisher.manufacturingDate = this.manufacturing.value : delete extinguisher.manufacturingDate;
     this.lastLoad.value && this.lastLoad.value != "" ? extinguisher.lastLoad = this.lastLoad.value : delete extinguisher.lastLoad;
     this.lastHydraulicTest.value && this.lastHydraulicTest.value != "" ? extinguisher.lastHydraulicTest = this.lastHydraulicTest.value : delete extinguisher.lastHydraulicTest; 
     this.carID && this.carID != "" ? extinguisher.idCar = this.carID : delete extinguisher.idCar;
+    this.dps && this.dps != "" ? extinguisher.dps = this.dps : delete extinguisher.dps;    
 
     if(this.customerId) {
       extinguisher.customer = new Customer();
@@ -165,14 +174,12 @@ export class ExtinguisherFormComponent implements OnInit {
     }
     if(this.category == ExtinguisherCategory.DOMICILIARIO) {
       error = ( this.location.hasError('required') ||  
-                this.address.hasError('required') || 
-                this.costCenter.hasError('required')
+                this.address.hasError('required') 
               )     
     }
     return !(error ||  
       this.code.hasError('required') || 
-      this.factoryNo.hasError('required') || 
-      this.bvNo.hasError('required') || 
+      this.extinguisherNo.hasError('required') ||  
       this.manufacturing.hasError('required') || 
       this.lastLoad.hasError('required') || 
       this.lastHydraulicTest.hasError('required'))

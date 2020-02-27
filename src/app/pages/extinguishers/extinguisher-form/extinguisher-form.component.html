@@ -1,10 +1,16 @@
 <div class="general-form">
 
     <mat-form-field class="extinguishersFormField">
-      <input matInput placeholder="Identificador" [formControl]="code">
-      <mat-error *ngIf="code.hasError('required')">
-        El identificador es <strong>obligatorio</strong>
+      <input matInput placeholder="Nro de matafuego" [formControl]="extinguisherNo" type="number">
+      <mat-error *ngIf="extinguisherNo.hasError('required')">
+        El nro de matafuego es <strong>obligatorio</strong>
       </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="extinguishersFormField">
+      <mat-select placeholder="Marca" [(value)]="mark">
+        <mat-option *ngFor="let mark of marks | async" value="{{mark.name}}">{{mark.name}}</mat-option>
+      </mat-select>
     </mat-form-field>
   
     <app-custom-select 
@@ -43,9 +49,6 @@
 
     <mat-form-field class="extinguishersFormField" *ngIf="category == 'DOMICILIARIO'">
       <input matInput placeholder="Centro de costo" [formControl]="costCenter" type="string">
-      <mat-error *ngIf="costCenter.hasError('required')">
-        El centro de costo es <strong>obligatorio</strong>
-      </mat-error>
     </mat-form-field>
   
     <mat-form-field class="extinguishersFormField" *ngIf="category == 'DOMICILIARIO'">
@@ -53,6 +56,10 @@
       <mat-error *ngIf="location.hasError('required')">
         La ubicación es <strong>obligatorio</strong>
       </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="extinguishersFormField" *ngIf="category == 'DOMICILIARIO'">
+      <input matInput placeholder="Nro de ubicación" [formControl]="locationNo" type="number">
     </mat-form-field>
   
     <mat-form-field class="extinguishersFormField" *ngIf="category == 'DOMICILIARIO'">
@@ -62,18 +69,8 @@
       </mat-error>
     </mat-form-field>
   
-    <mat-form-field class="extinguishersFormField">
-      <input matInput placeholder="Nro de fabricación" [formControl]="factoryNo" type="number">
-      <mat-error *ngIf="factoryNo.hasError('required')">
-        El nro de fabricación es <strong>obligatorio</strong>
-      </mat-error>
-    </mat-form-field>
-
-    <mat-form-field class="extinguishersFormField">
+    <mat-form-field class="extinguishersFormField" *ngIf="category == 'DOMICILIARIO'">
       <input matInput placeholder="Nro de BV" [formControl]="bvNo" type="number">
-      <mat-error *ngIf="bvNo.hasError('required')">
-        El nro de BV es <strong>obligatorio</strong>
-      </mat-error>
     </mat-form-field>
 
     <mat-form-field class="extinguishersFormField">
@@ -95,6 +92,10 @@
       <mat-error *ngIf="lastHydraulicTest.hasError('required')">
         La fecha de última PH es <strong>obligatorio</strong>
       </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="extinguishersFormField">
+      <input matInput placeholder="DPS" readonly="true" type="string" [value]="dps">
     </mat-form-field>
     
     <div class="div-button-actions">

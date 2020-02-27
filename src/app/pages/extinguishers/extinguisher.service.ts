@@ -17,4 +17,8 @@ export class ExtinguishersService extends BaseServiceAPI<Extinguisher>{
   print(id: string) : Observable<any> {
     return this.httpClient.get(environment.api_url+"extinguisher/print?id="+id)
   }
+
+  getAllMarks() : Observable<any> {
+    return this.httpClient.get(environment.api_url+"mark")
+  }
 }
