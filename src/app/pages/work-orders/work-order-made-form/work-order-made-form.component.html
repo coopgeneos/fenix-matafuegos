@@ -26,9 +26,9 @@
   </mat-form-field>
 
   <div class="div-button-actions">
-    <button mat-raised-button class="saveAndClose button-actions" color="success" *ngIf="state == 'CREADA' || state == 'COMPLETANDOSE'" (click)="saveAndClose()">Guardar y Cerrar</button>
-    <button mat-raised-button class="button-actions" color="primary" *ngIf="state == 'CREADA' || state == 'COMPLETANDOSE'" (click)="save()">Guardar</button>
-    <button mat-raised-button class="button-actions" color="warn" *ngIf="state == 'CREADA' || state == 'COMPLETANDOSE'" (click)="cancel()">Cancelar</button>
+    <button mat-raised-button class="saveAndClose button-actions" color="success" *ngIf="state == 'CREADA'" (click)="saveAndClose()">Guardar y Cerrar</button>
+    <button mat-raised-button class="button-actions" color="primary" *ngIf="state == 'CREADA'" (click)="save()">Guardar</button>
+    <button mat-raised-button class="button-actions" color="warn" *ngIf="state == 'CREADA'" (click)="cancel()">Cancelar</button>
     <button mat-raised-button class="button-actions" color="primary" *ngIf="state == 'FACTURADA' || state == 'CERRADA'" (click)="cancel()">Ok</button>
   </div>
 </div>

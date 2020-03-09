@@ -58,9 +58,9 @@ export class CustomSelectComponent<T> implements OnInit {
     let filters = [];
     if(value && value != "") {
       filters.push({column: this.label, condition: Condition.contains, value: value}); 
-      this.service.filters = filters;
-      this.search();
     }
+    this.service.filters = filters;
+    this.search();
   }
 
   selectElement(value: any){

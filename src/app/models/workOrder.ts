@@ -4,10 +4,10 @@ import { User } from './user';
 
 export enum WOrderState {
   CREADA = "CREADA",
-  COMPLETANDOSE = "COMPLETANDOSE",
   CERRADA = "CERRADA",
+  IMPRESA = "IMPRESA",
+  FACTURADA = "FACTURADA",
   CANCELADA = "CANCELADA",
-  FACTURADA = "FACTURADA"
 }
 export class WorkOrder {
   id: number;

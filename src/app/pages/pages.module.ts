@@ -20,10 +20,11 @@ import { CustomersModule } from './customers/customers.module';
 import { ExtinguishersModule } from './extinguishers/extinguishers.module';
 import { CommonsModule } from '../commons/commons.module';
 import { WorkOrdersModule } from './work-orders/work-orders.module';
+import { ConfigurationModule } from './configuration/configuration.module';
 
 @NgModule({
   declarations: [
-    PagesComponent
+    PagesComponent,
   ],
   imports: [
     CommonModule,
@@ -38,7 +39,8 @@ import { WorkOrdersModule } from './work-orders/work-orders.module';
     CustomersModule,
     ExtinguishersModule,
     WorkOrdersModule,
-    CommonsModule
+    CommonsModule,
+    ConfigurationModule
   ],
   providers: [
     IsAuthenticatedGuard, 

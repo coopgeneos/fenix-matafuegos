@@ -19,7 +19,9 @@ export class PagesComponent implements OnInit {
     {label: "Tipo de matafuegos", path: "extinguisherstype", show: ["isAdmin"]},
     {label: "Matafuegos", path: "extinguishers", show: ["isAdmin"]},
     {label: "Ordenes", path: "workorders", show: []},
+    {label: "Impresión DPS", path: "workordersprint", show: ["isAdmin"]},
     {label: "Facturación", path: "workordersinvoice", show: ["isAdmin"]},
+    {label: "Configuración", path: "configuration", show: ["isAdmin"]},
   ]
 
   menu = this.menuEntries.filter(entry => {return entry.show});

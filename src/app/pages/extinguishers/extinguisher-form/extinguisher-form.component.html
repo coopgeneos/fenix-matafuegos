@@ -8,9 +8,12 @@
     </mat-form-field>
 
     <mat-form-field class="extinguishersFormField">
-      <mat-select placeholder="Marca" [(value)]="mark">
-        <mat-option *ngFor="let mark of marks | async" value="{{mark.name}}">{{mark.name}}</mat-option>
+      <mat-select placeholder="Marca" [formControl]="mark">
+        <mat-option *ngFor="let markx of marks | async" value="{{markx.name}}">{{markx.name}}</mat-option>
       </mat-select>
+      <mat-error *ngIf="mark.hasError('required')">
+        La marca es <strong>obligatoria</strong>
+      </mat-error>
     </mat-form-field>
   
     <app-custom-select 

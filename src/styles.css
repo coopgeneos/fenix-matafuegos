@@ -81,3 +81,15 @@ app-invoice-popup mat-form-field, app-cancel-popup mat-form-field {
   top: 70%;
   left: 95%;
 }
+
+/* Configuracion */
+.configuration-fieldset {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1%;
+  border: 2px solid #c3c3c3;
+  border-radius: 5px;
+  align-items: center;
+  padding: 10px;
+}

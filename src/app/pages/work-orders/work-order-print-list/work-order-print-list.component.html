@@ -1,5 +1,5 @@
 <div class="button-row">
-  <button mat-raised-button color="primary" (click)="invoiceOrders()">Facturar</button>
+  <button mat-raised-button color="primary" (click)="printOrders()">Imprimir</button>
 </div>
 
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
@@ -30,6 +30,12 @@
   <ng-container matColumnDef="extinguisher">
     <th mat-header-cell *matHeaderCellDef> Matafuego </th>
     <td mat-cell *matCellDef="let element"> {{element.extinguisherNo}} </td>
+  </ng-container>
+
+  <!-- Extinguisher Category Column -->
+  <ng-container matColumnDef="extinguisherCategory">
+    <th mat-header-cell *matHeaderCellDef> Categoría </th>
+    <td mat-cell *matCellDef="let element"> {{element.extinguisherCategory}} </td>
   </ng-container>
 
   <!-- Cost center Column -->

@@ -25,7 +25,7 @@ export class ExtinguisherFormComponent implements OnInit {
 
   code = new FormControl('', [Validators.required]);
   location = new FormControl('', [Validators.required]);
-  locationNo = new FormControl('', [Validators.required]);
+  locationNo = new FormControl('', []);
   costCenter = new FormControl('', []);
   address = new FormControl('', [Validators.required]);
   extinguisherNo = new FormControl('', [Validators.required]);
@@ -47,7 +47,7 @@ export class ExtinguisherFormComponent implements OnInit {
   extinguisherTypes: ExtinguisherType[];
   
   marks: Observable<any>;
-  mark: string;
+  mark = new FormControl('', [Validators.required]);//string = null;
 
   constructor(
     private activatedRouter: ActivatedRoute,
@@ -81,7 +81,7 @@ export class ExtinguisherFormComponent implements OnInit {
           this.customerId = data.customer.id.toString();
           this.typeId = data.type.id.toString();
           this.carID = data.idCar;
-          this.mark = data.mark;
+          this.mark.setValue(data.mark);// = data.mark;
         },
         error => {
           this._snackBar.showError("Error obteniendo la información!");
@@ -127,7 +127,7 @@ export class ExtinguisherFormComponent implements OnInit {
     this.lastHydraulicTest.value && this.lastHydraulicTest.value != "" ? extinguisher.lastHydraulicTest = this.lastHydraulicTest.value : delete extinguisher.lastHydraulicTest; 
     this.carID && this.carID != "" ? extinguisher.idCar = this.carID : delete extinguisher.idCar;
     this.dps && this.dps != "" ? extinguisher.dps = this.dps : delete extinguisher.dps; 
-    this.mark && this.mark != "" ? extinguisher.mark = this.mark : delete extinguisher.mark;   
+    this.mark.value && this.mark.value != "" ? extinguisher.mark = this.mark.value : delete extinguisher.mark;   
 
     if(this.customerId) {
       extinguisher.customer = new Customer();
@@ -182,7 +182,9 @@ export class ExtinguisherFormComponent implements OnInit {
               )     
     }
     return !(error ||  
-      // this.code.hasError('required') || 
+      this.customerId == null || 
+      this.typeId == null || 
+      this.mark.hasError('required') || 
       this.extinguisherNo.hasError('required') ||  
       this.manufacturing.hasError('required') || 
       this.lastLoad.hasError('required') || 

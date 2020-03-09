@@ -14,6 +14,7 @@ import { ExtinguishersService } from '../../extinguishers/extinguisher.service';
 import { CustomSnackService } from 'src/app/services/custom-snack.service';
 import { ExtinguisherJobs } from '../const-data';
 import { Condition, FilterEvent } from '../../../commons/directives/filterable.directive'
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-work-order-form',
@@ -48,6 +49,8 @@ export class WorkOrderFormComponent implements OnInit {
   servicesList: any[] = [];
 
   _partialIsSelected = false;
+
+  iNote: string;
   
   constructor(
     private activatedRouter: ActivatedRoute,
@@ -56,7 +59,8 @@ export class WorkOrderFormComponent implements OnInit {
     private router: Router,
     private userService: UsersService,
     public customerService: CustomersService,
-    public extinguisherService: ExtinguishersService) { 
+    public extinguisherService: ExtinguishersService,
+    private authService: AuthService) { 
     this.activatedRouter.params.subscribe(
       params => { 
         this.id = Number(params['id']); 
@@ -65,80 +69,66 @@ export class WorkOrderFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(this.id != 0) {
-      this.service.get(this.id).subscribe(
-        data => {
-          // this.orderNo.setValue(data.orderNo);
-          this.customerId = data.customer.id.toString();
-          this.extinguisherId = data.extinguisher.id.toString();
-          this.userId = data.closeBy ? data.closeBy.id.toString() : null;
-          this.services = data.toDoList;
-          data.closeDate ? 
-            this.closeDate.setValue(moment(data.closeDate).format("YYYY-MM-DD")) :
-            this.closeDate.setValue(null);
-          this.cancelNote = data.cancelNote ? data.cancelNote : null;
-          this.state = data.state;
-          this.receptionDate.setValue(data.reception);
-          this.deliveryDate.setValue(data.delivery);
-          this.partialLoad.setValue(data.partialLoad);
-          this._disabled = (this.state == 'CANCELADA' || this.state == 'FACTURADA'  || this.state == 'CERRADA');
-          this.extinguisherFilters = [{column: "customer", condition: Condition["="], value: this.customerId}]
-          this._force = true;
-          
-          let aux = this.services.split(',');
-          for(let i=0; i<aux.length; i++) {
-            for(let j=0; j<this.servicesList.length; j++) {
-              if(aux[i] == this.servicesList[j].name) {
-                this.servicesList[j].value = true;
-                break;
-              }
-            }
-          }
-        },
-        error => {
-          this._snackBar.showError("Error obteniendo las órdenes!");
-        }
-      )
-    }
-
     this.service.getAllServices().subscribe(
       data => {
         this.servicesList = data.map(job => {
           return {name: job.name, value: false}
-        })
+        });
+
+        if(this.id != 0) {
+          this._loadOrder(this.id);
+        }
+
       },
       error => {
         this._snackBar.showError("Error obteniendo los servicios!");
       }
     )
 
-    /* this.userService.search()
-      .then(list => {
-        this.users = list;
-      })
-      .catch(err => {
-        this._snackBar.showError("Error obteniendo los usuarios!");
-      })
+    
+  }
 
-    this.customerService.clearState();
-    this.customerService.filters = [{column: 'force', condition: Condition["="], value: true}]
-    this.customerService.search()
-      .then(list => {
-        this.customers = list;
-      })
-      .catch(err => {
-        this._snackBar.showError("Error obteniendo los clientes!");
-      })
-
-    this.extinguisherService.clearState();
-    this.extinguisherService.filters = [{column: 'force', condition: Condition["="], value: true}]
-    this.extinguisherService.search()
-      .then(list => {
-        this.extinguishers = list;
-      })
-      .catch(err => {
-        this._snackBar.showError("Error obteniendo los matafuegos!");
-      }) */
+  _loadOrder(id) {
+    this.service.get(this.id).subscribe(
+      data => {
+        // this.orderNo.setValue(data.orderNo);
+        this.customerId = data.customer.id.toString();
+        this.extinguisherId = data.extinguisher.id.toString();
+        this.userId = data.closeBy ? data.closeBy.id.toString() : null;
+        this.services = data.toDoList;
+        data.closeDate ? 
+          this.closeDate.setValue(moment(data.closeDate).format("YYYY-MM-DD")) :
+          this.closeDate.setValue(null);
+        this.cancelNote = data.cancelNote ? data.cancelNote : null;
+        this.state = data.state;
+        data.reception ? 
+          this.receptionDate.setValue(moment(data.reception).format("YYYY-MM-DD")) :
+          this.receptionDate.setValue(null);
+        data.delivery ? 
+          this.deliveryDate.setValue(moment(data.delivery).format("YYYY-MM-DD")) :
+          this.deliveryDate.setValue(null);
+        this.partialLoad.setValue(data.partialLoad);
+        this._disabled = (this.state != WOrderState.CREADA) ? true : false;
+        this.extinguisherFilters = [{column: "customer", condition: Condition["="], value: this.customerId}]
+        this._force = true;
+        this.iNote = data.invoiceNote ? 
+              `Nro Fact: ${data.invoiceNo}\nFecha: ${moment(data.invoiceDate).format('YYYY-MM-DD')}\nNota: ${data.invoiceNote}` : 
+              null;
+        
+        let aux = this.services.split(',');
+        for(let i=0; i<aux.length; i++) {
+          for(let j=0; j<this.servicesList.length; j++) {
+            if(aux[i] == this.servicesList[j].name) {
+              this.servicesList[j].value = true;
+              break;
+            }
+          }
+        }
+      },
+      error => {
+        this._snackBar.showError("Error obteniendo las órdenes!");
+      }
+    )
   }
 
   save() : void {
@@ -146,10 +136,25 @@ export class WorkOrderFormComponent implements OnInit {
     this.__save(order);
   }
 
+  saveAndClose() : void {
+    let order = this.__prepareOrder();
+    order.state = WOrderState.CERRADA;
+
+    // Cerrada por ...
+    order.closeBy = new User();
+    order.closeBy.id = this.authService.getLoggedUser().id;
+    order.closeDate = moment().format("YYYY-MM-DD")
+    order.state = WOrderState.CERRADA;
+
+    this.__save(order);
+  }
+
   __prepareOrder() : WorkOrder {
     let order = new WorkOrder();
     // this.orderNo.value && this.orderNo.value != "" ? order.orderNo = this.orderNo.value : delete order.orderNo;
     
+    order.state = WOrderState.CREADA;
+
     // Preparo el Customer
     if(this.customerId) {
       order.customer = new Customer();
@@ -170,17 +175,17 @@ export class WorkOrderFormComponent implements OnInit {
                       .map(serv => {return serv.name})
                       .toString();
 
+    order.reception = this.receptionDate.value;
+    order.delivery = this.deliveryDate.value;
+    order.partialLoad = this.partialLoad.value ? this.partialLoad.value : delete order.partialLoad;
+                  
     //Borro los campos innecesarios. Solo dejo los que estan nombrados en el arreglo fields
-    let fields = ['orderNo','customer','extinguisher','toDoList','state'];
+    let fields = ['orderNo','customer','extinguisher','toDoList','state','reception','delivery','partialLoad'];
     for(let key in order) {
       if(fields.includes(key))
         continue
       delete order[key];
     }
-
-    order.reception = this.receptionDate.value;
-    order.delivery = this.deliveryDate.value;
-    order.partialLoad = this.partialLoad.value;
 
     return order;
   }
@@ -189,7 +194,6 @@ export class WorkOrderFormComponent implements OnInit {
     if(this.__validate(order)) {
       //Creo nueva orden
       if(this.id == 0) { 
-        order.state = WOrderState.CREADA;
         this.service.add(order).subscribe(
           _ => {
             this._snackBar.showSuccess("Orden guardada!");
@@ -200,7 +204,6 @@ export class WorkOrderFormComponent implements OnInit {
           }
         )
       } else { //Actualizo una orden existente
-        order.state = WOrderState.COMPLETANDOSE;
         this.service.update(this.id, order).subscribe(
           _ => {
             this._snackBar.showSuccess("Orden guardada!");

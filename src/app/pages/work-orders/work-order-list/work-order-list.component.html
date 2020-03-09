@@ -72,14 +72,14 @@
 
   <!-- CloseBy Column -->
   <ng-container matColumnDef="doneBy">
-    <th mat-header-cell *matHeaderCellDef> Hecho por </th>
-    <td mat-cell *matCellDef="let element"> {{element.doneBy ? element.doneBy.name : ""}} </td>
+    <th mat-header-cell *matHeaderCellDef> Cerrada por </th>
+    <td mat-cell *matCellDef="let element"> {{element.closeBy ? element.closeBy.name : ""}} </td>
   </ng-container>
 
   <!-- CloseDate Column -->
   <ng-container matColumnDef="doneDate">
-    <th mat-header-cell *matHeaderCellDef> Hecho el </th>
-    <td mat-cell *matCellDef="let element"> {{element.doneDate | date:'yyyy/MM/dd'}} </td>
+    <th mat-header-cell *matHeaderCellDef> Fecha cierre </th>
+    <td mat-cell *matCellDef="let element"> {{element.closeDate | date:'yyyy/MM/dd'}} </td>
   </ng-container>
 
   <!-- State Column -->
@@ -95,19 +95,19 @@
       <button mat-icon-button aria-label="edit" matTooltip="Editar" (click)="edit(element)" *ngIf="isAdmin && (element.state == 'CREADA' || element.state == 'COMPLETANDOSE')">
         <mat-icon aria-hidden="false" aria-label="edit">edit</mat-icon>
       </button>
-      <button mat-icon-button aria-label="view" matTooltip="Ver" (click)="edit(element)" *ngIf="element.state == 'CANCELADA'">
+      <button mat-icon-button aria-label="view" matTooltip="Ver" (click)="edit(element)" *ngIf="element.state == 'CANCELADA' || element.state == 'FACTURADA' || element.state == 'CERRADA' || element.state == 'IMPRESA'">
         <mat-icon aria-hidden="false" aria-label="visibility">visibility</mat-icon>
       </button>
-      <button mat-icon-button aria-label="view" matTooltip="Ver" (click)="update(element)" *ngIf="element.state == 'FACTURADA' || element.state == 'CERRADA'">
+      <!-- <button mat-icon-button aria-label="view" matTooltip="Ver" (click)="update(element)" *ngIf="element.state == 'FACTURADA' || element.state == 'CERRADA'">
         <mat-icon aria-hidden="false" aria-label="visibility">visibility</mat-icon>
-      </button>
+      </button> -->
       <!-- <a (click)="delete(element)" *ngIf="isAdmin">
         <mat-icon aria-hidden="false" aria-label="delete">delete</mat-icon>
       </a> -->
-      <button mat-icon-button aria-label="update" matTooltip="Completar" (click)="update(element)" *ngIf="element.state == 'CREADA' || element.state == 'COMPLETANDOSE'">
+      <!-- <button mat-icon-button aria-label="update" matTooltip="Completar" (click)="update(element)" *ngIf="element.state == 'CREADA' || element.state == 'COMPLETANDOSE'">
         <mat-icon aria-hidden="false" aria-label="update">list_alt</mat-icon>
-      </button>
-      <button mat-icon-button aria-label="close" matTooltip="Cerrar" (click)="close(element)" *ngIf="element.state == 'COMPLETANDOSE'">
+      </button> -->
+      <button mat-icon-button aria-label="close" matTooltip="Cerrar" (click)="close(element)" *ngIf="element.state == 'CREADA'">
         <mat-icon aria-hidden="false" aria-label="close">archive</mat-icon>
       </button>
       <button mat-icon-button aria-label="cancel" matTooltip="Cancelar" (click)="cancel(element)" *ngIf="element.state == 'CREADA' || element.state == 'COMPLETANDOSE'">

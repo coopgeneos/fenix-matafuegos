@@ -3,13 +3,6 @@
     <input matInput placeholder="Nro de orden" [value]="id" readonly>
   </mat-form-field>
 
-  <!-- <mat-form-field class="orderFormField">
-    <mat-select placeholder="Cliente" [(value)]="customerId" 
-      disabled="{{state == 'CANCELADA' || state == 'FACTURADA'  || state == 'CERRADA'}}"
-      (selectionChange)=loadExtinguishers()>
-      <mat-option *ngFor="let c of customers" value="{{c.id}}" disabled="{{c.deleted}}">{{c.name}}</mat-option>
-    </mat-select>
-  </mat-form-field> -->
   <app-custom-select 
     [service]="customerService"
     [key]="'id'" 
@@ -23,12 +16,6 @@
     class="orderFormField">
   </app-custom-select>
 
-  <!-- <mat-form-field class="orderFormField" *ngIf="customerId">
-    <mat-select placeholder="Matafuego" [(value)]="extinguisherId" 
-      disabled="{{state == 'CANCELADA' || state == 'FACTURADA'  || state == 'CERRADA'}}">
-      <mat-option *ngFor="let e of extinguishers" value="{{e.id}}" disabled="{{e.deleted}}">{{e.code}}</mat-option>
-    </mat-select>
-  </mat-form-field> -->
   <app-custom-select 
     [service]="extinguisherService"
     [key]="'id'" 
@@ -44,14 +31,14 @@
   </app-custom-select>
 
   <mat-form-field class="extinguishersFormField">
-    <input matInput placeholder="Recibido" [formControl]="receptionDate" type="date">
+    <input matInput placeholder="Recibido" [formControl]="receptionDate" type="date" readonly="{{state != 'CREADA'}}">
     <mat-error *ngIf="receptionDate.hasError('required')">
       Fecha de recepción es <strong>obligatorio</strong>
     </mat-error>
   </mat-form-field>
 
   <mat-form-field class="extinguishersFormField">
-    <input matInput placeholder="Entrega" [formControl]="deliveryDate" type="date">
+    <input matInput placeholder="Entrega" [formControl]="deliveryDate" type="date" readonly="{{state != 'CREADA'}}">
     <mat-error *ngIf="deliveryDate.hasError('required')">
       Fecha de entrega es <strong>obligatorio</strong>
     </mat-error>
@@ -60,7 +47,7 @@
   <mat-selection-list >
     <mat-list-item *ngFor="let serv of servicesList; let i=index">  
       <p>{{serv.name}}</p>
-      <mat-checkbox [checked]="serv.value" (change)="checkService(i)" disabled="{{state == 'CANCELADA' || state == 'FACTURADA'  || state == 'CERRADA'}}"></mat-checkbox>
+      <mat-checkbox [checked]="serv.value" (change)="checkService(i)" disabled="{{state != 'CREADA'}}"></mat-checkbox>
     </mat-list-item>
   </mat-selection-list>
 
@@ -71,26 +58,18 @@
     </mat-error>
   </mat-form-field>
 
-  <!-- <mat-form-field class="orderFormField">
-    <mat-select placeholder="Select user" [(value)]="userId">
-      <mat-option *ngFor="let u of users" value="{{u.id}}">{{u.name}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <mat-form-field class="extinguishersFormField">
-    <input matInput placeholder="Close date" [formControl]="closeDate" type="date">
-    <mat-error *ngIf="closeDate.hasError('required') && userId">
-      CloseDate date is <strong>obligatorio</strong>
-    </mat-error>
-  </mat-form-field> -->
-
   <mat-form-field class="orderFormField" *ngIf="state == 'CANCELADA'">
     <textarea matInput placeholder="Motivo de cancelación" [ngModel]="cancelNote" readonly="true"></textarea>
   </mat-form-field>
 
+  <mat-form-field class="orderFormField" *ngIf="state == 'FACTURADA'">
+    <textarea matInput placeholder="Datos de facturación" [(ngModel)]="iNote" readonly="true"></textarea>
+  </mat-form-field>
+
   <div class="div-button-actions">
-    <button mat-raised-button class="button-actions" color="primary" (click)="save()" *ngIf="state == 'CREADA' || state == 'COMPLETANDOSE'">Guardar</button>
-    <button mat-raised-button class="button-actions" color="warn" (click)="cancel()" *ngIf="state == 'CREADA' || state == 'COMPLETANDOSE'">Cancelar</button>
-    <button mat-raised-button class="button-actions" color="primary" (click)="cancel()" *ngIf="state == 'CANCELADA' || state == 'CERRADA'">Ok</button>
+    <button mat-raised-button class="saveAndClose button-actions" color="success" *ngIf="state == 'CREADA'" (click)="saveAndClose()">Guardar y Cerrar</button>
+    <button mat-raised-button class="button-actions" color="primary" (click)="save()" *ngIf="state == 'CREADA'">Guardar</button>
+    <button mat-raised-button class="button-actions" color="warn" (click)="cancel()" *ngIf="state == 'CREADA'">Cancelar</button>
+    <button mat-raised-button class="button-actions" color="primary" (click)="cancel()" *ngIf="state != 'CREADA'">Ok</button>
   </div>
 </div>

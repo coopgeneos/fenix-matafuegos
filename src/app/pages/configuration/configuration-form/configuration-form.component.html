@@ -1,0 +1,54 @@
+<div class="general-form">
+  <fieldset class="configuration-fieldset">
+    <legend>Configuracion DPS vehicular</legend>
+    <mat-form-field class="configurationFormField">
+      <input matInput placeholder="Prefijo" [(ngModel)]="config.vehicularDPSPrefix">
+    </mat-form-field>
+
+    <mat-form-field class="configurationFormField">
+      <input matInput placeholder="Nro de inicio" [(ngModel)]="config.vehicularDPSInit" type="number">
+    </mat-form-field>
+
+    <mat-form-field class="configurationFormField">
+      <input matInput placeholder="Nro de Fin" [(ngModel)]="config.vehicularDPSEnd" type="number">
+    </mat-form-field>
+
+    <mat-form-field class="configurationFormField">
+      <input matInput placeholder="Nro actual" [(ngModel)]="config.vehicularDPSCurrent" type="number">
+    </mat-form-field>
+
+    <mat-form-field class="configurationFormField">
+      <input matInput placeholder="Incremento" [(ngModel)]="config.vehicularDPSIncrement" type="number">
+    </mat-form-field>
+  </fieldset>
+
+  <!-- **************** DOMICILIARIO ****************** -->
+
+  <fieldset class="configuration-fieldset">
+    <legend>Configuracion DPS domiciliario</legend>
+    <mat-form-field class="configurationFormField">
+      <input matInput placeholder="Prefijo" [(ngModel)]="config.domiciliaryDPSPrefix">
+    </mat-form-field>
+
+    <mat-form-field class="configurationFormField">
+      <input matInput placeholder="Nro de inicio" [(ngModel)]="config.domiciliaryDPSInit" type="number">
+    </mat-form-field>
+
+    <mat-form-field class="configurationFormField">
+      <input matInput placeholder="Nro de Fin" [(ngModel)]="config.domiciliaryDPSEnd" type="number">
+    </mat-form-field>
+
+    <mat-form-field class="configurationFormField">
+      <input matInput placeholder="Nro actual" [(ngModel)]="config.domiciliaryDPSCurrent" type="number">
+    </mat-form-field>
+
+    <mat-form-field class="configurationFormField">
+      <input matInput placeholder="Incremento" [(ngModel)]="config.domiciliaryDPSIncrement" type="number">
+    </mat-form-field>
+  </fieldset>
+
+  <div class="div-button-actions">
+    <button mat-raised-button class="button-actions" color="primary" (click)="save()">Guardar</button>
+    <!-- <button mat-raised-button class="button-actions" color="warn" (click)="cancel()">Cancelar</button> -->
+  </div>
+</div>

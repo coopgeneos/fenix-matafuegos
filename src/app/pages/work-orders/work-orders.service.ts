@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BaseServiceAPI } from 'src/app/commons/base-service-api';
 import { WorkOrder } from 'src/app/models/workOrder';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -30,5 +30,18 @@ export class WorkOrdersService extends BaseServiceAPI<WorkOrder>{
 
   getAllServices() : Observable<any> {
     return this.httpClient.get(environment.api_url+'job')
+  }
+
+  ordersToPrint() : Observable<any> {
+    return this.httpClient.get(environment.api_url+'workorder/toprint')
+  }
+
+  printOrders(ids: number[]) : Observable<any> {
+    let body = {
+      'ids': ids
+    }
+    let headers = new HttpHeaders();
+    headers = headers.set('Accept', 'application/pdf');
+    return this.httpClient.post(environment.api_url+'workorder/print', body, { headers: headers, responseType: 'blob' })
   }
 }

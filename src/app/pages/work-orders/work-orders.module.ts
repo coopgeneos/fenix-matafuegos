@@ -27,6 +27,7 @@ import { WorkOrderInvoiceListComponent } from './work-order-invoice-list/work-or
 import { InvoicePopupComponent } from './invoice-popup/invoice-popup.component';
 import { ClosePopupComponent } from './close-popup/close-popup.component';
 import { DeletePopupComponent } from 'src/app/commons/delete-popup/delete-popup.component';
+import { WorkOrderPrintListComponent } from './work-order-print-list/work-order-print-list.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { DeletePopupComponent } from 'src/app/commons/delete-popup/delete-popup.
     CancelPopupComponent,
     WorkOrderInvoiceListComponent,
     InvoicePopupComponent,
-    ClosePopupComponent
+    ClosePopupComponent,
+    WorkOrderPrintListComponent
   ],
   imports: [
     CommonModule,

@@ -99,7 +99,7 @@ export class WorkOrderMadeFormComponent implements OnInit {
 
   save() : void {
     let order = this.__prepareOrder()
-    order.state = WOrderState.COMPLETANDOSE;
+    // order.state = WOrderState.COMPLETANDOSE;
 
     //Campos a actualizar. Solo se enviarán los campos de la lista
     let fields = ['doneList','doneBy','doneDate','state'];
@@ -136,7 +136,7 @@ export class WorkOrderMadeFormComponent implements OnInit {
     order.doneBy = new User();
     order.doneBy.id = this.authService.getLoggedUser().id;
     order.doneDate = moment().format("YYYY-MM-DD")
-    order.state = WOrderState.COMPLETANDOSE;
+    // order.state = WOrderState.COMPLETANDOSE;
 
     order.extinguisher = {...this.order.extinguisher};
 
