@@ -1,6 +1,6 @@
 <mat-form-field class="custom-select-ff">
   <mat-label>{{placeholder}}</mat-label>
-  <mat-select (selectionChange)="selectElement($event.value)" (openedChange)="cleanSearch($event)" [(value)]="_selected" disabled="{{_disabled == true}}">
+  <mat-select (selectionChange)="selectElement($event.value)" (openedChange)="cleanSearch($event)" [(value)]="_selected" disabled="{{_disabled == true}}" required="{{required == true}}">
     <input placeholder="{{inputPlaceholder}}" matInput (keyup)="searchElement($event.target.value)" class="inputCS" [(ngModel)]="_inputValue">
     <button mat-button *ngIf="_inputValue" matSuffix mat-icon-button aria-label="Clear" (click)="cleanSearch(false)">
       <mat-icon>close</mat-icon>

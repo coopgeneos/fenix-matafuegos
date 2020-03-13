@@ -1,14 +1,14 @@
 <div class="general-form">
 
     <mat-form-field class="extinguishersFormField">
-      <input matInput placeholder="Nro de matafuego" [formControl]="extinguisherNo" type="number">
+      <input matInput placeholder="Nro de matafuego" [formControl]="extinguisherNo" type="number" required>
       <mat-error *ngIf="extinguisherNo.hasError('required')">
         El nro de matafuego es <strong>obligatorio</strong>
       </mat-error>
     </mat-form-field>
 
     <mat-form-field class="extinguishersFormField">
-      <mat-select placeholder="Marca" [formControl]="mark">
+      <mat-select placeholder="Marca" [formControl]="mark" required>
         <mat-option *ngFor="let markx of marks | async" value="{{markx.name}}">{{markx.name}}</mat-option>
       </mat-select>
       <mat-error *ngIf="mark.hasError('required')">
@@ -23,6 +23,7 @@
       [placeholder]="'Cliente'" 
       [inputPlaceholder]="'Escriba para filtrar'"
       [force]="true" 
+      [required]="true" 
       [selected]="customerId"
       (selectChange)="selectCustomer($event)"
       class="extinguishersFormField">
@@ -35,13 +36,13 @@
     </mat-form-field> -->
 
     <mat-form-field class="extinguishersFormField">
-      <mat-select placeholder="Tipo" [(value)]="typeId">
+      <mat-select placeholder="Tipo" [(value)]="typeId" required>
         <mat-option *ngFor="let type of extinguisherTypes" value="{{type.id}}" disabled="{{type.deleted}}">{{type.category}} - {{type.volume}}</mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field class="extinguishersFormField">
-      <mat-select placeholder="Categoría" [(value)]="category">
+      <mat-select placeholder="Categoría" [(value)]="category" required>
         <mat-option *ngFor="let categ of categories()" value="{{categ}}">{{categ}}</mat-option>
       </mat-select>
     </mat-form-field>
@@ -55,7 +56,7 @@
     </mat-form-field>
   
     <mat-form-field class="extinguishersFormField" *ngIf="category == 'DOMICILIARIO'">
-      <input matInput placeholder="Ubicación" [formControl]="location" type="string">
+      <input matInput placeholder="Ubicación" [formControl]="location" type="string" required>
       <mat-error *ngIf="location.hasError('required')">
         La ubicación es <strong>obligatorio</strong>
       </mat-error>
@@ -66,7 +67,7 @@
     </mat-form-field>
   
     <mat-form-field class="extinguishersFormField" *ngIf="category == 'DOMICILIARIO'">
-      <input matInput placeholder="Dirección" [formControl]="address" type="string">
+      <input matInput placeholder="Dirección" [formControl]="address" type="string" required>
       <mat-error *ngIf="address.hasError('required')">
         La dirección de <strong>obligatorio</strong>
       </mat-error>
@@ -77,21 +78,21 @@
     </mat-form-field>
 
     <mat-form-field class="extinguishersFormField">
-      <input matInput placeholder="Fabricación" [formControl]="manufacturing" type="date">
+      <input matInput placeholder="Fabricación" [formControl]="manufacturing" type="date" required>
       <mat-error *ngIf="manufacturing.hasError('required')">
         La fecha de fabricación es <strong>obligatorio</strong>
       </mat-error>
     </mat-form-field>
 
     <mat-form-field class="extinguishersFormField">
-      <input matInput placeholder="Ultima carga" [formControl]="lastLoad" type="date">
+      <input matInput placeholder="Ultima carga" [formControl]="lastLoad" type="date" required>
       <mat-error *ngIf="lastLoad.hasError('required')">
         La fecha de última carga es <strong>obligatorio</strong>
       </mat-error>
     </mat-form-field>
 
     <mat-form-field class="extinguishersFormField">
-      <input matInput placeholder="Ultima PH" [formControl]="lastHydraulicTest" type="date">
+      <input matInput placeholder="Ultima PH" [formControl]="lastHydraulicTest" type="date" required>
       <mat-error *ngIf="lastHydraulicTest.hasError('required')">
         La fecha de última PH es <strong>obligatorio</strong>
       </mat-error>

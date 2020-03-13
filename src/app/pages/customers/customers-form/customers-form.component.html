@@ -1,28 +1,28 @@
 <div class="general-form">
 
   <mat-form-field class="customerFormField">
-    <input matInput placeholder="Nro de cliente" [formControl]="cNumber">
+    <input matInput placeholder="Nro de cliente" [formControl]="cNumber" required>
     <mat-error *ngIf="cNumber.hasError('required')">
       El nro de cliente es <strong>obligatorio</strong>
     </mat-error>
   </mat-form-field>
 
   <mat-form-field class="customerFormField">
-    <input matInput placeholder="CUIT" [formControl]="cuit">
+    <input matInput placeholder="CUIT" [formControl]="cuit" required>
     <mat-error *ngIf="cuit.hasError('required')">
       El cuit es <strong>obligatorio</strong>
     </mat-error>
   </mat-form-field>
 
   <mat-form-field class="customerFormField">
-    <input matInput placeholder="Nombre" [formControl]="name">
+    <input matInput placeholder="Nombre" [formControl]="name" required>
     <mat-error *ngIf="name.hasError('required')">
       El nombre es <strong>obligatorio</strong>
     </mat-error>
   </mat-form-field>
 
   <mat-form-field class="customerFormField">
-    <input matInput placeholder="Dirección" [formControl]="address">
+    <input matInput placeholder="Dirección" [formControl]="address" required>
     <mat-error *ngIf="address.hasError('required')">
       La dirección es <strong>obligatoria</strong>
     </mat-error>
@@ -41,7 +41,7 @@
   </mat-form-field>
 
   <mat-form-field class="customerFormField">
-    <mat-select placeholder="Seleccione el tipo" [(value)]="type">
+    <mat-select placeholder="Seleccione el tipo" [(value)]="type" required>
       <mat-option *ngFor="let val of types()" value="{{val}}">{{val}}</mat-option>
     </mat-select>
   </mat-form-field>

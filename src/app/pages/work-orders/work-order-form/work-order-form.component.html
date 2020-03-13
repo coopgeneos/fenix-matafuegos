@@ -1,6 +1,6 @@
 <div class="general-form">
   <mat-form-field class="orderFormField" *ngIf="id">
-    <input matInput placeholder="Nro de orden" [value]="id" readonly>
+    <input matInput placeholder="Nro de orden" [value]="id" readonly required>
   </mat-form-field>
 
   <app-custom-select 
@@ -12,6 +12,7 @@
     [force]="_force" 
     [disabled]="_disabled" 
     [selected]="customerId" 
+    [required] = "true" 
     (selectChange)="selectCustomer($event)"
     class="orderFormField">
   </app-custom-select>
@@ -25,20 +26,21 @@
     [force]="_force" 
     [disabled]="_disabled" 
     [selected]="extinguisherId" 
+    [required] = "true" 
     [filters]="extinguisherFilters"
     (selectChange)="selectExtinguisher($event)"
     class="orderFormField">
   </app-custom-select>
 
   <mat-form-field class="extinguishersFormField">
-    <input matInput placeholder="Recibido" [formControl]="receptionDate" type="date" readonly="{{state != 'CREADA'}}">
+    <input matInput placeholder="Recibido" [formControl]="receptionDate" type="date" readonly="{{state != 'CREADA'}}" required>
     <mat-error *ngIf="receptionDate.hasError('required')">
       Fecha de recepción es <strong>obligatorio</strong>
     </mat-error>
   </mat-form-field>
 
   <mat-form-field class="extinguishersFormField">
-    <input matInput placeholder="Entrega" [formControl]="deliveryDate" type="date" readonly="{{state != 'CREADA'}}">
+    <input matInput placeholder="Entrega" [formControl]="deliveryDate" type="date" readonly="{{state != 'CREADA'}}" required>
     <mat-error *ngIf="deliveryDate.hasError('required')">
       Fecha de entrega es <strong>obligatorio</strong>
     </mat-error>

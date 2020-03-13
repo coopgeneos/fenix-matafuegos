@@ -1,29 +1,29 @@
 <div class="general-form">
   <mat-form-field class="userFormField">
-    <input matInput placeholder="Nombre" [formControl]="name">
+    <input matInput placeholder="Nombre" [formControl]="name" required>
     <mat-error *ngIf="name.hasError('required')">
       El nombre es <strong>obligatorio</strong>
     </mat-error>
   </mat-form-field>
   <mat-form-field class="userFormField">
-    <mat-select placeholder="Rol" [(value)]="role">
+    <mat-select placeholder="Rol" [(value)]="role" required>
       <mat-option value="ADMIN">Administrador</mat-option>
       <mat-option value="OPERARIO">Operario</mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field class="userFormField">
-    <input matInput placeholder="Usuario" [formControl]="username">
+    <input matInput placeholder="Usuario" [formControl]="username" required>
     <mat-error *ngIf="username.hasError('required')">
       El usuario es <strong>obligatorio</strong>
     </mat-error>
   </mat-form-field>
   <mat-form-field class="signin-field">
-    <input type="password" matInput placeholder="Password" [formControl]="password" [type]="hide ? 'password' : 'text'">
+    <input type="password" matInput placeholder="Password" [formControl]="password" [type]="hide ? 'password' : 'text'" required>
     <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
       <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
     </button>
     <mat-error *ngIf="password.hasError('required')">
-      La contraseña es <strong>obligatorio</strong>
+      La contraseña es <strong>obligatoria</strong>
     </mat-error>
   </mat-form-field>
   <div class="div-button-actions">

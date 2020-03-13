@@ -15,6 +15,7 @@ export class CustomSelectComponent<T> implements OnInit {
   @Input() label: any;
   @Input() placeholder: string;
   @Input() inputPlaceholder: string;
+  @Input() required: boolean;
   @Output() selectChange = new EventEmitter<any>();
 
   _selected: string = null;
