@@ -82,6 +82,7 @@ export class ExtinguisherFormComponent implements OnInit {
           this.typeId = data.type.id.toString();
           this.carID = data.idCar;
           this.mark.setValue(data.mark);// = data.mark;
+          this.dps = data.dps;
         },
         error => {
           this._snackBar.showError("Error obteniendo la información!");
