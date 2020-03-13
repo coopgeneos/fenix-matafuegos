@@ -116,9 +116,9 @@ export class ExtinguisherFormComponent implements OnInit {
     let extinguisher = new Extinguisher();
     this.code.value && this.code.value != "" ? extinguisher.code = this.code.value : delete extinguisher.code;
     this.category ? extinguisher.category = this.category : delete extinguisher.category;
-    this.costCenter && this.costCenter.value != "" ? extinguisher.costCenter = this.costCenter.value : delete extinguisher.costCenter;  
-    this.location && this.location.value != "" ? extinguisher.location = this.location.value : delete extinguisher.location;  
-    this.locationNo && this.locationNo.value != "" ? extinguisher.locationNo = this.locationNo.value : delete extinguisher.locationNo;  
+    this.costCenter.value && this.costCenter.value != "" ? extinguisher.costCenter = this.costCenter.value : delete extinguisher.costCenter;  
+    this.location.value && this.location.value != "" ? extinguisher.location = this.location.value : delete extinguisher.location;  
+    this.locationNo.value && this.locationNo.value != "" ? extinguisher.locationNo = this.locationNo.value : delete extinguisher.locationNo;  
     this.address.value && this.address.value != "" ? extinguisher.address = this.address.value : delete extinguisher.address; 
     this.extinguisherNo.value && this.extinguisherNo.value != "" ? extinguisher.extinguisherNo = this.extinguisherNo.value : delete extinguisher.extinguisherNo; 
     this.bvNo.value && this.bvNo.value != "" ? extinguisher.bvNo = this.bvNo.value : delete extinguisher.bvNo;
@@ -174,10 +174,10 @@ export class ExtinguisherFormComponent implements OnInit {
   validate() : boolean {
     let error = false;
     if(this.category == ExtinguisherCategory.VEHICULAR && !this.carID) {
-      error = true;
+      error = error || true;
     }
     if(this.category == ExtinguisherCategory.DOMICILIARIO) {
-      error = ( this.location.hasError('required') ||  
+      error = error || ( this.location.hasError('required') ||  
                 this.address.hasError('required') 
               )     
     }
@@ -193,6 +193,10 @@ export class ExtinguisherFormComponent implements OnInit {
 
   selectCustomer(id: any) {
     this.customerId = id;
+  }
+
+  _prepareObjectToSend(obj: any) {
+
   }
 
 }
