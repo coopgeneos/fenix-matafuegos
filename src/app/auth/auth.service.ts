@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { of, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
 
@@ -58,16 +58,25 @@ export class AuthService {
     return false;
   }
 
+  // isAdmin() : Observable<boolean> {
+    // return this.http.get(environment.api_url+"isAdmin").pipe(
+    //   map(resp => {
+    //     if(resp['error']) {
+    //       return false;
+    //     }
+    //     else {
+    //       return resp['data']
+    //     }
+    //   })
+    // )
+  // }
+
   isAdmin() : Observable<boolean> {
-    return this.http.get(environment.api_url+"isAdmin").pipe(
-      map(resp => {
-        if(resp['error']) {
-          return false;
-        }
-        else {
-          return resp['data']
-        }
-      })
-    )
+    let userData = localStorage.getItem('currentUser');
+    userData = JSON.parse(userData);
+    if(userData && userData["role"] === "ADMIN"){
+      return of(true);
+    }
+    return of(false);
   }
 }
